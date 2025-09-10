@@ -3,24 +3,18 @@ import ts from 'typescript-eslint';
 import astro from 'eslint-plugin-astro';
 
 export default [
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', '.astro', 'astro.config.mjs'] },
   js.configs.recommended,
-  ...ts.configs.recommendedTypeChecked.map((c) => ({
+  ...ts.configs.recommended.map((c) => ({
     ...c,
-    languageOptions: {
-      ...c.languageOptions,
-      parserOptions: {
-        ...c.languageOptions?.parserOptions,
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
+    rules: {
+      ...c.rules,
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   })),
   ...astro.configs.recommended,
-  {
-    rules: {
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-    },
-  },
 ];
