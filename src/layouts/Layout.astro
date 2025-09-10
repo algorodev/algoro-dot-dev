@@ -1,16 +1,16 @@
 ---
-import '../styles/global.css'
-import ToggleButton from '../components/ToggleButton.astro'
+import '../styles/global.css';
+import ToggleButton from '../components/ToggleButton.astro';
 ---
 
 <!doctype html>
 <html lang="en" class="scheme-light dark:scheme-dark">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro Basics</title>
     <script>
       (() => {
         const root = document.documentElement;
@@ -20,18 +20,18 @@ import ToggleButton from '../components/ToggleButton.astro'
         root.classList.toggle('dark', wantsDark);
       })();
     </script>
-	</head>
-	<body>
+  </head>
+  <body>
     <ToggleButton />
-		<slot />
-	</body>
+    <slot />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>
