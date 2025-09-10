@@ -16,15 +16,7 @@ export default [
       },
     },
   })),
-  {
-    plugins: { astro },
-    files: ['**/*.astro'],
-    languageOptions: {
-      parser: astro.parsers['.astro'],
-      ecmaVersion: 'latest',
-    },
-    rules: {},
-  },
+  ...astro.configs.recommended,
   {
     rules: {
       'no-unused-vars': 'off',
