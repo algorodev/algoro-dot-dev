@@ -1,24 +1,31 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
+import { getAllPosts } from '@content/posts';
 
-const posts = await getCollection('blog');
-posts.sort((a, b) => (b.data.publishedAt ?? '').localeCompare(a.data.publishedAt ?? ''));
+const pageSize = 10;
+const allPosts = await getAllPosts();
+const pagePosts = allPosts.slice(0, pageSize);
+const pageCount = Math.ceil(allPosts.length / pageSize);
+const title = 'Blog';
+const description = 'Articles and notes'
 ---
 
-<Layout>
-  <h1>Blog</h1>
-  {
-    posts.length === 0 ? (
-      <p>No posts yet.</p>
-    ) : (
-      <ul>
-        {posts.map((entry) => (
-          <li>
-            <a href={`/blog/${entry.data.slug}/`}>{entry.data.title}</a>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+<Layout title={title} description={description}>
+  <h1 class="text-2xl font-semibold">{title}</h1>
+
+  <ul class="mt-6 space-y-4">
+    {pagePosts.map(p => (
+      <li>
+        <a class="text-primary hover:underline" href={`/blog/${p.slug}`}>{p.title}</a>
+        {p.date && <span class="ml-2 text-sm opacity-70">{new Date(p.date).toLocaleDateString()}</span>}
+        {p.description && <p class="opacity-80">{p.description}</p>}
+      </li>
+    ))}
+  </ul>
+
+  {pageCount > 1 && (
+    <nav class="mt-8 flex gap-3">
+      <a class="border px-3 py-1 rounded-xl hover:bg-muted" href="/blog/page/2">Next →</a>
+    </nav>
+  )}
 </Layout>
