@@ -2,6 +2,7 @@
 import '@styles/global.css';
 import ToggleButton from '@components/ToggleButton.astro';
 import Container from '@components/ui/Container.astro';
+import Meta from '../components/Meta.astro'
 
 const { title = 'algoro.dev' } = Astro.props;
 ---
@@ -9,11 +10,7 @@ const { title = 'algoro.dev' } = Astro.props;
 <!doctype html>
 <html lang="en" class="scheme-light dark:scheme-dark">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <Meta title={title} />
     <script>
       (() => {
         const root = document.documentElement;
