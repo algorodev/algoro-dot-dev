@@ -28,7 +28,7 @@ async function main() {
     console.warn('[mdx] Skipping profile generation:', (e as Error).message);
   }
 
-  console.log(`[mdx] Done. Generated ${ok} post(s).`);
+  console.log(`[mdx] Done. Generated ${ok} file(s).`);
 }
 
 main().catch((err) => {

@@ -10,7 +10,7 @@ function esc(text = '') {
     .replaceAll('>', '&gt;');
 }
 
-function richTextToInline(rt: any[]): string {
+function richTextToInline(rt: any[] = []): string {
   return (rt ?? [])
     .map((r) => {
       const t = r?.plain_text ?? '';
@@ -37,77 +37,234 @@ async function materializeImage(pageId: string, url: string, idx: number): Promi
   const ext = (() => {
     try {
       const u = new URL(url);
-      const m = u.pathname.match(/\\.(\\w+)(?:\\?|$)/);
+      const m = u.pathname.match(/\.(\w+)(?:\?|$)/);
       return m ? m[1] : 'png';
-    } catch { return 'png'; }
+    } catch {
+      return 'png';
+    }
   })();
-  const fname = `img-${idx}.${ext}`;
-  const rel = `/notion/${pageId}/${fname}`;
-  const abs = path.join(NOTION_PUBLIC_DIR, pageId, fname);
+  const fileName = `img-${idx}.${ext}`;
+  const rel = `/notion/${pageId}/${fileName}`;
+  const abs = path.join(NOTION_PUBLIC_DIR, pageId, fileName);
   await downloadFile(url, abs);
   return { url, localRelPath: rel, localAbsPath: abs };
 }
 
-export async function blocksToMDX(pageId: string, blocks: any[], options?: {
+export type BlocksToMdxOptions = {
   coverUrl?: string;
-}): Promise<{ mdx: string; coverPath?: string }> {
-  let mdx: string[] = [];
+  loadChildren?: (blockId: string) => Promise<any[]>;
+};
+
+export async function blocksToMDX(
+  pageId: string,
+  blocks: any[],
+  options?: BlocksToMdxOptions
+): Promise<{ mdx: string; coverPath?: string }> {
   let imageCount = 0;
   let localCover: string | undefined;
 
-  // Cover
   if (options?.coverUrl) {
     const cover = await materializeImage(pageId, options.coverUrl, ++imageCount);
     localCover = cover.localRelPath;
   }
 
-  for (const block of blocks) {
-    const t = block.type;
+  const mdxLines = await renderBlocks(blocks, 0);
+  const normalized = mdxLines.join('\n').replace(/\n{3,}/g, '\n\n');
+  return { mdx: normalized, coverPath: localCover };
 
-    if (t === 'paragraph') {
-      mdx.push(richTextToInline(block.paragraph.rich_text) || '<br />');
-    }
+  async function renderBlocks(items: any[] = [], depth: number): Promise<string[]> {
+    const out: string[] = [];
 
-    else if (t === 'heading_1' || t === 'heading_2' || t === 'heading_3') {
-      const level = t === 'heading_1' ? '#' : t === 'heading_2' ? '##' : '###';
-      mdx.push(`${level} ${richTextToInline(block[t].rich_text)}`);
-    }
+    for (let i = 0; i < items.length; i++) {
+      const block = items[i];
+      const t = block?.type;
+      if (!t) continue;
 
-    else if (t === 'bulleted_list_item' || t === 'numbered_list_item') {
-      const bullet = t === 'numbered_list_item' ? '1.' : '-';
-      const txt = richTextToInline(block[t].rich_text);
-      mdx.push(`${bullet} ${txt}`);
-    }
+      if (t === 'paragraph') {
+        out.push(richTextToInline(block.paragraph?.rich_text) || '<br />');
+      }
 
-    else if (t === 'quote' || t === 'callout') {
-      const txt = richTextToInline(block[t].rich_text);
-      mdx.push(`> ${txt}`);
-    }
+      else if (t === 'heading_1' || t === 'heading_2' || t === 'heading_3') {
+        const level = t === 'heading_1' ? '#' : t === 'heading_2' ? '##' : '###';
+        const content = richTextToInline(block[t]?.rich_text);
+        const isToggle = block[t]?.is_toggleable;
+        if (isToggle) {
+          out.push(`<details>\n<summary>${level} ${content}</summary>`);
+          const children = await getChildren(block);
+          if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
+          out.push('</details>');
+        } else {
+          out.push(`${level} ${content}`);
+        }
+      }
 
-    else if (t === 'code') {
-      const lang = block.code.language || '';
-      const codeText = (block.code.rich_text ?? []).map((r: any) => r?.plain_text ?? '').join('');
-      mdx.push('');
-      mdx.push('```' + lang);
-      mdx.push(codeText);
-      mdx.push('```');
-      mdx.push('');
-    }
+      else if (t === 'bulleted_list_item' || t === 'numbered_list_item') {
+        const groupType = t;
+        const group: any[] = [block];
+        while (i + 1 < items.length && items[i + 1]?.type === groupType) {
+          group.push(items[++i]);
+        }
+        out.push(...(await renderList(group, groupType, depth)));
+      }
 
-    else if (t === 'image') {
-      const file = block.image?.external?.url ?? block.image?.file?.url;
-      if (file) {
-        const dl = await materializeImage(pageId, file, ++imageCount);
-        const caption = richTextToInline(block.image.caption ?? []);
-        mdx.push(`![${caption}](${dl.localRelPath})`);
+      else if (t === 'quote') {
+        const txt = richTextToInline(block.quote?.rich_text);
+        out.push(`> ${txt}`);
+        const children = await getChildren(block);
+        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
+      }
+      else if (t === 'callout') {
+        const txt = richTextToInline(block.callout?.rich_text);
+        const icon = block.callout?.icon;
+        const iconTxt = icon?.emoji ? icon.emoji + ' ' : '';
+        out.push(`> ${iconTxt}${txt}`);
+        const children = await getChildren(block);
+        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
+      }
+
+      else if (t === 'toggle') {
+        const summary = richTextToInline(block.toggle?.rich_text);
+        out.push(`<details><summary>${summary}</summary>`);
+        const children = await getChildren(block);
+        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
+        out.push('</details>');
+      }
+
+      else if (t === 'to_do') {
+        const checked = !!block.to_do?.checked;
+        out.push(`${'  '.repeat(depth)}- [${checked ? 'x' : ' '}] ${richTextToInline(block.to_do?.rich_text)}`);
+        const children = await getChildren(block);
+        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
+      }
+
+      else if (t === 'code') {
+        const lang = block.code?.language || '';
+        const codeText = (block.code?.rich_text ?? []).map((r: any) => r?.plain_text ?? '').join('');
+        out.push('');
+        out.push('```' + lang);
+        out.push(codeText);
+        out.push('```');
+        out.push('');
+      }
+
+      else if (t === 'image') {
+        const file = block.image?.external?.url ?? block.image?.file?.url;
+        if (file) {
+          const dl = await materializeImage(pageId, file, ++imageCount);
+          const caption = richTextToInline(block.image?.caption ?? []);
+          out.push(`![${caption}](${dl.localRelPath})`);
+        }
+      }
+      else if (t === 'video' || t === 'audio' || t === 'file' || t === 'pdf' || t === 'embed') {
+        const src = block[t]?.external?.url ?? block[t]?.file?.url ?? block[t]?.url;
+        const cap = richTextToInline(block[t]?.caption ?? []);
+        if (src) out.push(`[${cap || t}](${src})`);
+      }
+      else if (t === 'bookmark') {
+        const url = block.bookmark?.url;
+        const cap = richTextToInline(block.bookmark?.caption ?? []);
+        if (url) out.push(`[${cap || url}](${url})`);
+      }
+
+      else if (t === 'equation') {
+        const expr = block.equation?.expression ?? '';
+        out.push('');
+        out.push('$$');
+        out.push(expr);
+        out.push('$$');
+        out.push('');
+      }
+
+      else if (t === 'table') {
+        const rows = await getChildren(block); // table_row[]
+        if (!rows?.length) continue;
+        const hasColHeader = !!block.table?.has_column_header;
+        const cells: string[][] = rows.map((row: any) => (row.table_row?.cells ?? []).map((cell: any[]) => richTextToInline(cell)));
+        if (!cells.length) continue;
+        if (hasColHeader) {
+          const header = cells[0];
+          const sep = header.map(() => '---').join(' | ');
+          out.push(`| ${header.join(' | ')} |`);
+          out.push(`| ${sep} |`);
+          for (let r = 1; r < cells.length; r++) out.push(`| ${cells[r].join(' | ')} |`);
+        } else {
+          const width = Math.max(...cells.map((r) => r.length));
+          const blank = Array.from({ length: width }, () => ' ').join(' | ');
+          const sep = Array.from({ length: width }, () => '---').join(' | ');
+          out.push(`| ${blank} |`);
+          out.push(`| ${sep} |`);
+          cells.forEach((r) => out.push(`| ${r.join(' | ')} |`));
+        }
+      }
+
+      else if (t === 'column_list') {
+        const cols = await getChildren(block); // column[]
+        const rendered: string[] = [];
+        for (const col of cols ?? []) {
+          const colChildren = await getChildren(col);
+          const body = colChildren?.length ? (await renderBlocks(colChildren, depth + 1)).join('\n') : '';
+          rendered.push(`<div class="mdx-column">\n${body}\n</div>`);
+        }
+        if (rendered.length) {
+          out.push(`<div class="mdx-columns">`);
+          out.push(rendered.join('\n'));
+          out.push(`</div>`);
+        }
+      }
+
+      else if (t === 'synced_block') {
+        const children = await getChildren(block);
+        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
+      }
+      else if (t === 'child_page') {
+        const title = block.child_page?.title ?? 'Untitled page';
+        out.push(`**${esc(title)}**`);
+      }
+      else if (t === 'child_database') {
+        const title = block.child_database?.title ?? 'Untitled database';
+        out.push(`**${esc(title)}**`);
+      }
+
+      else if (t === 'divider') {
+        out.push('---');
+      }
+      else if (t === 'table_of_contents') {
+        out.push('<!-- table of contents placeholder -->');
+      }
+      else if (t === 'breadcrumb') {
+        // skip
+      }
+      else {
+        const rich = block[t]?.rich_text;
+        if (rich) out.push(richTextToInline(rich));
       }
     }
 
-    else if (t === 'divider') {
-      mdx.push('---');
-    }
+    return out;
   }
 
-  const normalized = mdx.join('\n').replace(/\n{3,}/g, '\n\n');
-  return { mdx: normalized, coverPath: localCover };
+  async function renderList(group: any[], listType: 'bulleted_list_item' | 'numbered_list_item', depth: number): Promise<string[]> {
+    const out: string[] = [];
+    const bullet = listType === 'numbered_list_item' ? '1.' : '-';
+    for (const item of group) {
+      const txt = richTextToInline(item[listType]?.rich_text);
+      out.push(`${'  '.repeat(depth)}${bullet} ${txt}`);
+      const children = await getChildren(item);
+      if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
+    }
+    return out;
+  }
+
+  async function getChildren(block: any): Promise<any[] | undefined> {
+    if (!block?.has_children) return undefined;
+    if (Array.isArray(block[block.type]?.children)) return block[block.type].children;
+    if (typeof options?.loadChildren === 'function') {
+      try {
+        return await options.loadChildren(block.id);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }
 }
