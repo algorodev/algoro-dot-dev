@@ -1,6 +1,9 @@
 ---
 import '@styles/global.css';
 import ToggleButton from '@components/ToggleButton.astro';
+import Container from '@components/ui/Container.astro';
+
+const { title = 'algoro.dev' } = Astro.props;
 ---
 
 <!doctype html>
@@ -10,7 +13,7 @@ import ToggleButton from '@components/ToggleButton.astro';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>{title}</title>
     <script>
       (() => {
         const root = document.documentElement;
@@ -21,9 +24,28 @@ import ToggleButton from '@components/ToggleButton.astro';
       })();
     </script>
   </head>
-  <body class="prose mx-auto w-full max-w-7xl p-6">
-    <ToggleButton />
-    <slot />
+  <body>
+    <header class="border-b border-border bg-[color-mix(in oklab, var(--color-card) 80%, transparent)] backdrop-blur">
+      <Container class="flex h-14 items-center justify-between">
+        <a href="/" class="font-bold">algoro.dev</a>
+        <nav class="flex items-center gap-3">
+          <a href="/blog" class="hover:underline text-primary">Blog</a>
+          <ToggleButton />
+        </nav>
+      </Container>
+    </header>
+
+    <main id="main" class="py-10">
+      <Container>
+        <slot />
+      </Container>
+    </main>
+
+    <footer class="py-10 border-t border-border">
+      <Container class="opacity-80 text-sm">
+        © {new Date().getFullYear()} algoro.dev
+      </Container>
+    </footer>
   </body>
 </html>
 
