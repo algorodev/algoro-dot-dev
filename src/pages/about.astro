@@ -1,0 +1,15 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Prose from '@components/ui/Prose.astro';
+import { getProfile } from '@content/profile';
+
+const { Content, frontmatter } = await getProfile();
+const title = frontmatter.title ?? 'About';
+---
+
+<Layout title={title} description={frontmatter.description ?? 'About me'} image={frontmatter.cover}>
+  <h1 class="text-2xl font-semibold">{title}</h1>
+  <Prose class="mt-6">
+    <Content />
+  </Prose>
+</Layout>
