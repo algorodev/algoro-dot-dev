@@ -161,27 +161,42 @@ export async function blocksToMDX(
         out.push('$$');
         out.push('');
       } else if (t === 'table') {
-        const rows = await getChildren(block); // table_row[]
+        const rows = await getChildren(block);
         if (!rows?.length) continue;
+
         const hasColHeader = !!block.table?.has_column_header;
-        const cells: string[][] = rows.map((row: any) =>
-          (row.table_row?.cells ?? []).map((cell: any[]) => richTextToInline(cell)),
+
+        let rawCells: string[][] = rows.map((row: any) =>
+          (row.table_row?.cells ?? []).map((cell: any[]) =>
+            richTextToInline(cell).replace(/\|/g, '\\|')
+          )
         );
-        if (!cells.length) continue;
+
+        const maxCols = Math.max(...rawCells.map((r) => r.length));
+        if (maxCols === 0) continue;
+        const cells = rawCells.map((r) => r.concat(Array(Math.max(0, maxCols - r.length)).fill('')));
+
+        out.push('');
+
         if (hasColHeader) {
           const header = cells[0];
-          const sep = header.map(() => '---').join(' | ');
+          const sep = Array.from({ length: header.length }, () => '---').join(' | ');
           out.push(`| ${header.join(' | ')} |`);
           out.push(`| ${sep} |`);
-          for (let r = 1; r < cells.length; r++) out.push(`| ${cells[r].join(' | ')} |`);
+          for (let r = 1; r < cells.length; r++) {
+            out.push(`| ${cells[r].join(' | ')} |`);
+          }
         } else {
-          const width = Math.max(...cells.map((r) => r.length));
-          const blank = Array.from({ length: width }, () => ' ').join(' | ');
-          const sep = Array.from({ length: width }, () => '---').join(' | ');
-          out.push(`| ${blank} |`);
+          const header = Array.from({ length: maxCols }, () => '');
+          const sep = Array.from({ length: maxCols }, () => '---').join(' | ');
+          out.push(`| ${header.join(' | ')} |`);
           out.push(`| ${sep} |`);
-          cells.forEach((r) => out.push(`| ${r.join(' | ')} |`));
+          for (let r = 0; r < cells.length; r++) {
+            out.push(`| ${cells[r].join(' | ')} |`);
+          }
         }
+
+        out.push('');
       } else if (t === 'column_list') {
         const cols = await getChildren(block); // column[]
         const rendered: string[] = [];
