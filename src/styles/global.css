@@ -60,13 +60,15 @@
 
 @layer components {
   .prose {
-    max-width: 70ch;
+    color: var(--color-fg) !important;
+
   }
 
   .prose :where(h1,h2,h3,h4) {
     font-weight:       600;
     line-height:       1.2;
     scroll-margin-top: 6rem;
+    color:             var(--color-fg) !important;
   }
 
   .prose h1 {
@@ -84,7 +86,8 @@
   }
 
   .prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table, .prose img {
-    margin-top: 1rem; margin-bottom: 1rem;
+    margin-top:    1rem;
+    margin-bottom: 1rem;
   }
 
   .prose ul {
