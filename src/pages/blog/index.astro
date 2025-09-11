@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '@layouts/Layout.astro'
+
+const posts = await getCollection('blog')
+posts.sort((a, b) => (b.data.publishedAt ?? '').localeCompare(a.data.publishedAt ?? ''))
+---
+
+<Layout>
+  <h1>Blog</h1>
+  {posts.length === 0 ? (
+    <p>No posts yet.</p>
+  ) : (
+    <ul>
+      {posts.map((entry) => (
+        <li>
+          <a href={`/blog/${entry.data.slug}/`}>{entry.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>

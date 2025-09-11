@@ -1,0 +1,35 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.status === 'Published');
+  return posts.map((entry) => ({
+    params: { slug: entry.data.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+
+const entry = await getEntry('blog', slug!);
+if (!entry) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
+const { Content } = await render(entry);
+const data = entry.data;
+---
+
+<Layout>
+  <article>
+    <header class="mb-6">
+      <h1 class="text-3xl font-bold">{data.title}</h1>
+      {data.publishedAt && <p class="opacity-70">{data.publishedAt}</p>}
+      {data.cover && <img src={data.cover} alt={data.title} class="my-4 rounded-xl" />}
+      {data.tags?.length ? (
+        <p class="mt-2 text-sm opacity-80">{data.tags.join(' · ')}</p>
+      ) : null}
+    </header>
+    <Content />
+  </article>
+</Layout>

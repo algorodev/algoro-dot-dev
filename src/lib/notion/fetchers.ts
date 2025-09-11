@@ -63,13 +63,6 @@ export async function fetchAllPosts(options?: { includeDrafts?: boolean }): Prom
   return posts;
 }
 
-export async function fetchPostBySlug(slug: string): Promise<Post | null> {
-  if (!resourceIds.postsDb) throw new Error("[NOTION] Missing NOTION_DB_POSTS");
-
-  const all = await fetchAllPosts({ includeDrafts: true });
-  return all.find((p) => p.slug === slug) ?? null;
-}
-
 export async function fetchProfile(): Promise<Profile> {
   if (resourceIds.profilePage) {
     const page = await (notion as any).pages.retrieve({ page_id: resourceIds.profilePage });
