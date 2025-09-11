@@ -1,30 +1,164 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: light-dark(#f9f9f9, #111827);
+  --font-sans:        'Inter Variable', system-ui, sans-serif;
+  --font-mono:        'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-bg:         light-dark(#FFFFFF, #090E1A);
+  --color-fg:         light-dark(#0F1729, #F9FAFB);
+  --color-muted:      light-dark(#F3F4F6, #23272F);
+  --color-card:       light-dark(#FFFFFF, #0C1322);
+  --color-border:     light-dark(#E5E7EB, #2C313A);
+  --color-primary:    light-dark(#570DF8, #8752FA);
+  --color-primary-fg: light-dark(#FFFFFF, #1F1F1F);
+  --color-accent:     light-dark(#0284C5, #02A2F2);
+  --color-accent-fg:  light-dark(#FFFFFF, #141414);
+  --color-success:    light-dark(#157F3C, #1BA74E);
+  --color-warn:       light-dark(#F59F0A, #F7B23B);
+  --color-danger:     light-dark(#EF4343, #F15B5B);
+
+  --radius-xl:        1rem;
+  --radius-2xl:       1.25rem;
+  --shadow-soft:      0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.mdx-columns {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-}
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
 
-@media (min-width: 768px) {
-  .mdx-columns {
-    grid-template-columns: repeat(2, 1fr);
+  body {
+    font-family:             var(--font-sans);
+    background-color:        var(--color-bg);
+    color:                   var(--color-fg);
+    -webkit-font-smoothing:  antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color:                 var(--color-primary);
+    text-underline-offset: 4px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  :focus-visible {
+    outline:    none;
+    box-shadow: 0 0 0 2px var(--color-primary),
+                0 0 0 4px var(--color-bg);
   }
 }
 
-@media (min-width: 1024px) {
-  .mdx-columns {
-    grid-template-columns: repeat(3, 1fr);
+@layer components {
+  .prose {
+    max-width: 70ch;
   }
-}
 
-.mdx-column {
-  display: block;
+  .prose :where(h1,h2,h3,h4) {
+    font-weight:       600;
+    line-height:       1.2;
+    scroll-margin-top: 6rem;
+  }
+
+  .prose h1 {
+    font-size: 2rem;
+  }
+
+  .prose h2 {
+    font-size:  1.5rem;
+    margin-top: 2.25rem;
+  }
+
+  .prose h3 {
+    font-size:  1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  .prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table, .prose img {
+    margin-top: 1rem; margin-bottom: 1rem;
+  }
+
+  .prose ul {
+    padding-left: 1.25rem;
+    list-style:   disc;
+  }
+
+  .prose ol {
+    padding-left: 1.25rem;
+    list-style:   decimal;
+  }
+
+  .prose li {
+    margin: .25rem 0;
+  }
+
+  .prose code {
+    font-family:   var(--font-mono);
+    background:    var(--color-muted);
+    padding:       .125rem .375rem;
+    border-radius: .375rem;
+  }
+
+  .prose pre {
+    font-family:   var(--font-mono);
+    background:    var(--color-muted);
+    padding:       1rem;
+    border-radius: 0.75rem;
+    box-shadow:    var(--shadow-soft);
+    overflow:      auto;
+  }
+
+  .prose img {
+    border-radius: 1rem;
+    box-shadow:    var(--shadow-soft);
+    max-width:     100%;
+    height:        auto;
+  }
+
+  .prose table {
+    width:           100%;
+    border-collapse: collapse;
+    border:          1px solid var(--color-border);
+    border-radius:   0.75rem;
+    overflow:        hidden;
+  }
+
+  .prose thead tr {
+    background: var(--color-muted);
+  }
+
+  .prose th, .prose td {
+    border:     1px solid var(--color-border);
+    padding:    .5rem .75rem;
+    text-align: left;
+  }
+
+  .mdx-columns {
+    display:              grid;
+    gap:                  1rem;
+    grid-template-columns:1fr;
+  }
+
+  @media (min-width: 768px) {
+    .mdx-columns {
+      grid-template-columns:repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .mdx-columns {
+      grid-template-columns:repeat(3, 1fr);
+    }
+  }
+  .mdx-column {
+    display: block;
+  }
 }
