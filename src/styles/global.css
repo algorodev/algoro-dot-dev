@@ -27,6 +27,9 @@
   --radius-xl:        1rem;
   --radius-2xl:       1.25rem;
   --shadow-soft:      0 8px 24px rgba(0, 0, 0, 0.08);
+
+  --media-aspect:     16/9;
+  --media-max-h:      480px;
 }
 
 @layer base {
@@ -125,7 +128,39 @@
     box-shadow:    var(--shadow-soft);
     max-width:     100%;
     height:        auto;
+    display:       block;
   }
+
+  .prose :where(img):not([data-full],[data-contain]) {
+    width:        100%;
+    aspect-ratio: var(--media-aspect);
+    object-fit:   cover;
+  }
+
+  .prose :where(img)[data-full] {
+    aspect-ratio: auto;
+    object-fit:   initial;
+  }
+
+  .prose :where(img)[data-contain] {
+    aspect-ratio: auto;
+    max-height:   var(--media-max-h);
+    width:        auto;
+    object-fit:   contain;
+  }
+
+  .prose p:has(> img) {
+    margin-top:    1rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose figcaption {
+    font-size:  0.875rem;
+    opacity:    0.8;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
 
   .prose table {
     width:           100%;
