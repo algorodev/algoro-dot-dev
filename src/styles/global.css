@@ -8,28 +8,28 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans:        'Inter Variable', system-ui, sans-serif;
-  --font-mono:        'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-bg:         light-dark(#FFFFFF, #090E1A);
-  --color-fg:         light-dark(#0F1729, #F9FAFB);
-  --color-muted:      light-dark(#F3F4F6, #23272F);
-  --color-card:       light-dark(#FFFFFF, #0C1322);
-  --color-border:     light-dark(#E5E7EB, #2C313A);
-  --color-primary:    light-dark(#570DF8, #8752FA);
-  --color-primary-fg: light-dark(#FFFFFF, #1F1F1F);
-  --color-accent:     light-dark(#0284C5, #02A2F2);
-  --color-accent-fg:  light-dark(#FFFFFF, #141414);
-  --color-success:    light-dark(#157F3C, #1BA74E);
-  --color-warn:       light-dark(#F59F0A, #F7B23B);
-  --color-danger:     light-dark(#EF4343, #F15B5B);
+  --color-bg: light-dark(#ffffff, #090e1a);
+  --color-fg: light-dark(#0f1729, #f9fafb);
+  --color-muted: light-dark(#f3f4f6, #23272f);
+  --color-card: light-dark(#ffffff, #0c1322);
+  --color-border: light-dark(#e5e7eb, #2c313a);
+  --color-primary: light-dark(#570df8, #8752fa);
+  --color-primary-fg: light-dark(#ffffff, #1f1f1f);
+  --color-accent: light-dark(#0284c5, #02a2f2);
+  --color-accent-fg: light-dark(#ffffff, #141414);
+  --color-success: light-dark(#157f3c, #1ba74e);
+  --color-warn: light-dark(#f59f0a, #f7b23b);
+  --color-danger: light-dark(#ef4343, #f15b5b);
 
-  --radius-xl:        1rem;
-  --radius-2xl:       1.25rem;
-  --shadow-soft:      0 8px 24px rgba(0, 0, 0, 0.08);
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.08);
 
-  --media-aspect:     16/9;
-  --media-max-h:      480px;
+  --media-aspect: 16/9;
+  --media-max-h: 480px;
 }
 
 @layer base {
@@ -38,15 +38,15 @@
   }
 
   body {
-    font-family:             var(--font-sans);
-    background-color:        var(--color-bg);
-    color:                   var(--color-fg);
-    -webkit-font-smoothing:  antialiased;
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   a {
-    color:                 var(--color-primary);
+    color: var(--color-primary);
     text-underline-offset: 4px;
   }
 
@@ -55,23 +55,23 @@
   }
 
   :focus-visible {
-    outline:    none;
-    box-shadow: 0 0 0 2px var(--color-primary),
-                0 0 0 4px var(--color-bg);
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-primary),
+      0 0 0 4px var(--color-bg);
   }
 }
 
 @layer components {
   .prose {
     color: var(--color-fg) !important;
-
   }
 
-  .prose :where(h1,h2,h3,h4) {
-    font-weight:       600;
-    line-height:       1.2;
+  .prose :where(h1, h2, h3, h4) {
+    font-weight: 600;
+    line-height: 1.2;
     scroll-margin-top: 6rem;
-    color:             var(--color-fg) !important;
+    color: var(--color-fg) !important;
   }
 
   .prose h1 {
@@ -79,105 +79,111 @@
   }
 
   .prose h2 {
-    font-size:  1.5rem;
+    font-size: 1.5rem;
     margin-top: 2.25rem;
   }
 
   .prose h3 {
-    font-size:  1.25rem;
+    font-size: 1.25rem;
     margin-top: 1.75rem;
   }
 
-  .prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table, .prose img {
-    margin-top:    1rem;
+  .prose p,
+  .prose ul,
+  .prose ol,
+  .prose blockquote,
+  .prose pre,
+  .prose table,
+  .prose img {
+    margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
   .prose ul {
     padding-left: 1.25rem;
-    list-style:   disc;
+    list-style: disc;
   }
 
   .prose ol {
     padding-left: 1.25rem;
-    list-style:   decimal;
+    list-style: decimal;
   }
 
   .prose li {
-    margin: .25rem 0;
+    margin: 0.25rem 0;
   }
 
   .prose code {
-    font-family:   var(--font-mono);
-    background:    var(--color-muted);
-    padding:       .125rem .375rem;
-    border-radius: .375rem;
+    font-family: var(--font-mono);
+    background: var(--color-muted);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.375rem;
   }
 
   .prose pre {
-    font-family:   var(--font-mono);
-    background:    var(--color-muted);
-    padding:       1rem;
+    font-family: var(--font-mono);
+    background: var(--color-muted);
+    padding: 1rem;
     border-radius: 0.75rem;
-    box-shadow:    var(--shadow-soft);
-    overflow:      auto;
+    box-shadow: var(--shadow-soft);
+    overflow: auto;
   }
 
   .prose img {
     border-radius: 1rem;
-    box-shadow:    var(--shadow-soft);
-    max-width:     100%;
-    height:        auto;
-    display:       block;
+    box-shadow: var(--shadow-soft);
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 
-  .prose :where(img):not([data-full],[data-contain]) {
-    width:        100%;
+  .prose :where(img):not([data-full], [data-contain]) {
+    width: 100%;
     aspect-ratio: var(--media-aspect);
-    object-fit:   cover;
+    object-fit: cover;
   }
 
   .prose :where(img)[data-full] {
     aspect-ratio: auto;
-    object-fit:   initial;
+    object-fit: initial;
   }
 
   .prose :where(img)[data-contain] {
     aspect-ratio: auto;
-    max-height:   var(--media-max-h);
-    width:        auto;
-    object-fit:   contain;
+    max-height: var(--media-max-h);
+    width: auto;
+    object-fit: contain;
   }
 
   .prose p:has(> img) {
-    margin-top:    1rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
   .prose figcaption {
-    font-size:  0.875rem;
-    opacity:    0.8;
+    font-size: 0.875rem;
+    opacity: 0.8;
     text-align: center;
     margin-top: 0.5rem;
   }
 
   .prose table {
-    width:           100%;
-    min-width:       640px;
+    width: 100%;
+    min-width: 640px;
     border-collapse: separate;
-    border-spacing:  0;
+    border-spacing: 0;
   }
 
   .prose thead th {
-    position:      sticky;
-    top:           0;
-    z-index:       1;
-    font-weight:   600;
-    text-align:    left;
-    background:    color-mix(in oklab, var(--color-card) 92%, var(--color-fg) 8%);
-    color:         var(--color-fg) !important;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+    text-align: left;
+    background: color-mix(in oklab, var(--color-card) 92%, var(--color-fg) 8%);
+    color: var(--color-fg) !important;
     border-bottom: 1px solid var(--color-border);
-    padding:       0.75rem 1rem !important;
+    padding: 0.75rem 1rem !important;
   }
 
   .prose thead th:first-child {
@@ -189,9 +195,9 @@
   }
 
   .prose td {
-    color:          var(--color-fg);
-    border-bottom:  1px solid var(--color-border);
-    padding:        0.75rem 1rem !important;
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem 1rem !important;
     vertical-align: top;
   }
 
@@ -207,34 +213,36 @@
 
   .prose table caption {
     caption-side: bottom;
-    padding:      0.5rem 0.75rem;
-    color:        color-mix(in oklab, var(--color-fg) 70%, transparent);
-    font-size:    0.875rem;
-    text-align:   left;
+    padding: 0.5rem 0.75rem;
+    color: color-mix(in oklab, var(--color-fg) 70%, transparent);
+    font-size: 0.875rem;
+    text-align: left;
   }
 
-  .prose td.num, .prose th.num {
+  .prose td.num,
+  .prose th.num {
     text-align: right;
   }
 
-  .prose td.center, .prose th.center {
+  .prose td.center,
+  .prose th.center {
     text-align: center;
   }
 
   .mdx-columns {
-    display:              grid;
-    gap:                  1rem;
-    grid-template-columns:1fr;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
   }
 
   @media (min-width: 768px) {
     .mdx-columns {
-      grid-template-columns:repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
   @media (min-width: 1024px) {
     .mdx-columns {
-      grid-template-columns:repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   .mdx-column {

@@ -166,15 +166,17 @@ export async function blocksToMDX(
 
         const hasColHeader = !!block.table?.has_column_header;
 
-        let rawCells: string[][] = rows.map((row: any) =>
+        const rawCells: string[][] = rows.map((row: any) =>
           (row.table_row?.cells ?? []).map((cell: any[]) =>
-            richTextToInline(cell).replace(/\|/g, '\\|')
-          )
+            richTextToInline(cell).replace(/\|/g, '\\|'),
+          ),
         );
 
         const maxCols = Math.max(...rawCells.map((r) => r.length));
         if (maxCols === 0) continue;
-        const cells = rawCells.map((r) => r.concat(Array(Math.max(0, maxCols - r.length)).fill('')));
+        const cells = rawCells.map((r) =>
+          r.concat(Array(Math.max(0, maxCols - r.length)).fill('')),
+        );
 
         out.push('');
 

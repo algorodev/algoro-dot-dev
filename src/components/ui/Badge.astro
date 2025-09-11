@@ -1,14 +1,18 @@
 ---
-const { variant = 'accent', class: cls = '' } = Astro.props
+const { variant = 'accent', class: cls = '' } = Astro.props;
 const colors = {
   accent: 'bg-accent text-accent-fg',
   neutral: 'bg-muted text-fg',
-  success: 'bg-[color-mix(in oklab, var(--color-success) 15%, transparent)] text-[var(--color-success)]',
+  success:
+    'bg-[color-mix(in oklab, var(--color-success) 15%, transparent)] text-[var(--color-success)]',
   warn: 'bg-[color-mix(in oklab, var(--color-warn) 15%, transparent)] text-[var(--color-warn)]',
-  danger: 'bg-[color-mix(in oklab, var(--color-danger) 15%, transparent)] text-[var(--color-danger)]',
-}
+  danger:
+    'bg-[color-mix(in oklab, var(--color-danger) 15%, transparent)] text-[var(--color-danger)]',
+};
 ---
 
-<span class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${colors[variant]} ${cls}`}>
+<span
+  class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${colors[variant]} ${cls}`}
+>
   <slot />
 </span>

@@ -25,11 +25,13 @@ const { title = 'algoro.dev' } = Astro.props;
     </script>
   </head>
   <body>
-    <header class="border-b border-border bg-[color-mix(in oklab, var(--color-card) 80%, transparent)] backdrop-blur">
+    <header
+      class="border-border bg-[color-mix(in oklab, var(--color-card) 80%, transparent)] border-b backdrop-blur"
+    >
       <Container class="flex h-14 items-center justify-between">
         <a href="/" class="font-bold">algoro.dev</a>
         <nav class="flex items-center gap-3">
-          <a href="/blog" class="hover:underline text-primary">Blog</a>
+          <a href="/blog" class="text-primary hover:underline">Blog</a>
           <ToggleButton />
         </nav>
       </Container>
@@ -41,8 +43,8 @@ const { title = 'algoro.dev' } = Astro.props;
       </Container>
     </main>
 
-    <footer class="py-10 border-t border-border">
-      <Container class="opacity-80 text-sm">
+    <footer class="border-border border-t py-10">
+      <Container class="text-sm opacity-80">
         © {new Date().getFullYear()} algoro.dev
       </Container>
     </footer>
