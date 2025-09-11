@@ -1,24 +1,24 @@
-import { notion, resourceIds } from "./client";
-import { mapPost, mapProfileFromPage } from "./mappers";
-import type { Post, Profile } from "./schemas.ts";
+import { notion, resourceIds } from './client';
+import { mapPost, mapProfileFromPage } from './mappers';
+import type { Post, Profile } from './schemas.ts';
 
 async function resolveDataSourceId(id: string): Promise<string> {
-  if (id.startsWith('ntn_')) return id
+  if (id.startsWith('ntn_')) return id;
 
   const db: any = await notion.databases.retrieve({ database_id: id });
-  const ds = db?.data_sources?.[0]?.id
+  const ds = db?.data_sources?.[0]?.id;
   if (!ds) {
     throw new Error(
       `[NOTION] Database ${id} has no accessible data sources for this integration. ` +
-      `Ensure the integration is shared and the DB has at least one data source.`
-    )
+        `Ensure the integration is shared and the DB has at least one data source.`,
+    );
   }
-  return ds
+  return ds;
 }
 
 export async function fetchAllPosts(options?: { includeDrafts?: boolean }): Promise<Post[]> {
   const rawId = resourceIds.postsDb;
-  if (!rawId) throw new Error("[NOTION] Missing NOTION_DB_POSTS");
+  if (!rawId) throw new Error('[NOTION] Missing NOTION_DB_POSTS');
 
   const dataSourceId = await resolveDataSourceId(rawId);
   const includeDrafts = !!options?.includeDrafts;
@@ -37,16 +37,16 @@ export async function fetchAllPosts(options?: { includeDrafts?: boolean }): Prom
     cursor = res.next_cursor ?? undefined;
   }
 
-  const pages = results.filter((r: any) => r.object === "page" && r.properties);
+  const pages = results.filter((r: any) => r.object === 'page' && r.properties);
   let posts: Post[] = pages.map((p: any) => mapPost(p));
 
   if (!includeDrafts) {
-    posts = posts.filter((p) => p.status === "Published");
+    posts = posts.filter((p) => p.status === 'Published');
   }
 
   posts.sort((a, b) => {
-    const ad = a.publishedAt ?? "";
-    const bd = b.publishedAt ?? "";
+    const ad = a.publishedAt ?? '';
+    const bd = b.publishedAt ?? '';
     if (!ad && !bd) return 0;
     if (!ad) return 1;
     if (!bd) return -1;
@@ -70,7 +70,7 @@ export async function fetchProfile(): Promise<Profile> {
     const aboutBlocks = await fetchAllBlocks(resourceIds.profilePage);
     return mapProfileFromPage(page as any, { avatarUrl, aboutBlocks });
   }
-  throw new Error("[NOTION] Provide NOTION_PROFILE_PAGE (or implement DB variant).");
+  throw new Error('[NOTION] Provide NOTION_PROFILE_PAGE (or implement DB variant).');
 }
 
 export async function fetchAllBlocks(blockId: string) {
@@ -97,8 +97,8 @@ async function fetchPageIconAsUrl(pageId?: string): Promise<string | undefined> 
     const page: any = await (notion as any).pages.retrieve({ page_id: pageId });
     const icon: any = page.icon;
     if (!icon) return undefined;
-    if (icon.type === "external") return icon.external?.url;
-    if (icon.type === "file") return icon.file?.url;
+    if (icon.type === 'external') return icon.external?.url;
+    if (icon.type === 'file') return icon.file?.url;
   } catch {
     // ignore
   }

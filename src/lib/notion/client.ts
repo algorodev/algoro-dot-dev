@@ -1,8 +1,8 @@
-import { Client } from "@notionhq/client";
+import { Client } from '@notionhq/client';
 
 const token = process.env.NOTION_TOKEN;
 if (!token) {
-  throw new Error("[NOTION] Missing NOTION_TOKEN in .env");
+  throw new Error('[NOTION] Missing NOTION_TOKEN in .env');
 }
 
 export const notion = new Client({

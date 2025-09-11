@@ -58,7 +58,7 @@ export type BlocksToMdxOptions = {
 export async function blocksToMDX(
   pageId: string,
   blocks: any[],
-  options?: BlocksToMdxOptions
+  options?: BlocksToMdxOptions,
 ): Promise<{ mdx: string; coverPath?: string }> {
   let imageCount = 0;
   let localCover: string | undefined;
@@ -82,9 +82,7 @@ export async function blocksToMDX(
 
       if (t === 'paragraph') {
         out.push(richTextToInline(block.paragraph?.rich_text) || '<br />');
-      }
-
-      else if (t === 'heading_1' || t === 'heading_2' || t === 'heading_3') {
+      } else if (t === 'heading_1' || t === 'heading_2' || t === 'heading_3') {
         const level = t === 'heading_1' ? '#' : t === 'heading_2' ? '##' : '###';
         const content = richTextToInline(block[t]?.rich_text);
         const isToggle = block[t]?.is_toggleable;
@@ -96,90 +94,79 @@ export async function blocksToMDX(
         } else {
           out.push(`${level} ${content}`);
         }
-      }
-
-      else if (t === 'bulleted_list_item' || t === 'numbered_list_item') {
+      } else if (t === 'bulleted_list_item' || t === 'numbered_list_item') {
         const groupType = t;
         const group: any[] = [block];
         while (i + 1 < items.length && items[i + 1]?.type === groupType) {
           group.push(items[++i]);
         }
         out.push(...(await renderList(group, groupType, depth)));
-      }
-
-      else if (t === 'quote') {
+      } else if (t === 'quote') {
         const txt = richTextToInline(block.quote?.rich_text);
         out.push(`> ${txt}`);
         const children = await getChildren(block);
-        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
-      }
-      else if (t === 'callout') {
+        if (children?.length)
+          out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
+      } else if (t === 'callout') {
         const txt = richTextToInline(block.callout?.rich_text);
         const icon = block.callout?.icon;
         const iconTxt = icon?.emoji ? icon.emoji + ' ' : '';
         out.push(`> ${iconTxt}${txt}`);
         const children = await getChildren(block);
-        if (children?.length) out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
-      }
-
-      else if (t === 'toggle') {
+        if (children?.length)
+          out.push(...(await renderBlocks(children, depth + 1)).map((l) => `> ${l}`));
+      } else if (t === 'toggle') {
         const summary = richTextToInline(block.toggle?.rich_text);
         out.push(`<details><summary>${summary}</summary>`);
         const children = await getChildren(block);
         if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
         out.push('</details>');
-      }
-
-      else if (t === 'to_do') {
+      } else if (t === 'to_do') {
         const checked = !!block.to_do?.checked;
-        out.push(`${'  '.repeat(depth)}- [${checked ? 'x' : ' '}] ${richTextToInline(block.to_do?.rich_text)}`);
+        out.push(
+          `${'  '.repeat(depth)}- [${checked ? 'x' : ' '}] ${richTextToInline(block.to_do?.rich_text)}`,
+        );
         const children = await getChildren(block);
         if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
-      }
-
-      else if (t === 'code') {
+      } else if (t === 'code') {
         const lang = block.code?.language || '';
-        const codeText = (block.code?.rich_text ?? []).map((r: any) => r?.plain_text ?? '').join('');
+        const codeText = (block.code?.rich_text ?? [])
+          .map((r: any) => r?.plain_text ?? '')
+          .join('');
         out.push('');
         out.push('```' + lang);
         out.push(codeText);
         out.push('```');
         out.push('');
-      }
-
-      else if (t === 'image') {
+      } else if (t === 'image') {
         const file = block.image?.external?.url ?? block.image?.file?.url;
         if (file) {
           const dl = await materializeImage(pageId, file, ++imageCount);
           const caption = richTextToInline(block.image?.caption ?? []);
           out.push(`![${caption}](${dl.localRelPath})`);
         }
-      }
-      else if (t === 'video' || t === 'audio' || t === 'file' || t === 'pdf' || t === 'embed') {
+      } else if (t === 'video' || t === 'audio' || t === 'file' || t === 'pdf' || t === 'embed') {
         const src = block[t]?.external?.url ?? block[t]?.file?.url ?? block[t]?.url;
         const cap = richTextToInline(block[t]?.caption ?? []);
         if (src) out.push(`[${cap || t}](${src})`);
-      }
-      else if (t === 'bookmark') {
+      } else if (t === 'bookmark') {
         const url = block.bookmark?.url;
         const cap = richTextToInline(block.bookmark?.caption ?? []);
         if (url) out.push(`[${cap || url}](${url})`);
-      }
-
-      else if (t === 'equation') {
+      } else if (t === 'equation') {
         const expr = block.equation?.expression ?? '';
         out.push('');
         out.push('$$');
         out.push(expr);
         out.push('$$');
         out.push('');
-      }
-
-      else if (t === 'table') {
+      } else if (t === 'table') {
         const rows = await getChildren(block); // table_row[]
         if (!rows?.length) continue;
         const hasColHeader = !!block.table?.has_column_header;
-        const cells: string[][] = rows.map((row: any) => (row.table_row?.cells ?? []).map((cell: any[]) => richTextToInline(cell)));
+        const cells: string[][] = rows.map((row: any) =>
+          (row.table_row?.cells ?? []).map((cell: any[]) => richTextToInline(cell)),
+        );
         if (!cells.length) continue;
         if (hasColHeader) {
           const header = cells[0];
@@ -195,14 +182,14 @@ export async function blocksToMDX(
           out.push(`| ${sep} |`);
           cells.forEach((r) => out.push(`| ${r.join(' | ')} |`));
         }
-      }
-
-      else if (t === 'column_list') {
+      } else if (t === 'column_list') {
         const cols = await getChildren(block); // column[]
         const rendered: string[] = [];
         for (const col of cols ?? []) {
           const colChildren = await getChildren(col);
-          const body = colChildren?.length ? (await renderBlocks(colChildren, depth + 1)).join('\n') : '';
+          const body = colChildren?.length
+            ? (await renderBlocks(colChildren, depth + 1)).join('\n')
+            : '';
           rendered.push(`<div class="mdx-column">\n${body}\n</div>`);
         }
         if (rendered.length) {
@@ -210,31 +197,22 @@ export async function blocksToMDX(
           out.push(rendered.join('\n'));
           out.push(`</div>`);
         }
-      }
-
-      else if (t === 'synced_block') {
+      } else if (t === 'synced_block') {
         const children = await getChildren(block);
         if (children?.length) out.push(...(await renderBlocks(children, depth + 1)));
-      }
-      else if (t === 'child_page') {
+      } else if (t === 'child_page') {
         const title = block.child_page?.title ?? 'Untitled page';
         out.push(`**${esc(title)}**`);
-      }
-      else if (t === 'child_database') {
+      } else if (t === 'child_database') {
         const title = block.child_database?.title ?? 'Untitled database';
         out.push(`**${esc(title)}**`);
-      }
-
-      else if (t === 'divider') {
+      } else if (t === 'divider') {
         out.push('---');
-      }
-      else if (t === 'table_of_contents') {
+      } else if (t === 'table_of_contents') {
         out.push('<!-- table of contents placeholder -->');
-      }
-      else if (t === 'breadcrumb') {
+      } else if (t === 'breadcrumb') {
         // skip
-      }
-      else {
+      } else {
         const rich = block[t]?.rich_text;
         if (rich) out.push(richTextToInline(rich));
       }
@@ -243,7 +221,11 @@ export async function blocksToMDX(
     return out;
   }
 
-  async function renderList(group: any[], listType: 'bulleted_list_item' | 'numbered_list_item', depth: number): Promise<string[]> {
+  async function renderList(
+    group: any[],
+    listType: 'bulleted_list_item' | 'numbered_list_item',
+    depth: number,
+  ): Promise<string[]> {
     const out: string[] = [];
     const bullet = listType === 'numbered_list_item' ? '1.' : '-';
     for (const item of group) {

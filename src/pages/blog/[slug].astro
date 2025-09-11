@@ -26,9 +26,7 @@ const data = entry.data;
       <h1 class="text-3xl font-bold">{data.title}</h1>
       {data.publishedAt && <p class="opacity-70">{data.publishedAt}</p>}
       {data.cover && <img src={data.cover} alt={data.title} class="my-4 rounded-xl" />}
-      {data.tags?.length ? (
-        <p class="mt-2 text-sm opacity-80">{data.tags.join(' · ')}</p>
-      ) : null}
+      {data.tags?.length ? <p class="mt-2 text-sm opacity-80">{data.tags.join(' · ')}</p> : null}
     </header>
     <Content />
   </article>

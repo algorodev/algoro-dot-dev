@@ -5,9 +5,7 @@ import { ensureDir, BLOG_DIR, PROFILE_DIR } from '@lib/fs/paths';
 
 function sanitize<T>(value: T): T {
   if (Array.isArray(value)) {
-    return value
-      .filter((v) => v !== undefined)
-      .map((v) => sanitize(v)) as unknown as T;
+    return value.filter((v) => v !== undefined).map((v) => sanitize(v)) as unknown as T;
   }
   if (value && typeof value === 'object') {
     const out: Record<string, any> = {};
@@ -21,18 +19,21 @@ function sanitize<T>(value: T): T {
   return value;
 }
 
-export function writePostMDX(post: {
-  title: string;
-  slug: string;
-  status: 'Draft' | 'Published';
-  publishedAt: string | null | undefined;
-  tags?: string[];
-  excerpt?: string | undefined;
-  coverUrl?: string | undefined;
-  featured?: boolean | undefined;
-  canonicalURL?: string | undefined;
-  readingTimeMinutes?: number | undefined;
-}, mdxBody: string) {
+export function writePostMDX(
+  post: {
+    title: string;
+    slug: string;
+    status: 'Draft' | 'Published';
+    publishedAt: string | null | undefined;
+    tags?: string[];
+    excerpt?: string | undefined;
+    coverUrl?: string | undefined;
+    featured?: boolean | undefined;
+    canonicalURL?: string | undefined;
+    readingTimeMinutes?: number | undefined;
+  },
+  mdxBody: string,
+) {
   const frontmatterRaw = {
     title: post.title,
     slug: post.slug,
@@ -55,18 +56,19 @@ export function writePostMDX(post: {
   return filepath;
 }
 
-export function writeProfileMDX(profile: {
-  id: string;
-  name: string;
-  role?: string;
-  location?: string;
-  email?: string;
-  links?: Record<string, string | undefined>;
-}, mdxBody: string) {
+export function writeProfileMDX(
+  profile: {
+    id: string;
+    name: string;
+    role?: string;
+    location?: string;
+    email?: string;
+    links?: Record<string, string | undefined>;
+  },
+  mdxBody: string,
+) {
   const linksClean: { [p: string]: string | undefined } | undefined = profile.links
-    ? Object.fromEntries(
-      Object.entries(profile.links).filter(([, v]) => typeof v === 'string'),
-    )
+    ? Object.fromEntries(Object.entries(profile.links).filter(([, v]) => typeof v === 'string'))
     : undefined;
 
   const frontmatterRaw = {

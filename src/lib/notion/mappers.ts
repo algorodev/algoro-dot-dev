@@ -1,15 +1,15 @@
-import type { Post, Profile } from "./schemas.ts";
-import { PostSchema, ProfileSchema } from "./schemas.ts";
-import type { PageObjectResponse } from "@notionhq/client";
+import type { Post, Profile } from './schemas.ts';
+import { PostSchema, ProfileSchema } from './schemas.ts';
+import type { PageObjectResponse } from '@notionhq/client';
 
 export function rtToPlain(rt: any[]): string {
-  return (rt ?? []).map((r: any) => r.plain_text ?? "").join("");
+  return (rt ?? []).map((r: any) => r.plain_text ?? '').join('');
 }
 
 export function fileToUrl(file: any): string | undefined {
   if (!file) return undefined;
-  if (file.type === "external") return file.external?.url;
-  if (file.type === "file") return file.file?.url;
+  if (file.type === 'external') return file.external?.url;
+  if (file.type === 'file') return file.file?.url;
   return undefined;
 }
 
@@ -23,8 +23,12 @@ export function mapPost(page: PageObjectResponse): Post {
   const props: any = page.properties;
 
   const title = rtToPlain(props?.Title?.title ?? []);
-  const slug = (props?.Slug?.rich_text?.[0]?.plain_text ?? props?.Slug?.formula?.string ?? "").trim();
-  const status = props?.Status?.select?.name ?? "Draft";
+  const slug = (
+    props?.Slug?.rich_text?.[0]?.plain_text ??
+    props?.Slug?.formula?.string ??
+    ''
+  ).trim();
+  const status = props?.Status?.select?.name ?? 'Draft';
   const publishedAt = props?.PublishedAt?.date?.start ?? null;
   const tags = (props?.Tags?.multi_select ?? []).map((t: any) => t.name);
   const excerpt = props?.Excerpt?.rich_text?.[0]?.plain_text ?? undefined;
@@ -45,16 +49,19 @@ export function mapPost(page: PageObjectResponse): Post {
     coverUrl,
     featured,
     canonicalURL,
-    readingTimeMinutes
+    readingTimeMinutes,
   };
 
   return PostSchema.parse(obj);
 }
 
-export function mapProfileFromPage(page: PageObjectResponse, options?: {
-  avatarUrl?: string;
-  aboutBlocks?: any[];
-}): Profile {
+export function mapProfileFromPage(
+  page: PageObjectResponse,
+  options?: {
+    avatarUrl?: string;
+    aboutBlocks?: any[];
+  },
+): Profile {
   const p: any = page.properties;
   const obj = {
     id: page.id,
@@ -65,7 +72,7 @@ export function mapProfileFromPage(page: PageObjectResponse, options?: {
     email: p?.Email?.email ?? undefined,
     links: parseLinks(p?.Links),
     avatarUrl: options?.avatarUrl,
-    aboutBlocks: options?.aboutBlocks
+    aboutBlocks: options?.aboutBlocks,
   };
   return ProfileSchema.parse(obj);
 }
@@ -74,12 +81,12 @@ function parseLinks(prop: any): Record<string, string> | undefined {
   if (!prop) return undefined;
   const rt = prop.url ? prop.url : rtToPlain(prop.rich_text ?? []);
   if (!rt) return undefined;
-  if (rt.startsWith("http")) return { Website: rt };
-  const entries = rt.split(",").map((s: string) => s.trim());
+  if (rt.startsWith('http')) return { Website: rt };
+  const entries = rt.split(',').map((s: string) => s.trim());
   const rec: Record<string, string> = {};
   for (const e of entries) {
-    const [k, ...rest] = e.split(":");
-    if (k && rest.length) rec[k.trim()] = rest.join(":").trim();
+    const [k, ...rest] = e.split(':');
+    if (k && rest.length) rec[k.trim()] = rest.join(':').trim();
   }
   return Object.keys(rec).length ? rec : undefined;
 }
