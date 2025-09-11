@@ -5,7 +5,10 @@ if (!token) {
   throw new Error("[NOTION] Missing NOTION_TOKEN in .env");
 }
 
-export const notion = new Client({ auth: token });
+export const notion = new Client({
+  auth: token,
+  notionVersion: '2025-09-03',
+});
 
 export const resourceIds = {
   postsDb: process.env.NOTION_DB_POSTS,
