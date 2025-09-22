@@ -1,15 +1,76 @@
 ---
+import Badge from '@components/ui/Badge.astro';
+import Button from '@components/ui/Button.astro';
+import Container from '@components/ui/Container.astro';
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
+import Timeline from '@components/about/Timeline.astro'
 import { getProfile } from '@lib/content/profile.ts';
 
-const { Content, frontmatter } = await getProfile();
-const title = frontmatter.title ?? 'About';
+const profile = await getProfile();
+if (!profile) throw new Error('Profile not found');
+
+const url = new URL(Astro.request.url, Astro.site).toString();
+const {
+  name,
+  role,
+  bio,
+  raised,
+  based,
+  email,
+  skills,
+  image,
+} = profile
+const title = 'About Me';
+const description = 'About Alejandro Gonzalez Romero';
+const { Content } = profile;
 ---
 
-<Layout title={title} description={frontmatter.description ?? 'About me'} image={frontmatter.cover}>
-  <h1 class="text-2xl font-semibold">{title}</h1>
-  <Prose class="mt-6">
-    <Content />
-  </Prose>
+<Layout title={title} description={description} url={url} image={profile.image}>
+  <section class='py-14'>
+    <Container>
+      <header class="flex flex-col md:flex-row md:items-center md:gap-8">
+        {image && (
+          <img
+            src={image}
+            alt={`Portrait of ${name}`}
+            width="160"
+            height="160"
+            fetchpriority="high"
+            class="h-40 w-40 rounded-full object-cover border border-border shadow-soft"
+          />
+        )}
+        <div class="mt-6 md:mt-0">
+          <h1 class="text-3xl font-bold">{name}</h1>
+          <p class="mt-2 text-lg opacity-80">{role}</p>
+          <p class="mt-2 text-sm opacity-70">Raised in {raised}. Based in {based}.</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a class="text-primary hover:underline" href='https://github.com/algorodev' target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="text-primary hover:underline" href='https://linkedin.com/in/algorodev' target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="text-primary hover:underline" href={`mailto:${email}`}>Email</a>
+          </div>
+        </div>
+      </header>
+      {skills.length > 0 && (
+        <section class="mt-10">
+          <h2 class="text-xl font-semibold">Skills</h2>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {skills.map((s: string) => <Badge variant="accent">{s}</Badge>)}
+          </div>
+        </section>
+      )}
+      <section class="mt-12">
+        <Prose>
+          <Content />
+        </Prose>
+      </section>
+      <section class="mt-14 rounded-2xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6 text-center">
+        <h2 class="text-xl font-semibold">Let’s work together</h2>
+        <p class="mt-2 opacity-80">Have a project in mind? I’m open to collaboration.</p>
+        <div class="mt-4">
+          <Button variant="primary" href={email ? `mailto:${email}` : '/'}>Get in touch</Button>
+        </div>
+      </section>
+    </Container>
+  </section>
 </Layout>

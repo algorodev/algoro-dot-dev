@@ -25,6 +25,7 @@ const {
   publishedAt,
   tags,
   cover,
+  readingTimeMinutes,
   Content,
 } = post;
 
@@ -39,11 +40,11 @@ const nextPost = allPosts[index - 1] || null;
     <header class="mb-8">
       <h1 class="text-3xl font-bold">{title}</h1>
       <div class="mt-2 text-sm opacity-70">
-        {publishedAt && new Date(publishedAt).toLocaleDateString()}
+        {publishedAt && new Date(publishedAt).toLocaleDateString()} • {readingTimeMinutes ?? '–'} min read
       </div>
       {tags?.length && (
         <div class="mt-3 flex flex-wrap gap-2">
-          {tags.map(tag => (
+          {tags.map((tag: string) => (
             <Badge variant="neutral">#{tag}</Badge>
           ))}
         </div>

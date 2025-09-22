@@ -39,7 +39,11 @@ async function main() {
 
   try {
     const profile = await fetchProfile();
-    const out = writeProfileMDX(profile, '');
+    const blocks = await fetchAllBlocks(profile.id);
+    const { mdx } = await blocksToMDX(profile.id, blocks, {
+      loadChildren,
+    })
+    const out = writeProfileMDX(profile, mdx || '');
     console.log(`[mdx] Wrote profile → ${out}`);
     ok++
   } catch (e) {

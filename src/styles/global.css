@@ -67,6 +67,10 @@
     color: var(--color-fg) !important;
   }
 
+  .prose strong {
+    color: var(--color-fg) !important;
+  }
+
   .prose :where(h1, h2, h3, h4) {
     font-weight: 600;
     line-height: 1.2;

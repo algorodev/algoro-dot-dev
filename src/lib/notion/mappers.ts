@@ -78,7 +78,6 @@ export function mapProfile(page: PageObjectResponse): Profile {
 
   const name = rtToPlain(props?.Name?.title ?? []);
   const role = props?.Role?.rich_text?.[0]?.plain_text ?? undefined;
-  const bio = props?.Bio?.rich_text?.[0]?.plain_text ?? undefined;
   const raised = props?.Raised?.rich_text?.[0]?.plain_text ?? undefined;
   const based = props?.Based?.rich_text?.[0]?.plain_text ?? undefined;
   const email = props?.Email?.email ?? undefined;
@@ -89,7 +88,6 @@ export function mapProfile(page: PageObjectResponse): Profile {
     id: page.id,
     name,
     role,
-    bio,
     raised,
     based,
     email,

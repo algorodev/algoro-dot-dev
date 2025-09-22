@@ -81,7 +81,7 @@ export async function blocksToMDX(
       if (!t) continue;
 
       if (t === 'paragraph') {
-        out.push(richTextToInline(block.paragraph?.rich_text) || '<br />');
+        out.push(richTextToInline(block.paragraph?.rich_text) || '<div class="my-2" />');
       } else if (t === 'heading_1' || t === 'heading_2' || t === 'heading_3') {
         const level = t === 'heading_1' ? '#' : t === 'heading_2' ? '##' : '###';
         const content = richTextToInline(block[t]?.rich_text);

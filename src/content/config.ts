@@ -22,7 +22,6 @@ const profile = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
-    bio: z.string(),
     raised: z.string(),
     based: z.string(),
     email: z.string().email(),

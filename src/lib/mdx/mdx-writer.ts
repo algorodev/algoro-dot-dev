@@ -61,7 +61,6 @@ export function writeProfileMDX(
     id: string;
     name: string;
     role: string;
-    bio: string;
     raised: string;
     based: string;
     email: string;
@@ -73,7 +72,6 @@ export function writeProfileMDX(
   const frontmatterRaw = {
     name: profile.name,
     role: profile.role,
-    bio: profile.bio,
     raised: profile.raised,
     based: profile.based,
     email: profile.email,
