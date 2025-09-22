@@ -3,7 +3,7 @@ import Badge from '@components/ui/Badge.astro'
 import Button from '@components/ui/Button.astro';
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
-import { getAllPosts, getPostBySlug } from '@content/posts';
+import { getAllPosts, getPostBySlug } from '@lib/content/posts.ts';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();

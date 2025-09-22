@@ -1,4 +1,4 @@
-import { getAllPosts } from '@content/posts';
+import { getAllPosts } from '@lib/content/posts.ts';
 
 export const prerender = true;
 
@@ -12,7 +12,7 @@ export async function GET({ site }: any) {
       <link>${new URL(`/blog/${p.slug}`, site)}</link>
       <guid>${new URL(`/blog/${p.slug}`, site)}</guid>
       ${p.description ? `<description>${escapeXml(p.description)}</description>` : ''}
-      ${p.date ? `<pubDate>${new Date(p.date).toUTCString()}</pubDate>` : ''}
+      ${p.publishedAt ? `<pubDate>${new Date(p.publishedAt).toUTCString()}</pubDate>` : ''}
     </item>
   `,
     )

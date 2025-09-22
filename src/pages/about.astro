@@ -1,7 +1,7 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
-import { getProfile } from '@content/profile';
+import { getProfile } from '@lib/content/profile.ts';
 
 const { Content, frontmatter } = await getProfile();
 const title = frontmatter.title ?? 'About';

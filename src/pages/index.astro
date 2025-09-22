@@ -4,7 +4,7 @@ import Button from '@components/ui/Button.astro';
 import Card from '@components/ui/Card.astro';
 import Container from '@components/ui/Container.astro';
 import Layout from '@layouts/Layout.astro';
-import { getAllPosts } from '@content/posts';
+import { getAllPosts } from '@lib/content/posts.ts';
 
 const posts = await getAllPosts({ includeDrafts: false });
 const latest = posts.slice(0, 3);
