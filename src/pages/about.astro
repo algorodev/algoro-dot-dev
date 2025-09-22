@@ -5,16 +5,16 @@ import Container from '@components/ui/Container.astro';
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
 import Timeline from '@components/about/Timeline.astro'
+import { getAllExperiences } from '@lib/content/experience.ts'
 import { getProfile } from '@lib/content/profile.ts';
 
 const profile = await getProfile();
-if (!profile) throw new Error('Profile not found');
+const experiences = await getAllExperiences()
 
 const url = new URL(Astro.request.url, Astro.site).toString();
 const {
   name,
   role,
-  bio,
   raised,
   based,
   email,
@@ -64,6 +64,12 @@ const { Content } = profile;
           <Content />
         </Prose>
       </section>
+      {experiences.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-xl font-semibold">Experience</h2>
+          <Timeline items={experiences} />
+        </section>
+      )}
       <section class="mt-14 rounded-2xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6 text-center">
         <h2 class="text-xl font-semibold">Let’s work together</h2>
         <p class="mt-2 opacity-80">Have a project in mind? I’m open to collaboration.</p>

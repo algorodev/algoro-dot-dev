@@ -1,0 +1,30 @@
+---
+type TimelineProps = {
+  items: {
+    title: string;
+    organization: string;
+    location: string;
+    start: string;
+    end: string;
+  }[]
+}
+
+const { items } = Astro.props as TimelineProps;
+---
+
+<ul class="mt-4 grid gap-6">
+  {items.map((it) => (
+    <li class="relative pl-6">
+      <span class="absolute left-0 top-[.55rem] h-3 w-3 rounded-full bg-primary"></span>
+      <div class="rounded-2xl border border-border bg-card p-4">
+        <h3 class="text-lg font-semibold">
+          {it.title}
+          {it.organization && <span class="opacity-70 font-normal"> — {it.organization}</span>}
+        </h3>
+        <div class="text-sm opacity-70 mt-0.5">
+          {it.start}{it.end ? ` – ${it.end}` : ' - Present'}
+        </div>
+      </div>
+    </li>
+  ))}
+</ul>
