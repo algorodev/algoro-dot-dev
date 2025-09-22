@@ -51,16 +51,15 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
         </nav>
       </Container>
     </header>
-
     <main id="main" class="py-10">
       <Container>
         <slot />
       </Container>
     </main>
-
     <footer class="border-border border-t py-10">
-      <Container class="text-sm opacity-80">
-        © {new Date().getFullYear()} algoro.dev
+      <Container class="text-sm opacity-80 flex justify-between">
+        <p>© {new Date().getFullYear()} algoro.dev</p>
+        <p>Difficult many things are, but impossible nothing is.</p>
       </Container>
     </footer>
   </body>

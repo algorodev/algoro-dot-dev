@@ -1,8 +1,8 @@
 ---
 import Badge from '@components/ui/Badge.astro';
-import Button from '@components/ui/Button.astro';
 import Card from '@components/ui/Card.astro';
 import Container from '@components/ui/Container.astro';
+import Link from '@components/ui/Link.astro';
 import Layout from '@layouts/Layout.astro';
 import { getAllPosts } from '@lib/content/posts.ts';
 
@@ -13,19 +13,20 @@ const description = 'Personal site, projects, and latest writing.';
 ---
 
 <Layout title={title} description={description}>
-  <section class="py-20 text-center">
+  <section class="pt-20 pb-10 text-center">
     <Container>
       <h1 class="text-4xl font-bold">
         Hi, I’m <span class="text-primary">Alejandro Gonzalez Romero</span>
       </h1>
       <p class="mt-4 text-xl opacity-80">Senior Software Engineer · Code, Cloud & AI</p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <Button variant="primary" href="/blog">Read the Blog</Button>
-        <Button variant="ghost" href="/about">About Me</Button>
+        <Link variant="primary" url="/blog">Read the Blog</Link>
+        <Link variant="ghost" url="/about">About Me</Link>
       </div>
     </Container>
   </section>
-  <section class="bg-[var(--color-muted)] py-12 dark:bg-[var(--color-card)]">
+  <p class='mx-auto mb-10 max-w-1/2 text-lg text-center opacity-80'>I care about clear UX, robust infra, and measurable outcomes. Smartbox by day; side-projects & reading lists by night. Let’s build something worth using.</p>
+  <section class="bg-muted py-12 rounded-t-2xl dark:bg-card">
     <Container class="grid gap-8 sm:grid-cols-3">
       <Card class="p-6 text-center">
         <h3 class="text-xl font-semibold">Experience</h3>
@@ -54,7 +55,7 @@ const description = 'Personal site, projects, and latest writing.';
       </Card>
     </Container>
   </section>
-  <section class="bg-[var(--color-muted)] py-16 dark:bg-[var(--color-card)]">
+  <section class="bg-muted py-8 rounded-b-2xl dark:bg-card">
     <Container>
       <h2 class="text-2xl font-semibold">Latest Posts</h2>
       <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
@@ -62,24 +63,19 @@ const description = 'Personal site, projects, and latest writing.';
           latest.map((p) => (
             <Card as="article" class="flex flex-col p-4">
               <h3 class="text-lg font-semibold">
-                <a href={`/blog/${p.slug}`} class="text-[var(--color-primary)] hover:underline">
+                <a href={`/blog/${p.slug}`} class="text-primary hover:underline">
                   {p.title}
                 </a>
               </h3>
-              {p.publishedAt && (
-                <div class="mt-1 text-sm opacity-70">{new Date(p.publishedAt).toLocaleDateString()}</div>
-              )}
-              {p.description && <p class="mt-2 line-clamp-3 opacity-80">{p.description}</p>}
-              <Button variant="subtle" href={`/blog/${p.slug}`} class="mt-auto pt-4">
+              <Link variant="subtle" url={`/blog/${p.slug}`} class="mt-4">
                 Read
-              </Button>
+              </Link>
             </Card>
           ))
         }
       </div>
-      <div class="mt-6">
-        <a href="/blog" class="mt-6 text-[var(--color-primary)] hover:underline">View all posts →</a
-        >
+      <div class="mt-4">
+        <a href="/blog" class="text-primary hover:underline">View all posts →</a>
       </div>
     </Container>
   </section>
@@ -90,7 +86,7 @@ const description = 'Personal site, projects, and latest writing.';
       <div class="mt-6 flex flex-wrap justify-center gap-4">
         <a
           href="https://github.com/algorodev"
-          class="text-[var(--color-primary)] hover:underline"
+          class="text-primary hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -98,13 +94,13 @@ const description = 'Personal site, projects, and latest writing.';
         </a>
         <a
           href="https://www.linkedin.com/in/algorodev/"
-          class="text-[var(--color-primary)] hover:underline"
+          class="text-primary hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
           LinkedIn
         </a>
-        <a href="mailto:me@algoro.dev" class="text-[var(--color-primary)] hover:underline">
+        <a href="mailto:me@algoro.dev" class="text-primary hover:underline">
           Email
         </a>
       </div>

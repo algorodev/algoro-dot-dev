@@ -4,6 +4,7 @@ import Button from '@components/ui/Button.astro';
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
 import { getAllPosts, getPostBySlug } from '@lib/content/posts.ts';
+import Link from '@components/ui/Link.astro';
 
 type SlugProps = {
   slug: string;
@@ -53,12 +54,12 @@ const nextPost = allPosts[index - 1] || null;
         <img
           src={cover}
           alt={title}
-          class="mt-4 rounded-[var(--radius-2xl)] shadow-[var(--shadow-soft)] w-full aspect-[16/9] object-cover"
+          class="mt-4 rounded-2xl shadow-soft w-full aspect-[16/9] object-cover"
           loading="lazy"
         />
       )}
     </header>
-    <nav id="toc-container" class="mb-8 border-l-4 border-[var(--color-muted)] pl-4"></nav>
+    <nav id="toc-container" class="mb-8 border-l-4 border-muted pl-4"></nav>
     <Prose>
       <Content />
     </Prose>
@@ -67,7 +68,7 @@ const nextPost = allPosts[index - 1] || null;
         {prevPost && (
           <div>
             <span class="block text-sm opacity-70 mb-1">Previous</span>
-            <a href={`/blog/${prevPost.slug}`} class="text-[var(--color-primary)] hover:underline">
+            <a href={`/blog/${prevPost.slug}`} class="text-primary hover:underline">
               {prevPost.title}
             </a>
           </div>
@@ -77,7 +78,7 @@ const nextPost = allPosts[index - 1] || null;
         {nextPost && (
           <div>
             <span class="block text-sm opacity-70 mb-1">Next</span>
-            <a href={`/blog/${nextPost.slug}`} class="text-[var(--color-primary)] hover:underline">
+            <a href={`/blog/${nextPost.slug}`} class="text-primary hover:underline">
               {nextPost.title}
             </a>
           </div>
@@ -85,7 +86,7 @@ const nextPost = allPosts[index - 1] || null;
       </div>
     </div>
     <div class="mt-10 text-center">
-      <Button variant="ghost" href="/blog">← Back to Blog</Button>
+      <Link variant="ghost" url="/blog">← Back to Blog</Link>
     </div>
   </article>
 </Layout>
@@ -123,7 +124,7 @@ const nextPost = allPosts[index - 1] || null;
         const link = document.createElement('a');
         link.href = '#' + h.id;
         link.textContent = h.textContent.trim();
-        link.className = 'text-sm text-[var(--color-primary)] hover:underline';
+        link.className = 'text-sm text-primary hover:underline';
         li.appendChild(link);
         list.appendChild(li);
       });

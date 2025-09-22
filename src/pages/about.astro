@@ -1,7 +1,7 @@
 ---
 import Badge from '@components/ui/Badge.astro';
-import Button from '@components/ui/Button.astro';
 import Container from '@components/ui/Container.astro';
+import Link from '@components/ui/Link.astro'
 import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
 import Timeline from '@components/about/Timeline.astro'
@@ -70,11 +70,11 @@ const { Content } = profile;
           <Timeline items={experiences} />
         </section>
       )}
-      <section class="mt-14 rounded-2xl border border-[var(--color-border)] bg-[var(--color-muted)] p-6 text-center">
+      <section class="mt-14 rounded-2xl border border-border bg-muted p-6 text-center">
         <h2 class="text-xl font-semibold">Let’s work together</h2>
         <p class="mt-2 opacity-80">Have a project in mind? I’m open to collaboration.</p>
         <div class="mt-4">
-          <Button variant="primary" href={email ? `mailto:${email}` : '/'}>Get in touch</Button>
+          <Link variant="primary" url={`mailto:${email}`}>Get in touch</Link>
         </div>
       </section>
     </Container>
