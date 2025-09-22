@@ -7,25 +7,35 @@ const allPosts = await getAllPosts();
 const pagePosts = allPosts.slice(0, pageSize);
 const pageCount = Math.ceil(allPosts.length / pageSize);
 const title = 'Blog';
-const description = 'Articles and notes'
+const description = 'Articles and notes';
 ---
 
 <Layout title={title} description={description}>
   <h1 class="text-2xl font-semibold">{title}</h1>
 
   <ul class="mt-6 space-y-4">
-    {pagePosts.map(p => (
-      <li>
-        <a class="text-primary hover:underline" href={`/blog/${p.slug}`}>{p.title}</a>
-        {p.date && <span class="ml-2 text-sm opacity-70">{new Date(p.date).toLocaleDateString()}</span>}
-        {p.description && <p class="opacity-80">{p.description}</p>}
-      </li>
-    ))}
+    {
+      pagePosts.map((p) => (
+        <li>
+          <a class="text-primary hover:underline" href={`/blog/${p.slug}`}>
+            {p.title}
+          </a>
+          {p.date && (
+            <span class="ml-2 text-sm opacity-70">{new Date(p.date).toLocaleDateString()}</span>
+          )}
+          {p.description && <p class="opacity-80">{p.description}</p>}
+        </li>
+      ))
+    }
   </ul>
 
-  {pageCount > 1 && (
-    <nav class="mt-8 flex gap-3">
-      <a class="border px-3 py-1 rounded-xl hover:bg-muted" href="/blog/page/2">Next →</a>
-    </nav>
-  )}
+  {
+    pageCount > 1 && (
+      <nav class="mt-8 flex gap-3">
+        <a class="hover:bg-muted rounded-xl border px-3 py-1" href="/blog/page/2">
+          Next →
+        </a>
+      </nav>
+    )
+  }
 </Layout>

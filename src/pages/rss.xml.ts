@@ -4,7 +4,9 @@ export const prerender = true;
 
 export async function GET({ site }: any) {
   const posts = await getAllPosts();
-  const items = posts.map(p => `
+  const items = posts
+    .map(
+      (p) => `
     <item>
       <title>${escapeXml(p.title)}</title>
       <link>${new URL(`/blog/${p.slug}`, site)}</link>
@@ -12,7 +14,9 @@ export async function GET({ site }: any) {
       ${p.description ? `<description>${escapeXml(p.description)}</description>` : ''}
       ${p.date ? `<pubDate>${new Date(p.date).toUTCString()}</pubDate>` : ''}
     </item>
-  `).join('');
+  `,
+    )
+    .join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0"><channel>
@@ -26,5 +30,5 @@ export async function GET({ site }: any) {
 }
 
 function escapeXml(s = '') {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

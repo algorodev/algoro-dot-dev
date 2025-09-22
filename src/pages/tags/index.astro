@@ -8,8 +8,17 @@ const tags = await getAllTags();
 <Layout title="Tags" description="Browse posts by tag">
   <h1 class="text-2xl font-semibold">Tags</h1>
   <ul class="mt-6 flex flex-wrap gap-2">
-    {tags.map(tag => (
-      <li><a class="border px-3 py-1 rounded-xl hover:bg-muted" href={`/tags/${encodeURIComponent(tag)}`}>#{tag}</a></li>
-    ))}
+    {
+      tags.map((tag) => (
+        <li>
+          <a
+            class="hover:bg-muted rounded-xl border px-3 py-1"
+            href={`/tags/${encodeURIComponent(tag)}`}
+          >
+            #{tag}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </Layout>

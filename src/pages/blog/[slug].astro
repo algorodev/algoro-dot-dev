@@ -5,7 +5,7 @@ import { getAllPosts, getPostBySlug } from '@content/posts';
 
 export async function getStaticPaths() {
   const all = await getAllPosts();
-  return all.map(p => ({ params: { slug: p.slug } }));
+  return all.map((p) => ({ params: { slug: p.slug } }));
 }
 
 const { slug } = Astro.params;
@@ -15,7 +15,11 @@ if (!post) throw new Error(`Post not found: ${slug}`);
 const url = new URL(Astro.request.url, Astro.site).toString();
 const title = post.title;
 const desc = post.description ?? '';
-const cover = post.cover?.startsWith('http') ? post.cover : (post.cover ? new URL(post.cover, Astro.site).toString() : undefined);
+const cover = post.cover?.startsWith('http')
+  ? post.cover
+  : post.cover
+    ? new URL(post.cover, Astro.site).toString()
+    : undefined;
 const Content = post.Content;
 ---
 
@@ -25,15 +29,28 @@ const Content = post.Content;
       <h1 class="text-3xl font-semibold">{post.title}</h1>
       <div class="mt-2 text-sm opacity-70">
         {post.date && new Date(post.date).toLocaleDateString()}
-        {post.tags?.length && (
-          <span class="ml-3">
-            {post.tags.map((t, i) => (
-              <a href={`/tags/${encodeURIComponent(t)}`} class="mr-2 hover:underline">#{t}</a>
-            ))}
-          </span>
-        )}
+        {
+          post.tags?.length && (
+            <span class="ml-3">
+              {post.tags.map((t) => (
+                <a href={`/tags/${encodeURIComponent(t)}`} class="mr-2 hover:underline">
+                  #{t}
+                </a>
+              ))}
+            </span>
+          )
+        }
       </div>
-      {cover && <img src={cover} alt={post.title} class="mt-4 rounded-2xl shadow-soft w-full" data-contain />}
+      {
+        cover && (
+          <img
+            src={cover}
+            alt={post.title}
+            class="shadow-soft mt-4 w-full rounded-2xl"
+            data-contain
+          />
+        )
+      }
     </header>
     <Prose class="mt-6">
       <Content />

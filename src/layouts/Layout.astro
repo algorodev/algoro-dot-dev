@@ -2,7 +2,7 @@
 import '@styles/global.css';
 import ToggleButton from '@components/ToggleButton.astro';
 import Container from '@components/ui/Container.astro';
-import Meta from '../components/Meta.astro'
+import Meta from '../components/Meta.astro';
 
 const { title = 'algoro.dev' } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
@@ -30,9 +30,21 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
       <Container class="flex h-14 items-center justify-between">
         <a href="/" class="font-bold">algoro.dev</a>
         <nav class="flex items-center gap-3">
-          <a href="/about" class={`text-primary hover:underline ${isActive('/about') ? 'font-semibold underline' : ''}`}>About</a>
-          <a href="/blog" class={`text-primary hover:underline ${isActive('/blog') ? 'font-semibold underline' : ''}`}>Blog</a>
-          <a href="/tags" class={`text-primary hover:underline ${isActive('/tags') ? 'font-semibold underline' : ''}`}>Tags</a>
+          <a
+            href="/about"
+            class={`text-primary hover:underline ${isActive('/about') ? 'font-semibold underline' : ''}`}
+            >About</a
+          >
+          <a
+            href="/blog"
+            class={`text-primary hover:underline ${isActive('/blog') ? 'font-semibold underline' : ''}`}
+            >Blog</a
+          >
+          <a
+            href="/tags"
+            class={`text-primary hover:underline ${isActive('/tags') ? 'font-semibold underline' : ''}`}
+            >Tags</a
+          >
           <ToggleButton />
         </nav>
       </Container>
