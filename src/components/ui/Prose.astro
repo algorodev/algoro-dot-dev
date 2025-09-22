@@ -1,5 +1,9 @@
 ---
-const { class: cls = '' } = Astro.props;
+type ProseProps = {
+  class?: string;
+}
+
+const { class: cls = '' } = Astro.props as ProseProps;
 ---
 
 <div class={`prose max-w-7xl ${cls}`}>

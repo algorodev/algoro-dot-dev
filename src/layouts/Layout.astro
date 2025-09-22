@@ -4,7 +4,14 @@ import ToggleButton from '@components/ToggleButton.astro';
 import Container from '@components/ui/Container.astro';
 import Meta from '../components/Meta.astro';
 
-const { title = 'algoro.dev' } = Astro.props;
+type LayoutProps = {
+  title?: string;
+  description?: string;
+  url?: string;
+  image?: string;
+}
+
+const { title = 'algoro.dev', description, url, image } = Astro.props as LayoutProps;
 const pathname = new URL(Astro.request.url).pathname;
 const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 ---
@@ -12,7 +19,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
 <!doctype html>
 <html lang="en" class="scheme-light dark:scheme-dark">
   <head>
-    <Meta title={title} />
+    <Meta title={title} description={description} url={url} image={image} />
     <script>
       (() => {
         const root = document.documentElement;

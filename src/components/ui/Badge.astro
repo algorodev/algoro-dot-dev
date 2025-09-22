@@ -1,5 +1,10 @@
 ---
-const { variant = 'accent', class: cls = '' } = Astro.props;
+type BadgeProps = {
+  variant?: 'accent' | 'neutral' | 'success' | 'warn' | 'danger';
+  class?: string;
+}
+
+const { variant = 'accent', class: cls = '' } = Astro.props as BadgeProps;
 const colors = {
   accent: 'bg-accent text-accent-fg',
   neutral: 'bg-muted text-fg',

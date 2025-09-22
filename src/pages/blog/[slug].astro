@@ -5,12 +5,16 @@ import Layout from '@layouts/Layout.astro';
 import Prose from '@components/ui/Prose.astro';
 import { getAllPosts, getPostBySlug } from '@lib/content/posts.ts';
 
+type SlugProps = {
+  slug: string;
+}
+
 export async function getStaticPaths() {
   const posts = await getAllPosts();
   return posts.map((p) => ({ params: { slug: p.slug } }));
 }
 
-const { slug } = Astro.params;
+const { slug } = Astro.params as SlugProps;
 const post = await getPostBySlug(slug!);
 if (!post) throw new Error(`Post not found: ${slug}`);
 

@@ -1,5 +1,10 @@
 ---
-const { variant = 'primary', class: cls = '' } = Astro.props;
+type ButtonProps = {
+  variant?: 'primary' | 'ghost' | 'subtle';
+  class?: string;
+}
+
+const { variant = 'primary', class: cls = '' } = Astro.props as ButtonProps;
 const base =
   'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition cursor-pointer';
 const ring = 'focus-visible:outline-none focus-visible:ring-2';

@@ -1,5 +1,9 @@
 ---
-const { class: cls = '' } = Astro.props;
+type CardProps = {
+  class?: string;
+}
+
+const { class: cls = '' } = Astro.props as CardProps;
 ---
 
 <div class={`rounded-2xl border border-border bg-card shadow-soft ${cls}`}>
