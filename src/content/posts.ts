@@ -4,7 +4,7 @@ export type PostModule = {
   frontmatter: {
     title: string;
     description?: string;
-    date?: string | Date;
+    publishedAt?: string | Date;
     tags?: string[];
     draft?: boolean;
     cover?: string;
@@ -32,10 +32,10 @@ export async function getAllPosts(opts?: { includeDrafts?: boolean }) {
 
   const parsed = onlyPublished.map((p) => ({
     ...p,
-    date: p.date ? new Date(p.date) : undefined,
+    publishedAt: p.publishedAt ? new Date(p.publishedAt) : undefined,
   }));
 
-  return parsed.sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
+  return parsed.sort((a, b) => (b.publishedAt?.getTime() ?? 0) - (a.publishedAt?.getTime() ?? 0));
 }
 
 export async function getPostBySlug(slug: string) {
