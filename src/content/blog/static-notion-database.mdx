@@ -1,0 +1,55 @@
+---
+title: How I Use Notion as a Database for My Portfolio Content
+slug: static-notion-database
+status: Published
+publishedAt: '2025-09-22'
+tags:
+  - Notion
+  - Blog
+  - Static-Content
+excerpt: >-
+  Discover how I use Notion as a lightweight database for my portfolio, turning
+  my content into fast, static pages while making blog post creation effortless.
+featured: false
+readingTimeMinutes: 3
+---
+When building my personal portfolio, I wanted it to be fast, minimal, and easy to maintain. Instead of relying on a heavy CMS, I decided to use **Notion as a lightweight database** for all my static content — from blog posts to project descriptions and about-me sections.
+Here’s why and how I did it:
+### **Why Notion?**
+Notion gives me:
+- **A clean content editor** – I can focus on writing without dealing with code.
+- **An API** – Perfect for fetching data dynamically into my portfolio.
+- **Centralized content management** – Everything is in one place: posts, pages, metadata, and more.
+This way, I don’t have to redeploy my website every time I want to add a blog post or update a description.
+---
+### **Static Content for a Fast Website**
+My portfolio is built with **Astro + Tailwind**. I fetch the content from Notion during build time, so the blog posts are transformed into static HTML pages.
+The benefit?
+- **No database queries on every visit.**
+- **Fast load times** because everything is pre-rendered.
+- **SEO-friendly** static pages.
+It’s the best of both worlds: dynamic content creation with a static website’s performance.
+---
+### **How I Structure My Content in Notion**
+I keep a single Notion database with:
+- **Title**: Post title
+- **Slug**: Used for the URL
+- **Date**: Publishing date
+- **Tags**: For filtering on the blog page
+- **Content**: The body of the post
+From there, my portfolio fetches the database, maps each entry, and generates the blog pages automatically.
+---
+### **Writing Posts Becomes Effortless**
+Now, whenever I want to create a new blog post:
+1. I open my Notion page.
+1. Write the post.
+1. Publish it by simply toggling a property in Notion.
+Next time my site rebuilds, the post is live — no coding needed.
+---
+### **Results**
+- **Content management feels natural** because Notion is easy to use.
+- **My blog page stays fast** with static rendering.
+- **I focus on writing** instead of fiddling with markdown files or CMS setups.
+This approach has been a game-changer for keeping my portfolio simple yet dynamic.
+---
+<div class="my-2" />

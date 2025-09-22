@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { fetchAllPosts, fetchAllBlocks, fetchProfile, fetchAllExperience } from '@lib/notion/fetchers'
 import { blocksToMDX } from '@lib/notion/blocks-to-mdx';
 import { writeExperienceMDX, writePostMDX, writeProfileMDX } from '@lib/mdx/mdx-writer'
-import { ensureBaseDirs } from '@lib/fs/paths';
+import { ensureBaseDirs, clearContentDirs } from '@lib/fs/paths';
 import { notion } from '@lib/notion/client';
 
 async function loadChildren(blockId: string): Promise<any[]> {
@@ -21,8 +21,11 @@ async function loadChildren(blockId: string): Promise<any[]> {
 }
 
 async function main() {
+  console.log('[mdx] Clearing existing content...');
+  clearContentDirs();
   ensureBaseDirs();
 
+  console.log('[mdx] Starting to fetch content from Notion...');
   const posts = await fetchAllPosts({ includeDrafts: false });
   let ok = 0;
   for (const post of posts) {

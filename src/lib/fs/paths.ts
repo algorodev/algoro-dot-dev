@@ -14,6 +14,35 @@ export function ensureDir(dir: string) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
+export function clearContentDirs() {
+  if (fs.existsSync(BLOG_DIR)) {
+    const blogFiles = fs.readdirSync(BLOG_DIR);
+    for (const file of blogFiles) {
+      if (file.endsWith('.mdx')) {
+        fs.unlinkSync(path.join(BLOG_DIR, file));
+      }
+    }
+  }
+
+  if (fs.existsSync(PROFILE_DIR)) {
+    const profileFiles = fs.readdirSync(PROFILE_DIR);
+    for (const file of profileFiles) {
+      if (file.endsWith('.mdx')) {
+        fs.unlinkSync(path.join(PROFILE_DIR, file));
+      }
+    }
+  }
+
+  if (fs.existsSync(EXPERIENCE_DIR)) {
+    const experienceFiles = fs.readdirSync(EXPERIENCE_DIR);
+    for (const file of experienceFiles) {
+      if (file.endsWith('.mdx')) {
+        fs.unlinkSync(path.join(EXPERIENCE_DIR, file));
+      }
+    }
+  }
+}
+
 export function ensureBaseDirs() {
   ensureDir(BLOG_DIR);
   ensureDir(PROFILE_DIR);
