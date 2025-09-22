@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
-import { ensureDir, BLOG_DIR, PROFILE_DIR } from '@lib/fs/paths';
+import { ensureDir, BLOG_DIR, PROFILE_DIR, EXPERIENCE_DIR } from '@lib/fs/paths'
 
 function sanitize<T>(value: T): T {
   if (Array.isArray(value)) {
@@ -60,23 +60,25 @@ export function writeProfileMDX(
   profile: {
     id: string;
     name: string;
-    role?: string;
-    location?: string;
-    email?: string;
-    links?: Record<string, string | undefined>;
+    role: string;
+    bio: string;
+    raised: string;
+    based: string;
+    email: string;
+    skills?: string[];
+    image: string;
   },
   mdxBody: string,
 ) {
-  const linksClean: { [p: string]: string | undefined } | undefined = profile.links
-    ? Object.fromEntries(Object.entries(profile.links).filter(([, v]) => typeof v === 'string'))
-    : undefined;
-
   const frontmatterRaw = {
     name: profile.name,
     role: profile.role,
-    location: profile.location,
+    bio: profile.bio,
+    raised: profile.raised,
+    based: profile.based,
     email: profile.email,
-    links: linksClean,
+    skills: profile.skills,
+    image: profile.image,
   };
 
   const frontmatter = sanitize(frontmatterRaw);
@@ -84,6 +86,34 @@ export function writeProfileMDX(
   const filepath = path.join(PROFILE_DIR, 'profile.mdx');
   const file = matter.stringify(mdxBody, frontmatter);
   ensureDir(PROFILE_DIR);
+  fs.writeFileSync(filepath, file, 'utf-8');
+  return filepath;
+}
+
+export function writeExperienceMDX(
+  experience: {
+    id: string;
+    title: string;
+    organization?: string;
+    location: string;
+    start: string;
+    end?: string;
+  },
+  mdxBody: string,
+) {
+  const frontmatterRaw = {
+    title: experience.title,
+    organization: experience.organization,
+    location: experience.location,
+    start: experience.start,
+    end: experience.end,
+  };
+
+  const frontmatter = sanitize(frontmatterRaw);
+
+  const filepath = path.join(EXPERIENCE_DIR, `experience-${experience.id}.mdx`);
+  const file = matter.stringify(mdxBody, frontmatter);
+  ensureDir(EXPERIENCE_DIR)
   fs.writeFileSync(filepath, file, 'utf-8');
   return filepath;
 }

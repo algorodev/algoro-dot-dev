@@ -21,11 +21,25 @@ const profile = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/profile' }),
   schema: z.object({
     name: z.string(),
-    role: z.string().optional(),
-    location: z.string().optional(),
-    email: z.string().email().optional(),
-    links: z.record(z.string()).optional(),
+    role: z.string(),
+    bio: z.string(),
+    raised: z.string(),
+    based: z.string(),
+    email: z.string().email(),
+    skills: z.array(z.string()).default([]),
+    image: z.string(),
   }),
 });
 
-export const collections = { blog, profile };
+const experience = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/experience' }),
+  schema: z.object({
+    title: z.string(),
+    organization: z.string().optional(),
+    location: z.string(),
+    start: z.string(),
+    end: z.string().optional(),
+  }),
+})
+
+export const collections = { blog, profile, experience };

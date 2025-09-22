@@ -12,5 +12,6 @@ export const notion = new Client({
 
 export const resourceIds = {
   postsDb: process.env.NOTION_DB_POSTS,
-  profilePage: process.env.NOTION_PROFILE_PAGE,
+  profileDb: process.env.NOTION_DB_PROFILE,
+  experienceDb: process.env.NOTION_DB_EXPERIENCE,
 };

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const PostSchema = z.object({
   id: z.string(),
@@ -12,21 +12,28 @@ export const PostSchema = z.object({
   featured: z.boolean().optional(),
   canonicalURL: z.string().url().optional(),
   readingTimeMinutes: z.number().int().nonnegative().optional(),
-});
+})
 export type Post = z.infer<typeof PostSchema>;
 
 export const ProfileSchema = z.object({
   id: z.string(),
   name: z.string(),
-  role: z.string().optional(),
-  shortBio: z.string().optional(),
-  location: z.string().optional(),
-  email: z.string().email().optional(),
-  links: z.record(z.string(), z.string()).optional(),
-  avatarUrl: z.string().url().optional(),
-  aboutBlocks: z.array(z.any()).optional(),
-  skills: z.array(z.string()).optional(),
-  highlights: z.array(z.string()).optional(),
-  timeline: z.array(z.string()).optional(),
-});
+  role: z.string(),
+  bio: z.string(),
+  raised: z.string(),
+  based: z.string(),
+  email: z.string().email(),
+  skills: z.array(z.string()).default([]),
+  image: z.string(),
+})
 export type Profile = z.infer<typeof ProfileSchema>;
+
+export const ExperienceSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  organization: z.string().optional(),
+  location: z.string(),
+  start: z.string(),
+  end: z.string().optional(),
+})
+export type Experience = z.infer<typeof ExperienceSchema>;

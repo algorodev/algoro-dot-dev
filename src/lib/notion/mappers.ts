@@ -1,4 +1,4 @@
-import type { Post, Profile } from './schemas.ts';
+import { type Experience, ExperienceSchema, type Post, type Profile } from './schemas.ts'
 import { PostSchema, ProfileSchema } from './schemas.ts';
 import type { PageObjectResponse } from '@notionhq/client';
 
@@ -34,9 +34,8 @@ export function mapPost(page: PageObjectResponse): Post {
   const excerpt = props?.Excerpt?.rich_text?.[0]?.plain_text ?? undefined;
   const featured = !!props?.Featured?.checkbox;
   const canonicalURL = props?.CanonicalURL?.url ?? undefined;
-
   const coverUrl = getCoverUrl(page);
-  const readingTimeMinutes = props?.ReadingTime?.number ?? undefined;
+  const readingTimeMinutes = props?.ReadingTimeMinutes?.number ?? undefined;
 
   const obj = {
     id: page.id,
@@ -51,42 +50,51 @@ export function mapPost(page: PageObjectResponse): Post {
     canonicalURL,
     readingTimeMinutes,
   };
-
   return PostSchema.parse(obj);
 }
 
-export function mapProfileFromPage(
-  page: PageObjectResponse,
-  options?: {
-    avatarUrl?: string;
-    aboutBlocks?: any[];
-  },
-): Profile {
-  const p: any = page.properties;
+export function mapExperience(page: PageObjectResponse): Experience {
+  const props: any = page.properties;
+
+  const title = rtToPlain(props?.Title?.title ?? []);
+  const organization = props?.Organization?.rich_text?.[0]?.plain_text ?? undefined;
+  const location = props?.Location?.rich_text?.[0]?.plain_text ?? undefined;
+  const start = props?.Start?.rich_text?.[0]?.plain_text ?? undefined;
+  const end = props?.End?.rich_text?.[0]?.plain_text ?? undefined;
+
   const obj = {
     id: page.id,
-    name: rtToPlain(p?.Name?.title ?? []),
-    role: p?.Role?.rich_text?.[0]?.plain_text ?? undefined,
-    shortBio: p?.ShortBio?.rich_text?.[0]?.plain_text ?? undefined,
-    location: p?.Location?.rich_text?.[0]?.plain_text ?? undefined,
-    email: p?.Email?.email ?? undefined,
-    links: parseLinks(p?.Links),
-    avatarUrl: options?.avatarUrl,
-    aboutBlocks: options?.aboutBlocks,
-  };
-  return ProfileSchema.parse(obj);
+    title,
+    organization,
+    location,
+    start,
+    end,
+  }
+  return ExperienceSchema.parse(obj);
 }
 
-function parseLinks(prop: any): Record<string, string> | undefined {
-  if (!prop) return undefined;
-  const rt = prop.url ? prop.url : rtToPlain(prop.rich_text ?? []);
-  if (!rt) return undefined;
-  if (rt.startsWith('http')) return { Website: rt };
-  const entries = rt.split(',').map((s: string) => s.trim());
-  const rec: Record<string, string> = {};
-  for (const e of entries) {
-    const [k, ...rest] = e.split(':');
-    if (k && rest.length) rec[k.trim()] = rest.join(':').trim();
-  }
-  return Object.keys(rec).length ? rec : undefined;
+export function mapProfile(page: PageObjectResponse): Profile {
+  const props: any = page.properties;
+
+  const name = rtToPlain(props?.Name?.title ?? []);
+  const role = props?.Role?.rich_text?.[0]?.plain_text ?? undefined;
+  const bio = props?.Bio?.rich_text?.[0]?.plain_text ?? undefined;
+  const raised = props?.Raised?.rich_text?.[0]?.plain_text ?? undefined;
+  const based = props?.Based?.rich_text?.[0]?.plain_text ?? undefined;
+  const email = props?.Email?.email ?? undefined;
+  const skills = (props?.Skills?.multi_select ?? []).map((s: any) => s.name);
+  const image = props?.Image?.files?.[0]?.file?.url ?? undefined;
+
+  const obj = {
+    id: page.id,
+    name,
+    role,
+    bio,
+    raised,
+    based,
+    email,
+    skills,
+    image,
+  };
+  return ProfileSchema.parse(obj);
 }

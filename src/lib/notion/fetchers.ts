@@ -1,6 +1,6 @@
-import { notion, resourceIds } from './client';
-import { mapPost, mapProfileFromPage } from './mappers';
-import type { Post, Profile } from './schemas.ts';
+import { notion, resourceIds } from './client'
+import { mapExperience, mapPost, mapProfile } from './mappers'
+import type { Experience, Post, Profile } from './schemas.ts'
 
 async function resolveDataSourceId(id: string): Promise<string> {
   if (id.startsWith('ntn_')) return id;
@@ -64,13 +64,45 @@ export async function fetchAllPosts(options?: { includeDrafts?: boolean }): Prom
 }
 
 export async function fetchProfile(): Promise<Profile> {
-  if (resourceIds.profilePage) {
-    const page = await (notion as any).pages.retrieve({ page_id: resourceIds.profilePage });
-    const avatarUrl = await fetchPageIconAsUrl(resourceIds.profilePage);
-    const aboutBlocks = await fetchAllBlocks(resourceIds.profilePage);
-    return mapProfileFromPage(page as any, { avatarUrl, aboutBlocks });
+  const rawId = resourceIds.profileDb;
+  if (!rawId) throw new Error('[NOTION] Missing NOTION_DB_PROFILE');
+
+  const dataSourceId = await resolveDataSourceId(rawId);
+
+  const results: any[] = [];
+
+  const res: any = await (notion as any).dataSources.query({
+    data_source_id: dataSourceId,
+    start_cursor: undefined,
+  })
+  results.push(...(res.results ?? []))
+
+  const pages = results.filter((r: any) => r.object === 'page' && r.properties)
+  return pages.map((p: any) => mapProfile(p))[0]
+}
+
+export async function fetchAllExperience(): Promise<Experience[]> {
+  const rawId = resourceIds.experienceDb;
+  if (!rawId) throw new Error('[NOTION] Missing NOTION_DB_EXPERIENCE');
+
+  const dataSourceId = await resolveDataSourceId(rawId);
+
+  const results: any[] = [];
+  let hasMore = true;
+  let cursor: string | undefined = undefined;
+
+  while (hasMore) {
+    const res: any = await (notion as any).dataSources.query({
+      data_source_id: dataSourceId,
+      start_cursor: cursor,
+    });
+    results.push(...(res.results ?? []));
+    hasMore = !!res.has_more;
+    cursor = res.next_cursor ?? undefined;
   }
-  throw new Error('[NOTION] Provide NOTION_PROFILE_PAGE (or implement DB variant).');
+
+  const pages = results.filter((r: any) => r.object === 'page' && r.properties);
+  return pages.map((e: any) => mapExperience(e));
 }
 
 export async function fetchAllBlocks(blockId: string) {
@@ -89,18 +121,4 @@ export async function fetchAllBlocks(blockId: string) {
     cursor = res.next_cursor ?? undefined;
   }
   return blocks;
-}
-
-async function fetchPageIconAsUrl(pageId?: string): Promise<string | undefined> {
-  if (!pageId) return undefined;
-  try {
-    const page: any = await (notion as any).pages.retrieve({ page_id: pageId });
-    const icon: any = page.icon;
-    if (!icon) return undefined;
-    if (icon.type === 'external') return icon.external?.url;
-    if (icon.type === 'file') return icon.file?.url;
-  } catch {
-    // ignore
-  }
-  return undefined;
 }

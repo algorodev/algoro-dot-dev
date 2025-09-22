@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { fetchAllPosts, fetchAllBlocks, fetchProfile } from '@lib/notion/fetchers';
+import { fetchAllPosts, fetchAllBlocks, fetchProfile, fetchAllExperience } from '@lib/notion/fetchers'
 import { blocksToMDX } from '@lib/notion/blocks-to-mdx';
-import { writePostMDX, writeProfileMDX } from '@lib/mdx/mdx-writer';
+import { writeExperienceMDX, writePostMDX, writeProfileMDX } from '@lib/mdx/mdx-writer'
 import { ensureBaseDirs } from '@lib/fs/paths';
 import { notion } from '@lib/notion/client';
 
@@ -39,15 +39,22 @@ async function main() {
 
   try {
     const profile = await fetchProfile();
-    const aboutBlocks = (profile as any).aboutBlocks ?? [];
-    const { mdx } = await blocksToMDX(profile.id, aboutBlocks, {
-      coverUrl: profile.avatarUrl,
-      loadChildren,
-    });
-    const out = writeProfileMDX(profile, mdx || '');
+    const out = writeProfileMDX(profile, '');
     console.log(`[mdx] Wrote profile → ${out}`);
+    ok++
   } catch (e) {
     console.warn('[mdx] Skipping profile generation:', (e as Error).message);
+  }
+
+  try {
+    const experiences = await fetchAllExperience();
+    for (const experience of experiences) {
+      const out = writeExperienceMDX(experience, '');
+      console.log(`[mdx] Wrote experience ${experience.id} → ${out}`);
+      ok++
+    }
+  } catch (e) {
+    console.warn('[mdx] Skipping experience generation:', (e as Error).message);
   }
 
   console.log(`[mdx] Done. Generated ${ok} file(s).`);
