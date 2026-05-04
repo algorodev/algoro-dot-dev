@@ -42,11 +42,6 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
             class={`text-primary hover:underline ${isActive('/about') ? 'font-semibold underline' : ''}`}
             >About</a
           >
-          <a
-            href="/blog"
-            class={`text-primary hover:underline ${isActive('/blog') ? 'font-semibold underline' : ''}`}
-            >Blog</a
-          >
           <ToggleButton />
         </nav>
       </Container>

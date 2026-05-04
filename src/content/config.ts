@@ -1,22 +1,6 @@
 import { z, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
-  schema: z.object({
-    title: z.string(),
-    slug: z.string(),
-    status: z.enum(['Draft', 'Published']),
-    publishedAt: z.string().nullable(),
-    tags: z.array(z.string()).default([]),
-    excerpt: z.string().optional(),
-    cover: z.string().optional(),
-    featured: z.boolean().optional(),
-    canonicalURL: z.string().url().optional(),
-    readingTimeMinutes: z.number().int().nonnegative().optional(),
-  }),
-});
-
 const profile = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/profile' }),
   schema: z.object({
@@ -41,4 +25,4 @@ const experience = defineCollection({
   }),
 })
 
-export const collections = { blog, profile, experience };
+export const collections = { profile, experience };
