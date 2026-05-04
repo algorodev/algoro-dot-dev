@@ -1,6 +1,6 @@
 ---
 // TODO: Phase 2 — wire up to /api/chat with Vercel AI SDK + pgvector
-import SectionHeader from '@components/SectionHeader.astro';
+import Section from '@components/Section.astro';
 
 const stack = [
   'Vercel AI SDK · streaming',
@@ -17,9 +17,13 @@ const suggested = [
 ];
 ---
 
-<section id="demo" class="container-x border-y border-border py-[120px]">
-  <SectionHeader number="/02" title="Live AI demo" meta="rag · streaming · cited" />
-
+<Section
+  id="demo"
+  number="/02"
+  eyebrow="live ai demo"
+  meta="rag · streaming · cited"
+  notes={['phase 2 — not wired yet']}
+>
   <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
       <h3
@@ -39,7 +43,7 @@ const suggested = [
         <div
           class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase"
         >
-          — Stack
+          — stack
         </div>
         <ul class="font-mono text-xs leading-[1.9] text-fg-muted">
           {
@@ -67,7 +71,7 @@ const suggested = [
 
       <div class="flex min-h-[380px] flex-col gap-4 p-6">
         <div
-          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-[#0a0a0a]"
+          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-bg"
           style="font-size: 14px; line-height: 1.55;"
         >
           What's Alejandro's experience with vector databases?
@@ -89,7 +93,7 @@ const suggested = [
           >openclaw.md:3</span>.
         </div>
         <div
-          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-[#0a0a0a]"
+          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-bg"
           style="font-size: 14px; line-height: 1.55;"
         >
           Tell me about the Smartbox AI work.
@@ -138,4 +142,4 @@ const suggested = [
       </div>
     </div>
   </div>
-</section>
+</Section>
