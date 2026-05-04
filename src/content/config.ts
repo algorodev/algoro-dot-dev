@@ -23,6 +23,30 @@ const experience = defineCollection({
     start: z.string(),
     end: z.string().optional(),
   }),
-})
+});
 
-export const collections = { profile, experience };
+const work = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/work' }),
+  schema: z.object({
+    title: z.string(),
+    client: z.string(),
+    year: z.string(),
+    summary: z.string(),
+    tags: z.array(z.string()).default([]),
+    stack: z.array(z.string()).default([]),
+    metrics: z
+      .array(
+        z.object({
+          label: z.string(),
+          value: z.string(),
+          unit: z.string().optional(),
+        }),
+      )
+      .optional(),
+    featured: z.boolean().default(false),
+    order: z.number().optional(),
+    linkLabel: z.string().optional(),
+  }),
+});
+
+export const collections = { profile, experience, work };

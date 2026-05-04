@@ -1,0 +1,102 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import StackTag from '@components/ui/StackTag.astro';
+import StatBlock from '@components/ui/StatBlock.astro';
+import Button from '@components/ui/Button.astro';
+import { getAllWork, getWorkBySlug } from '@lib/content/work.ts';
+
+type Params = { slug: string };
+
+export async function getStaticPaths() {
+  const items = await getAllWork();
+  return items.map((it) => ({ params: { slug: it.slug } }));
+}
+
+const { slug } = Astro.params as Params;
+const entry = await getWorkBySlug(slug!);
+if (!entry) throw new Error(`Work entry not found: ${slug}`);
+
+const all = await getAllWork();
+const idx = all.findIndex((w) => w.slug === slug);
+const next = all[(idx + 1) % all.length];
+
+const { title, client, year, summary, tags, stack, metrics, Content } = entry;
+const url = new URL(Astro.request.url, Astro.site).toString();
+---
+
+<BaseLayout title={`${title} — Work`} description={summary} url={url}>
+  <section class="container-x pt-24 pb-12 md:pt-[140px]">
+    <a
+      href="/work"
+      class="mb-12 inline-flex items-center gap-2 font-mono text-xs text-fg-faded transition-colors hover:text-fg"
+    >
+      ← back to work
+    </a>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      {(tags ?? []).map((t: string) => <StackTag>{t}</StackTag>)}
+      <span class="font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+        · {year} · {client}
+      </span>
+    </div>
+
+    <h1
+      class="mb-8 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(44px, 7vw, 96px);"
+    >
+      {title}
+    </h1>
+
+    <p class="max-w-[760px] text-[19px] leading-[1.5] text-fg-muted">{summary}</p>
+  </section>
+
+  {
+    metrics && metrics.length > 0 && (
+      <section class="container-x border-y border-border py-12">
+        <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+          {metrics.map((m: { label: string; value: string; unit?: string }) => (
+            <StatBlock value={m.value} unit={m.unit} label={m.label} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="container-x py-20">
+    <div class="prose">
+      <Content />
+    </div>
+  </section>
+
+  {
+    stack && stack.length > 0 && (
+      <section class="container-x border-t border-border py-12">
+        <div class="mb-4 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+          — stack
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {stack.map((s: string) => <StackTag>{s}</StackTag>)}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="container-x border-t border-border py-24">
+    <div class="flex flex-wrap items-end justify-between gap-8">
+      <div>
+        <div
+          class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase"
+        >
+          — next case study
+        </div>
+        <a
+          href={`/work/${next.slug}`}
+          class="font-serif text-[36px] leading-tight font-normal tracking-[-0.02em] transition-colors hover:text-accent"
+        >
+          {next.title} →
+        </a>
+      </div>
+      <Button href="/contact" variant="primary" arrow="→">Hire me</Button>
+    </div>
+  </section>
+</BaseLayout>
