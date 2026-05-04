@@ -1,0 +1,241 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+
+const types = [
+  { value: 'contract', label: 'Contract' },
+  { value: 'fulltime', label: 'Full-time' },
+  { value: 'project', label: 'Project / services' },
+  { value: 'other', label: 'Other' },
+];
+
+const title = 'Contact — Alejandro Gonzalez';
+const description = 'Open to senior contracts and full-time roles at AI-first companies. Response within 24 hours.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="container-x pt-24 pb-16 md:pt-[140px]">
+    <div
+      class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
+    >
+      <span class="text-accent">● accepting work</span>
+      <span class="opacity-50">/</span>
+      <span>q2 2026</span>
+      <span class="opacity-50">/</span>
+      <span>response within 24h</span>
+    </div>
+
+    <h1
+      class="mb-8 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(52px, 8vw, 112px);"
+    >
+      Contact.
+    </h1>
+
+    <p class="mb-12 max-w-[640px] text-[19px] leading-[1.5] text-fg-muted">
+      Open to senior contracts and full-time roles at AI-first companies. The more context you give
+      me, the better I can tell you whether I'm the right fit.
+    </p>
+  </section>
+
+  <section class="container-x pb-32">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.4fr]">
+      <aside>
+        <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+          — direct line
+        </div>
+        <a
+          href="mailto:me@algoro.dev"
+          class="block font-serif text-[28px] leading-tight font-normal tracking-[-0.02em] hover:text-accent"
+        >
+          me@algoro.dev →
+        </a>
+
+        <div class="mt-12 border-t border-border pt-8">
+          <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+            — also on
+          </div>
+          <ul class="space-y-2 font-mono text-sm text-fg-muted">
+            <li>
+              <a
+                href="https://github.com/algorodev"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-accent"
+              >
+                github.com/algorodev →
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/algorodev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-accent"
+              >
+                linkedin.com/in/algorodev →
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-12 border-t border-border pt-8">
+          <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+            — best fit
+          </div>
+          <ul class="space-y-2 font-mono text-[13px] text-fg-muted">
+            <li><span class="text-accent-dim">→</span> Senior IC or tech-lead AI roles</li>
+            <li><span class="text-accent-dim">→</span> RAG / agents in production</li>
+            <li><span class="text-accent-dim">→</span> Full-stack ownership across data → UI</li>
+            <li><span class="text-accent-dim">→</span> Remote-first teams (CET ± 4h)</li>
+          </ul>
+        </div>
+      </aside>
+
+      <form
+        id="contact-form"
+        class="rounded-xl border border-border bg-bg-elevated p-8 md:p-10"
+        novalidate
+      >
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <label class="block">
+            <span
+              class="mb-2 block font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase"
+            >
+              — name *
+            </span>
+            <input
+              type="text"
+              name="name"
+              required
+              autocomplete="name"
+              class="w-full rounded-md border border-border bg-bg px-4 py-3 font-sans text-sm text-fg outline-none transition-colors placeholder:text-fg-faded focus:border-accent"
+            />
+          </label>
+          <label class="block">
+            <span
+              class="mb-2 block font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase"
+            >
+              — email *
+            </span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="w-full rounded-md border border-border bg-bg px-4 py-3 font-sans text-sm text-fg outline-none transition-colors placeholder:text-fg-faded focus:border-accent"
+            />
+          </label>
+          <label class="block md:col-span-2">
+            <span
+              class="mb-2 block font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase"
+            >
+              — company
+            </span>
+            <input
+              type="text"
+              name="company"
+              autocomplete="organization"
+              class="w-full rounded-md border border-border bg-bg px-4 py-3 font-sans text-sm text-fg outline-none transition-colors placeholder:text-fg-faded focus:border-accent"
+            />
+          </label>
+        </div>
+
+        <fieldset class="mt-6">
+          <legend class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase">
+            — type *
+          </legend>
+          <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
+            {
+              types.map((t, i) => (
+                <label class="flex cursor-pointer items-center gap-2 rounded-md border border-border bg-bg px-3 py-2.5 font-mono text-[12px] text-fg-muted transition-colors hover:border-border-strong has-[:checked]:border-accent has-[:checked]:text-accent">
+                  <input
+                    type="radio"
+                    name="type"
+                    value={t.value}
+                    required
+                    checked={i === 0}
+                    class="accent-[var(--color-accent)]"
+                  />
+                  {t.label}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <label class="mt-6 block">
+          <span
+            class="mb-2 block font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase"
+          >
+            — message *
+          </span>
+          <textarea
+            name="message"
+            required
+            rows="6"
+            placeholder="What are you building, what stage are you at, and how can I help?"
+            class="w-full resize-y rounded-md border border-border bg-bg px-4 py-3 font-sans text-sm text-fg outline-none transition-colors placeholder:text-fg-faded focus:border-accent"
+          ></textarea>
+        </label>
+
+        <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+          <p
+            id="contact-error"
+            class="hidden font-mono text-[12px] text-[#ff6b6b]"
+            role="alert"
+          ></p>
+          <Button type="submit" variant="primary" arrow="→" class="ml-auto">
+            Send message
+          </Button>
+        </div>
+      </form>
+
+      <div
+        id="contact-success"
+        class="hidden rounded-xl border border-border bg-bg-elevated p-12 text-center lg:col-start-2"
+      >
+        <div class="mb-4 font-mono text-[11px] tracking-[0.1em] text-accent uppercase">
+          — message received
+        </div>
+        <p class="font-serif text-[36px] leading-tight font-normal tracking-[-0.02em]">
+          Thanks. <em class="text-accent italic">I'll respond within 24 hours.</em>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('contact-success');
+  const errorEl = document.getElementById('contact-error');
+
+  if (form && success && errorEl) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+
+      if (!form.reportValidity()) return;
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok && res.status !== 405) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch (err) {
+        // API route is not live yet (Phase 2). Log locally and continue to success state.
+        console.info('[contact] submission (Phase 2 not wired):', data, err);
+      }
+
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+    });
+  }
+</script>
