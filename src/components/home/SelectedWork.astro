@@ -1,0 +1,63 @@
+---
+import SectionHeader from '@components/SectionHeader.astro';
+import WorkCard from '@components/ui/WorkCard.astro';
+
+type Item = {
+  href: string;
+  tag: string;
+  period: string;
+  title: string;
+  description: string;
+  stack: string[];
+  linkLabel?: string;
+  featured?: boolean;
+};
+
+const items: Item[] = [
+  {
+    href: '/work/smartbox-voice',
+    tag: 'ai · e-commerce',
+    period: '2024 — 2025',
+    title: 'Voice shopping assistant<br/>for Smartbox',
+    description:
+      'Led the introduction of AI into a high-traffic e-commerce platform: shipped a voice-based assistant that guides customers through the catalogue acting as a virtual shop assistant, plus a personalized recommendation agent based on purchase history.',
+    stack: ['Vue 3', 'Nuxt', 'LLM agents', 'Voice AI', 'Recommendations'],
+    featured: true,
+  },
+  {
+    href: '/work/mercedes-ddx',
+    tag: 'ml · enterprise',
+    period: '2022 — 2023',
+    title: 'DDX Marketplace',
+    description:
+      'Strategic Big Data & ML initiative at Mercedes-Benz where data pipelines and cloud infrastructure were the core priority. Designed microservices and refactored backend for performance.',
+    stack: ['React', 'NestJS', 'PostgreSQL', 'ML pipelines'],
+  },
+  {
+    href: '/work/prozeso-stack',
+    tag: 'rag · automation',
+    period: '2025 — present',
+    title: 'Prozeso AI Stack',
+    description:
+      'Production automation infrastructure delivered to 15+ companies. RAG pipelines over private knowledge bases, conversational agents, and LLM-driven workflows across sales, support, ops, and HR.',
+    stack: ['OpenAI', 'Anthropic', 'pgvector', 'MCP'],
+  },
+  {
+    href: '/work/openclaw',
+    tag: 'self-hosted · personal',
+    period: '2025',
+    title: 'OpenClaw',
+    description:
+      'Self-hosted personal AI assistant on legacy hardware. Local LLM runtime, RAG over personal knowledge base, vector storage, and custom MCP integrations. Full ownership of the stack.',
+    stack: ['Local LLM', 'RAG', 'MCP', 'Self-hosted'],
+    linkLabel: 'View on GitHub',
+  },
+];
+---
+
+<section id="work" class="container-x py-[120px]">
+  <SectionHeader number="/01" title="Selected work" meta="04 of 12 →" />
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    {items.map((it) => <WorkCard {...it} />)}
+  </div>
+</section>

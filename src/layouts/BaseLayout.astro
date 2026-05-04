@@ -1,0 +1,35 @@
+---
+import '@styles/global.css';
+import Meta from '@components/Meta.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+
+type BaseLayoutProps = {
+  title?: string;
+  description?: string;
+  url?: string;
+  image?: string;
+};
+
+const { title, description, url, image } = Astro.props as BaseLayoutProps;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Meta title={title} description={description} url={url} image={image} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

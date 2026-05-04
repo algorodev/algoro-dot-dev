@@ -1,0 +1,67 @@
+---
+import StackTag from '@components/ui/StackTag.astro';
+
+type Props = {
+  href: string;
+  tag: string;
+  period: string;
+  title: string;
+  description: string;
+  stack: string[];
+  linkLabel?: string;
+  featured?: boolean;
+};
+
+const {
+  href,
+  tag,
+  period,
+  title,
+  description,
+  stack,
+  linkLabel = 'Read case study',
+  featured = false,
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    'group relative block overflow-hidden rounded-xl border border-border bg-bg-elevated p-10 transition-all duration-300',
+    'hover:-translate-y-0.5 hover:border-border-strong',
+    featured &&
+      'sm:col-span-2 bg-[linear-gradient(135deg,_var(--color-bg-elevated)_0%,_#181818_100%)]',
+  ]}
+>
+  <div
+    class="mb-8 flex justify-between font-mono text-[11px] tracking-[0.05em] text-fg-faded uppercase"
+  >
+    <span class="text-accent">● {tag}</span>
+    <span>{period}</span>
+  </div>
+  <h3
+    class:list={[
+      'mb-4 font-serif font-normal leading-[1.1] tracking-[-0.02em]',
+      featured ? 'text-[44px]' : 'text-[32px]',
+    ]}
+  >
+    <Fragment set:html={title} />
+  </h3>
+  <p class="mb-8 max-w-[560px] text-[15px] leading-relaxed text-fg-muted">
+    {description}
+  </p>
+  {
+    stack.length > 0 && (
+      <div class="mb-6 flex flex-wrap gap-2">
+        {stack.map((s) => (
+          <StackTag>{s}</StackTag>
+        ))}
+      </div>
+    )
+  }
+  <span
+    class="inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-xs text-accent transition-colors duration-200 group-hover:border-accent"
+  >
+    {linkLabel} <span>→</span>
+  </span>
+</a>

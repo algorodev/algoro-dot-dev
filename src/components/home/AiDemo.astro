@@ -1,0 +1,141 @@
+---
+// TODO: Phase 2 — wire up to /api/chat with Vercel AI SDK + pgvector
+import SectionHeader from '@components/SectionHeader.astro';
+
+const stack = [
+  'Vercel AI SDK · streaming',
+  'OpenAI embeddings · text-embedding-3',
+  'pgvector on Supabase',
+  'Claude Sonnet 4.5 · generation',
+  'Citations with source linking',
+];
+
+const suggested = [
+  "what's his AI stack?",
+  'has he done evals?',
+  'is he available?',
+];
+---
+
+<section id="demo" class="container-x border-y border-border py-[120px]">
+  <SectionHeader number="/02" title="Live AI demo" meta="rag · streaming · cited" />
+
+  <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <h3
+        class="mb-6 font-serif text-[44px] leading-none font-normal tracking-[-0.02em]"
+      >
+        Ask the <em class="text-accent italic">portfolio</em> anything.
+      </h3>
+      <p class="mb-6 text-[15px] text-fg-muted">
+        This isn't a static page — it's a working RAG system over my CV, case studies, and writing.
+        Ask anything about my experience and the system retrieves relevant chunks, generates a
+        grounded answer, and cites the source.
+      </p>
+      <p class="mb-6 text-[13px] text-fg-faded">
+        Same architecture I ship to clients. No mock data, no canned responses.
+      </p>
+      <div class="mt-8 border-t border-border pt-6">
+        <div
+          class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase"
+        >
+          — Stack
+        </div>
+        <ul class="font-mono text-xs leading-[1.9] text-fg-muted">
+          {
+            stack.map((line) => (
+              <li>
+                <span class="text-accent-dim">→</span> {line}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-border bg-bg-elevated">
+      <div
+        class="flex items-center gap-2.5 border-b border-border px-5 py-3.5 font-mono text-xs text-fg-muted"
+      >
+        <div class="flex gap-1.5">
+          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
+        </div>
+        <span class="ml-2">algoro.rag — interactive</span>
+      </div>
+
+      <div class="flex min-h-[380px] flex-col gap-4 p-6">
+        <div
+          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-[#0a0a0a]"
+          style="font-size: 14px; line-height: 1.55;"
+        >
+          What's Alejandro's experience with vector databases?
+        </div>
+        <div
+          class="max-w-[85%] self-start rounded-[10px] border border-border bg-white/[0.03] px-4 py-3 text-fg"
+          style="font-size: 14px; line-height: 1.55;"
+        >
+          Alejandro has hands-on experience with <strong class="text-accent">pgvector</strong>,
+          <strong class="text-accent">Pinecone</strong>, and
+          <strong class="text-accent">Qdrant</strong>. At Prozeso he's built production RAG systems
+          using pgvector on Supabase for clients across sales, support, and operations
+          <span
+            class="mx-0.5 inline-block cursor-pointer rounded-[3px] border border-accent/20 bg-accent/10 px-1.5 py-px font-mono text-[10px] text-accent"
+          >cv.md:14</span>. He also runs a self-hosted vector store as part of his OpenClaw personal AI
+          assistant project
+          <span
+            class="mx-0.5 inline-block cursor-pointer rounded-[3px] border border-accent/20 bg-accent/10 px-1.5 py-px font-mono text-[10px] text-accent"
+          >openclaw.md:3</span>.
+        </div>
+        <div
+          class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-[#0a0a0a]"
+          style="font-size: 14px; line-height: 1.55;"
+        >
+          Tell me about the Smartbox AI work.
+        </div>
+        <div
+          class="max-w-[85%] self-start rounded-[10px] border border-border bg-white/[0.03] px-4 py-3 text-fg"
+          style="font-size: 14px; line-height: 1.55;"
+        >
+          At Smartbox, Alejandro <strong class="text-accent"
+            >led the introduction of AI into the e-commerce platform</strong
+          >. He shipped two systems: a voice-based shopping assistant that guides customers through
+          the catalogue, and a personalized recommendation agent based on previous purchase history
+          <span
+            class="mx-0.5 inline-block cursor-pointer rounded-[3px] border border-accent/20 bg-accent/10 px-1.5 py-px font-mono text-[10px] text-accent"
+          >case-smartbox.md:7</span>.
+        </div>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {
+            suggested.map((q) => (
+              <button
+                type="button"
+                class="cursor-pointer rounded-full border border-border bg-transparent px-3 py-1.5 font-mono text-[11px] text-fg-muted transition-all duration-200 hover:border-accent-dim hover:text-accent"
+              >
+                → {q}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 border-t border-border px-5 py-3.5">
+        <input
+          type="text"
+          aria-label="Ask anything about my work"
+          placeholder="Ask anything about my work..."
+          disabled
+          class="flex-1 border-0 bg-transparent font-sans text-sm text-fg outline-none placeholder:text-fg-faded"
+        />
+        <button
+          type="button"
+          disabled
+          class="cursor-not-allowed rounded border border-accent-dim bg-transparent px-3 py-1.5 font-mono text-[11px] text-accent"
+        >
+          send ↵
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

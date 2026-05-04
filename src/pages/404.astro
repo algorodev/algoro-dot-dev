@@ -1,13 +1,26 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
 ---
 
-<Layout>
-  <section class="py-24 text-center">
-    <h1 class="text-5xl font-bold">404</h1>
-    <p class="mt-3 opacity-80">Page not found.</p>
-    <p class="mt-6">
-      <a href="/" class="hover:bg-muted rounded-xl border px-4 py-2">Go home</a>
+<BaseLayout title="404 — algoro.dev">
+  <section class="container-x py-32 text-center">
+    <div class="mb-8 font-mono text-xs tracking-[0.1em] text-fg-faded uppercase">
+      — error 404
+    </div>
+    <h1
+      class="mb-6 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(64px, 10vw, 140px);"
+    >
+      Page <em class="text-accent italic">not found.</em>
+    </h1>
+    <p class="mx-auto mb-12 max-w-[480px] text-[17px] text-fg-muted">
+      The page you were looking for either moved, never existed, or got shipped to production
+      somewhere else.
     </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/" variant="primary" arrow="→">Back home</Button>
+      <Button href="/work" variant="secondary" arrow="→">View work</Button>
+    </div>
   </section>
-</Layout>
+</BaseLayout>

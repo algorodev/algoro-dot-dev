@@ -1,82 +1,147 @@
 ---
-import Badge from '@components/ui/Badge.astro';
-import Container from '@components/ui/Container.astro';
-import Link from '@components/ui/Link.astro'
-import Layout from '@layouts/Layout.astro';
-import Prose from '@components/ui/Prose.astro';
-import Timeline from '@components/about/Timeline.astro'
-import { getAllExperiences } from '@lib/content/experience.ts'
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import StackTag from '@components/ui/StackTag.astro';
+import Button from '@components/ui/Button.astro';
 import { getProfile } from '@lib/content/profile.ts';
+import { getAllExperiences } from '@lib/content/experience.ts';
 
 const profile = await getProfile();
-const experiences = await getAllExperiences()
+const experiences = await getAllExperiences();
 
-const url = new URL(Astro.request.url, Astro.site).toString();
-const {
-  name,
-  role,
-  raised,
-  based,
-  email,
-  skills,
-  image,
-} = profile
-const title = 'About Me';
-const description = 'About Alejandro Gonzalez Romero';
-const { Content } = profile;
+const { name, role, raised, based, email, skills, image, Content } = profile;
+
+const principles = [
+  {
+    label: '— principle / 01',
+    title: 'Ship over prototype.',
+    body: 'Production-grade from day one: observability, error handling, retries, evals. A demo that wows in a meeting but breaks at scale is not done — it has not started.',
+  },
+  {
+    label: '— principle / 02',
+    title: 'Architecture earns its keep.',
+    body: 'Clean separation of concerns, typed boundaries, dependency injection where it pays. SOLID is a tool, not a religion. Tests exist to enable speed, not slow it down.',
+  },
+  {
+    label: '— principle / 03',
+    title: 'Instrument everything.',
+    body: 'Centralised logging, structured analytics, performance budgets, AI evals. If a system is in production and you can\'t answer "is it working", it is not in production yet.',
+  },
+  {
+    label: '— principle / 04',
+    title: 'Product mindset.',
+    body: 'Discover the real user problem, prototype quickly, iterate with data. The best engineering is invisible — it lets users get their job done without thinking about the code.',
+  },
+];
+
+const title = 'About — Alejandro Gonzalez';
+const description = `${role} based in ${based}. Senior AI Engineer with production track record across enterprise, scale-ups, and startups.`;
 ---
 
-<Layout title={title} description={description} url={url} image={profile.image}>
-  <section class='py-14'>
-    <Container>
-      <header class="flex flex-col md:flex-row md:items-center md:gap-8">
-        {image && (
-          <img
-            src={image}
-            alt={`Portrait of ${name}`}
-            width="160"
-            height="160"
-            fetchpriority="high"
-            class="h-40 w-40 rounded-full object-cover border border-border shadow-soft"
-          />
-        )}
-        <div class="mt-6 md:mt-0">
-          <h1 class="text-3xl font-bold">{name}</h1>
-          <p class="mt-2 text-lg opacity-80">{role}</p>
-          <p class="mt-2 text-sm opacity-70">Raised in {raised}. Based in {based}.</p>
-          <div class="mt-5 flex flex-wrap gap-3">
-            <a class="text-primary hover:underline" href='https://github.com/algorodev' target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="text-primary hover:underline" href='https://linkedin.com/in/algorodev' target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="text-primary hover:underline" href={`mailto:${email}`}>Email</a>
-          </div>
-        </div>
-      </header>
-      {skills.length > 0 && (
-        <section class="mt-10">
-          <h2 class="text-xl font-semibold">Skills</h2>
-          <div class="mt-4 flex flex-wrap gap-2">
-            {skills.map((s: string) => <Badge variant="accent">{s}</Badge>)}
-          </div>
-        </section>
-      )}
-      <section class="mt-12">
-        <Prose>
-          <Content />
-        </Prose>
-      </section>
-      {experiences.length > 0 && (
-        <section class="mt-12">
-          <h2 class="text-xl font-semibold">Experience</h2>
-          <Timeline items={experiences} />
-        </section>
-      )}
-      <section class="mt-14 rounded-2xl border border-border bg-muted p-6 text-center">
-        <h2 class="text-xl font-semibold">Let’s work together</h2>
-        <p class="mt-2 opacity-80">Have a project in mind? I’m open to collaboration.</p>
-        <div class="mt-4">
-          <Link variant="primary" url={`mailto:${email}`}>Get in touch</Link>
-        </div>
-      </section>
-    </Container>
+<BaseLayout title={title} description={description} image={image}>
+  <section class="container-x pt-24 pb-20 md:pt-[140px]">
+    <div
+      class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
+    >
+      <span class="text-accent">● {role}</span>
+      <span class="opacity-50">/</span>
+      <span>raised in {raised}</span>
+      <span class="opacity-50">/</span>
+      <span>based in {based}</span>
+    </div>
+
+    <h1
+      class="mb-10 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(52px, 8vw, 112px);"
+    >
+      About <em class="text-accent italic">{name.split(' ')[0].toLowerCase()}.</em>
+    </h1>
+
+    <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+      <img
+        src={image}
+        alt={`Portrait of ${name}`}
+        width="480"
+        height="600"
+        loading="eager"
+        class="aspect-[4/5] w-full max-w-[420px] rounded-xl border border-border object-cover"
+      />
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
   </section>
-</Layout>
+
+  <section class="container-x py-[100px]">
+    <SectionHeader number="/01" title="Trajectory" meta={`${experiences.length} roles · 2019 → today`} />
+
+    <ol class="relative ml-2 grid gap-8 border-l border-border pl-8">
+      {
+        experiences.map((exp) => (
+          <li class="relative">
+            <span class="absolute -left-[37px] top-[10px] h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" />
+            <div class="mb-1 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+              {exp.start} — {exp.end ?? 'present'} · {exp.location}
+            </div>
+            <h3 class="font-serif text-[28px] leading-tight font-normal tracking-[-0.02em]">
+              {exp.title}
+              {exp.organization && (
+                <span class="text-fg-muted"> — {exp.organization}</span>
+              )}
+            </h3>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="container-x border-t border-border py-[100px]">
+    <SectionHeader number="/02" title="How I work" meta="principles" />
+
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+      {
+        principles.map((p) => (
+          <div>
+            <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+              {p.label}
+            </div>
+            <h3 class="mb-3 font-serif text-[28px] leading-tight font-normal tracking-[-0.02em]">
+              {p.title}
+            </h3>
+            <p class="text-[15px] leading-[1.7] text-fg-muted">{p.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-x border-t border-border py-[100px]">
+    <SectionHeader number="/03" title="Hands-on with" meta="broader skills" />
+
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+      <p class="font-serif text-[24px] leading-[1.4] tracking-[-0.01em]">
+        I bring a <em class="text-accent italic">product mindset</em> to senior IC and tech-lead
+        roles — equally comfortable shaping systems, mentoring, or rolling up sleeves on the line.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        {skills.map((s: string) => <StackTag>{s}</StackTag>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x border-t border-border py-32 text-center">
+    <h2
+      class="mb-6 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(48px, 7vw, 96px);"
+    >
+      Want to <em class="text-accent italic">work together?</em>
+    </h2>
+    <p class="mx-auto mb-10 max-w-[520px] text-[17px] text-fg-muted">
+      Open to senior contracts and full-time roles. I respond within 24 hours.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/contact" variant="primary" arrow="→">Get in touch</Button>
+      <Button href={`mailto:${email}`} variant="secondary" arrow="→">{email}</Button>
+    </div>
+  </section>
+</BaseLayout>

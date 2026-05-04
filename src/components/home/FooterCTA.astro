@@ -1,0 +1,21 @@
+---
+import Button from '@components/ui/Button.astro';
+---
+
+<section class="container-x border-t border-border py-40 text-center">
+  <h2
+    class="mb-8 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+    style="font-size: clamp(56px, 9vw, 120px);"
+  >
+    Let's build<br />
+    something <em class="text-accent italic">worth shipping.</em>
+  </h2>
+  <p class="mx-auto mb-12 max-w-[560px] text-[18px] text-fg-muted">
+    Open to senior contract engagements and full-time roles at AI-first companies. Response within
+    24 hours.
+  </p>
+  <div class="flex flex-wrap justify-center gap-4">
+    <Button href="mailto:me@algoro.dev" variant="primary" arrow="→">me@algoro.dev</Button>
+    <Button href="/cv.pdf" variant="secondary" arrow="↓">Download CV</Button>
+  </div>
+</section>

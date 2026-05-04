@@ -1,0 +1,48 @@
+---
+import SectionHeader from '@components/SectionHeader.astro';
+
+type Cell = {
+  category: string;
+  items: string[];
+};
+
+const cells: Cell[] = [
+  {
+    category: '— ai & llms',
+    items: ['OpenAI', 'Anthropic', 'Vercel AI SDK', 'MCP', 'ElevenLabs'],
+  },
+  {
+    category: '— data & rag',
+    items: ['pgvector', 'Pinecone', 'Qdrant', 'Supabase', 'PostgreSQL'],
+  },
+  {
+    category: '— frontend',
+    items: ['Next.js', 'React', 'Vue 3 / Nuxt', 'TailwindCSS', 'TypeScript'],
+  },
+  {
+    category: '— backend & infra',
+    items: ['Node.js / NestJS', 'Python / FastAPI', 'AWS', 'Docker', 'Vercel'],
+  },
+];
+---
+
+<section class="container-x border-t border-border py-[100px]">
+  <SectionHeader number="/04" title="Tech I work with" meta="primary stack" />
+
+  <div
+    class="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border lg:grid-cols-4"
+  >
+    {
+      cells.map((cell) => (
+        <div class="bg-bg p-7 transition-colors duration-200 hover:bg-bg-elevated">
+          <div class="mb-4 font-mono text-[10px] tracking-[0.1em] text-accent uppercase">
+            {cell.category}
+          </div>
+          <ul class="text-[13px] leading-[1.7] text-fg-muted">
+            {cell.items.map((it) => <li>{it}</li>)}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>

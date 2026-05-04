@@ -1,0 +1,86 @@
+---
+import Button from '@components/ui/Button.astro';
+---
+
+<section class="container-x py-24 md:pt-[140px] md:pb-[120px]">
+  <div
+    class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
+  >
+    <span class="text-accent">● senior ai engineer</span>
+    <span class="opacity-50">/</span>
+    <span>valencia, es · remote</span>
+    <span class="opacity-50">/</span>
+    <span>est. 2018</span>
+  </div>
+
+  <h1
+    id="hero-title"
+    class="mb-10 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+    style="font-size: clamp(52px, 8vw, 112px);"
+  >
+    Building <em class="text-accent italic">production AI</em> systems<br />
+    that ship, scale, and don't break.
+  </h1>
+
+  <p class="mb-12 max-w-[620px] text-[19px] leading-[1.5] text-fg-muted">
+    Senior software engineer with <strong class="font-medium text-fg">nearly 8 years</strong> shipping
+    production systems across enterprise (Mercedes-Benz), scale-ups (Smartbox), and startups.
+    Hands-on with AI/ML in production since 2022. Currently CTO &amp; co-founder at Prozeso.
+  </p>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <Button href="/contact" variant="primary" arrow="→">Hire me</Button>
+    <Button href="#work" variant="secondary" arrow="→">View selected work</Button>
+  </div>
+</section>
+
+<script>
+  const title = document.getElementById('hero-title');
+  if (title) {
+    const fragments: ChildNode[] = Array.from(title.childNodes);
+    title.classList.add('word-stagger');
+    title.innerHTML = '';
+    let idx = 0;
+    for (const node of fragments) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent ?? '';
+        const parts = text.split(/(\s+)/);
+        for (const part of parts) {
+          if (part === '') continue;
+          if (/^\s+$/.test(part)) {
+            title.appendChild(document.createTextNode(part));
+          } else {
+            const span = document.createElement('span');
+            span.textContent = part;
+            span.style.animationDelay = `${idx * 60}ms`;
+            title.appendChild(span);
+            idx++;
+          }
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        if (el.tagName === 'BR') {
+          title.appendChild(document.createElement('br'));
+          continue;
+        }
+        const text = el.textContent ?? '';
+        const parts = text.split(/(\s+)/);
+        for (const part of parts) {
+          if (part === '') continue;
+          if (/^\s+$/.test(part)) {
+            title.appendChild(document.createTextNode(part));
+          } else {
+            const span = document.createElement('span');
+            span.textContent = part;
+            span.className = el.className;
+            const tag = el.tagName.toLowerCase();
+            if (tag === 'em') span.style.fontStyle = 'italic';
+            span.style.animationDelay = `${idx * 60}ms`;
+            title.appendChild(span);
+            idx++;
+          }
+        }
+      }
+    }
+  }
+</script>

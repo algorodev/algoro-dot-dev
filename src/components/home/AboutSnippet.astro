@@ -1,0 +1,41 @@
+---
+import SectionHeader from '@components/SectionHeader.astro';
+import StatBlock from '@components/ui/StatBlock.astro';
+---
+
+<section id="about-snippet" class="container-x py-[120px]">
+  <SectionHeader number="/03" title="About" meta="— who · how · why" />
+
+  <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+    <div>
+      <div
+        class="mb-4 font-mono text-xs tracking-[0.1em] text-fg-faded uppercase"
+      >
+        — profile
+      </div>
+      <p class="text-sm leading-[1.7] text-fg-muted">
+        I started writing software in 2018. Eight years in, I've shipped on enterprise teams
+        (Mercedes-Benz), scale-ups (Smartbox in Dublin), and now my own consultancy.
+      </p>
+      <p class="mt-4 text-sm leading-[1.7] text-fg-muted">
+        I care about systems that ship, scale, and don't break — and about being the senior who can
+        look at a vague problem and turn it into something running in production by Friday.
+      </p>
+    </div>
+
+    <div>
+      <p class="font-serif text-[28px] leading-[1.4] tracking-[-0.01em] text-fg">
+        I build <em class="text-accent italic">production AI systems</em> for companies that need to
+        ship — not prototype. My work spans the whole stack: data, infra, model orchestration, and
+        the UI on top.
+      </p>
+
+      <div class="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-12">
+        <StatBlock value="8" unit="y" label="software engineering" />
+        <StatBlock value="15" unit="+" label="ai systems shipped" />
+        <StatBlock value="04" unit="y" label="ai/ml in production" />
+        <StatBlock value="02" unit="x" label="languages · es / en" />
+      </div>
+    </div>
+  </div>
+</section>

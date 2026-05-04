@@ -1,0 +1,18 @@
+---
+type Props = {
+  value: string;
+  unit?: string;
+  label: string;
+};
+
+const { value, unit, label } = Astro.props;
+---
+
+<div>
+  <div class="mb-2 font-serif text-[56px] leading-none font-normal text-accent">
+    {value}{unit && <span class="text-[32px] text-fg-muted">{unit}</span>}
+  </div>
+  <div class="font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase">
+    {label}
+  </div>
+</div>

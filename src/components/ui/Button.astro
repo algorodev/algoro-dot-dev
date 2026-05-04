@@ -1,20 +1,52 @@
 ---
-type ButtonProps = {
-  variant?: 'primary' | 'ghost' | 'subtle';
-  class?: string;
-}
+type Variant = 'primary' | 'secondary';
 
-const { variant = 'primary', class: cls = '' } = Astro.props as ButtonProps;
-const base =
-  'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition cursor-pointer';
-const ring = 'focus-visible:outline-none focus-visible:ring-2';
-const variants = {
-  primary: `bg-primary text-primary-fg hover:brightness-110`,
-  ghost: `bg-transparent border border-border hover:bg-muted`,
-  subtle: `bg-muted text-fg hover:bg-[color-mix(in oklab, var(--color-muted) 80%, var(--color-fg) 0%)]`,
+type Props = {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: Variant;
+  arrow?: string;
+  class?: string;
 };
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  arrow,
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'group inline-flex items-center gap-2.5 rounded-md border border-transparent px-[22px] py-[14px] font-mono text-[13px] font-medium transition-all duration-200 cursor-pointer active:scale-[0.98]';
+
+const variants: Record<Variant, string> = {
+  primary: 'bg-accent text-[#0a0a0a] hover:-translate-y-px hover:bg-[#d9ff5d]',
+  secondary:
+    'border-border-strong text-fg hover:-translate-y-px hover:border-fg-muted hover:bg-bg-elevated',
+};
+
+const cls = `${base} ${variants[variant]} ${className}`;
 ---
 
-<button class={`${base} ${ring} ${variants[variant]} ${cls}`}>
-  <slot />
-</button>
+{
+  href ? (
+    <a href={href} class={cls}>
+      <slot />
+      {arrow && (
+        <span class="font-mono transition-transform duration-200 group-hover:translate-x-[3px]">
+          {arrow}
+        </span>
+      )}
+    </a>
+  ) : (
+    <button type={type} class={cls}>
+      <slot />
+      {arrow && (
+        <span class="font-mono transition-transform duration-200 group-hover:translate-x-[3px]">
+          {arrow}
+        </span>
+      )}
+    </button>
+  )
+}
