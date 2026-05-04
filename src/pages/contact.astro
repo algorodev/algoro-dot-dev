@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Section from '@components/Section.astro';
 import Button from '@components/ui/Button.astro';
 
 const types = [
@@ -14,31 +15,28 @@ const description = 'Open to senior contracts and full-time roles at AI-first co
 ---
 
 <BaseLayout title={title} description={description}>
-  <section class="container-x pt-24 pb-16 md:pt-[140px]">
-    <div
-      class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
-    >
-      <span class="text-accent">● accepting work</span>
-      <span class="opacity-50">/</span>
-      <span>q2 2026</span>
-      <span class="opacity-50">/</span>
-      <span>response within 24h</span>
-    </div>
-
+  <Section
+    bordered={false}
+    number="● accepting work"
+    eyebrow="q2 2026"
+    meta="response within 24h"
+    notes={['/ contact', 'eu / remote']}
+    class="hero-section"
+  >
     <h1
       class="mb-8 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-      style="font-size: clamp(52px, 8vw, 112px);"
+      style="font-size: clamp(52px, 8.5vw, 124px);"
     >
       Contact.
     </h1>
 
-    <p class="mb-12 max-w-[640px] text-[19px] leading-[1.5] text-fg-muted">
+    <p class="max-w-[640px] text-[19px] leading-[1.5] text-fg-muted">
       Open to senior contracts and full-time roles at AI-first companies. The more context you give
       me, the better I can tell you whether I'm the right fit.
     </p>
-  </section>
+  </Section>
 
-  <section class="container-x pb-32">
+  <Section number="/01" eyebrow="form" meta="all fields validated">
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.4fr]">
       <aside>
         <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
@@ -203,8 +201,21 @@ const description = 'Open to senior contracts and full-time roles at AI-first co
         </p>
       </div>
     </div>
-  </section>
+  </Section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 56px;
+  }
+  @media (max-width: 900px) {
+    .hero-section {
+      padding-top: 72px;
+      padding-bottom: 32px;
+    }
+  }
+</style>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;

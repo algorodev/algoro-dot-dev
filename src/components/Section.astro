@@ -1,0 +1,46 @@
+---
+type Props = {
+  id?: string;
+  number?: string;
+  eyebrow?: string;
+  title?: string;
+  meta?: string;
+  notes?: string[];
+  bordered?: boolean;
+  centered?: boolean;
+  class?: string;
+};
+
+const {
+  id,
+  number,
+  eyebrow,
+  title,
+  meta,
+  notes = [],
+  bordered = true,
+  centered = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', bordered && 'section-bordered', centered && 'section-centered', className]}
+>
+  {
+    !centered && (
+      <aside class="section-rail">
+        {number && <div class="rail-num">{number}</div>}
+        {eyebrow && <div class="rail-eyebrow">{eyebrow}</div>}
+        {meta && <div class="rail-meta">{meta}</div>}
+        {notes.length > 0 && <div class="rail-divider" />}
+        {notes.map((n) => <div class="rail-note">{n}</div>)}
+      </aside>
+    )
+  }
+  <div class="section-content">
+    {title && <h2 class="section-title" set:html={title} />}
+    <slot />
+  </div>
+</section>

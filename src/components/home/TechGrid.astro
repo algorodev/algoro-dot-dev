@@ -1,5 +1,5 @@
 ---
-import SectionHeader from '@components/SectionHeader.astro';
+import Section from '@components/Section.astro';
 
 type Cell = {
   category: string;
@@ -26,9 +26,11 @@ const cells: Cell[] = [
 ];
 ---
 
-<section class="container-x border-t border-border py-[100px]">
-  <SectionHeader number="/04" title="Tech I work with" meta="primary stack" />
-
+<Section
+  number="/04"
+  eyebrow="tech"
+  meta="primary stack"
+>
   <div
     class="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border lg:grid-cols-4"
   >
@@ -45,4 +47,4 @@ const cells: Cell[] = [
       ))
     }
   </div>
-</section>
+</Section>

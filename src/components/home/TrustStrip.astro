@@ -1,14 +1,15 @@
 ---
+import Section from '@components/Section.astro';
+
 const logos = ['Mercedes-Benz', 'Smartbox', 'Nexook', 'Prozeso'];
 ---
 
-<section class="container-x border-t border-border py-20">
-  <div
-    class="mb-8 font-mono text-[11px] tracking-[0.15em] text-fg-faded uppercase"
-  >
-    — Trusted by teams at
-  </div>
-  <div class="flex flex-wrap items-center gap-x-16 gap-y-6">
+<Section
+  number="— trust"
+  eyebrow="teams"
+  meta="+15 via prozeso"
+>
+  <div class="flex flex-wrap items-center gap-x-14 gap-y-6">
     {
       logos.map((logo) => (
         <div class="cursor-default font-serif text-[28px] italic text-fg-muted opacity-70 transition-[color,opacity] duration-300 hover:text-fg hover:opacity-100">
@@ -16,8 +17,5 @@ const logos = ['Mercedes-Benz', 'Smartbox', 'Nexook', 'Prozeso'];
         </div>
       ))
     }
-    <div class="ml-auto font-mono text-[13px] text-fg-muted">
-      + <strong class="font-medium text-accent">15</strong> companies via Prozeso
-    </div>
   </div>
-</section>
+</Section>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import SectionHeader from '@components/SectionHeader.astro';
+import Section from '@components/Section.astro';
 import StackTag from '@components/ui/StackTag.astro';
 import Button from '@components/ui/Button.astro';
 import { getProfile } from '@lib/content/profile.ts';
@@ -39,25 +39,22 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
 ---
 
 <BaseLayout title={title} description={description} image={image}>
-  <section class="container-x pt-24 pb-20 md:pt-[140px]">
-    <div
-      class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
-    >
-      <span class="text-accent">● {role}</span>
-      <span class="opacity-50">/</span>
-      <span>raised in {raised}</span>
-      <span class="opacity-50">/</span>
-      <span>based in {based}</span>
-    </div>
-
+  <Section
+    bordered={false}
+    number={`● ${role.toLowerCase()}`}
+    eyebrow={`based in ${based.toLowerCase()}`}
+    meta={`raised in ${raised.toLowerCase()}`}
+    notes={['/ about', `${experiences.length} roles`, '2019 → today']}
+    class="hero-section"
+  >
     <h1
-      class="mb-10 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-      style="font-size: clamp(52px, 8vw, 112px);"
+      class="mb-12 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(52px, 8.5vw, 124px);"
     >
       About <em class="text-accent italic">{name.split(' ')[0].toLowerCase()}.</em>
     </h1>
 
-    <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+    <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
       <img
         src={image}
         alt={`Portrait of ${name}`}
@@ -70,11 +67,15 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
         <Content />
       </div>
     </div>
-  </section>
+  </Section>
 
-  <section class="container-x py-[100px]">
-    <SectionHeader number="/01" title="Trajectory" meta={`${experiences.length} roles · 2019 → today`} />
-
+  <Section
+    number="/01"
+    eyebrow="trajectory"
+    meta={`${experiences.length} roles`}
+    notes={['oldest → newest reversed']}
+    title="Trajectory"
+  >
     <ol class="relative ml-2 grid gap-8 border-l border-border pl-8">
       {
         experiences.map((exp) => (
@@ -93,11 +94,14 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
         ))
       }
     </ol>
-  </section>
+  </Section>
 
-  <section class="container-x border-t border-border py-[100px]">
-    <SectionHeader number="/02" title="How I work" meta="principles" />
-
+  <Section
+    number="/02"
+    eyebrow="how i work"
+    meta="principles"
+    title="How I work"
+  >
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
       {
         principles.map((p) => (
@@ -113,11 +117,14 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
         ))
       }
     </div>
-  </section>
+  </Section>
 
-  <section class="container-x border-t border-border py-[100px]">
-    <SectionHeader number="/03" title="Hands-on with" meta="broader skills" />
-
+  <Section
+    number="/03"
+    eyebrow="hands-on"
+    meta="broader skills"
+    title="Hands-on with"
+  >
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
       <p class="font-serif text-[24px] leading-[1.4] tracking-[-0.01em]">
         I bring a <em class="text-accent italic">product mindset</em> to senior IC and tech-lead
@@ -127,9 +134,14 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
         {skills.map((s: string) => <StackTag>{s}</StackTag>)}
       </div>
     </div>
-  </section>
+  </Section>
 
   <section class="container-x border-t border-border py-32 text-center">
+    <div
+      class="mb-6 font-mono text-[11px] tracking-[0.15em] text-fg-faded uppercase"
+    >
+      — work together
+    </div>
     <h2
       class="mb-6 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
       style="font-size: clamp(48px, 7vw, 96px);"
@@ -145,3 +157,16 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+  @media (max-width: 900px) {
+    .hero-section {
+      padding-top: 72px;
+      padding-bottom: 48px;
+    }
+  }
+</style>

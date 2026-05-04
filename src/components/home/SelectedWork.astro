@@ -1,5 +1,5 @@
 ---
-import SectionHeader from '@components/SectionHeader.astro';
+import Section from '@components/Section.astro';
 import WorkCard from '@components/ui/WorkCard.astro';
 
 type Item = {
@@ -55,9 +55,15 @@ const items: Item[] = [
 ];
 ---
 
-<section id="work" class="container-x py-[120px]">
-  <SectionHeader number="/01" title="Selected work" meta="04 of 12 →" />
+<Section
+  id="work"
+  number="/01"
+  eyebrow="selected work"
+  meta="04 of 12 →"
+  notes={['featured spans the column']}
+  title="Selected work"
+>
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
     {items.map((it) => <WorkCard {...it} />)}
   </div>
-</section>
+</Section>

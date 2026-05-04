@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Section from '@components/Section.astro';
 import WorkCard from '@components/ui/WorkCard.astro';
 import { getAllWork } from '@lib/content/work.ts';
 
@@ -10,24 +11,23 @@ const description = 'Case studies, projects, and ships across AI, e-commerce, en
 ---
 
 <BaseLayout title={title} description={description}>
-  <section class="container-x pt-24 pb-16 md:pt-[140px]">
-    <div
-      class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
-    >
-      <span class="text-accent">● {items.length} entries</span>
-      <span class="opacity-50">/</span>
-      <span>case studies, projects, ships</span>
-    </div>
-
+  <Section
+    bordered={false}
+    number={`● ${items.length} entries`}
+    eyebrow="case studies"
+    meta="projects · ships"
+    notes={['featured first', 'newest by default']}
+    class="hero-section"
+  >
     <h1
-      class="mb-12 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-      style="font-size: clamp(52px, 8vw, 112px);"
+      class="mb-2 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+      style="font-size: clamp(52px, 8.5vw, 124px);"
     >
       Work.
     </h1>
-  </section>
+  </Section>
 
-  <section class="container-x pb-32">
+  <Section bordered={false} number="/01" eyebrow="all work" meta={`${items.length} of ${items.length}`}>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
         items.map((it) => (
@@ -44,5 +44,18 @@ const description = 'Case studies, projects, and ships across AI, e-commerce, en
         ))
       }
     </div>
-  </section>
+  </Section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 56px;
+  }
+  @media (max-width: 900px) {
+    .hero-section {
+      padding-top: 72px;
+      padding-bottom: 32px;
+    }
+  }
+</style>

@@ -1,11 +1,15 @@
 ---
-import SectionHeader from '@components/SectionHeader.astro';
+import Section from '@components/Section.astro';
 import StatBlock from '@components/ui/StatBlock.astro';
 ---
 
-<section id="about-snippet" class="container-x py-[120px]">
-  <SectionHeader number="/03" title="About" meta="— who · how · why" />
-
+<Section
+  id="about-snippet"
+  number="/03"
+  eyebrow="about"
+  meta="who · how · why"
+  notes={['8 years · 4 in production AI']}
+>
   <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
     <div>
       <div
@@ -38,4 +42,4 @@ import StatBlock from '@components/ui/StatBlock.astro';
       </div>
     </div>
   </div>
-</section>
+</Section>

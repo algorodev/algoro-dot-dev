@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Section from '@components/Section.astro';
 import StackTag from '@components/ui/StackTag.astro';
 import StatBlock from '@components/ui/StatBlock.astro';
 import Button from '@components/ui/Button.astro';
@@ -25,20 +26,20 @@ const url = new URL(Astro.request.url, Astro.site).toString();
 ---
 
 <BaseLayout title={`${title} — Work`} description={summary} url={url}>
-  <section class="container-x pt-24 pb-12 md:pt-[140px]">
+  <Section
+    bordered={false}
+    number={`/${String(idx + 1).padStart(2, '0')}`}
+    eyebrow={(tags ?? []).join(' · ') || 'case study'}
+    meta={year}
+    notes={['client', client, '— back', '/work']}
+    class="hero-section"
+  >
     <a
       href="/work"
-      class="mb-12 inline-flex items-center gap-2 font-mono text-xs text-fg-faded transition-colors hover:text-fg"
+      class="mb-10 inline-flex items-center gap-2 font-mono text-xs text-fg-faded transition-colors hover:text-fg"
     >
       ← back to work
     </a>
-
-    <div class="mb-6 flex flex-wrap items-center gap-3">
-      {(tags ?? []).map((t: string) => <StackTag>{t}</StackTag>)}
-      <span class="font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
-        · {year} · {client}
-      </span>
-    </div>
 
     <h1
       class="mb-8 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
@@ -48,55 +49,58 @@ const url = new URL(Astro.request.url, Astro.site).toString();
     </h1>
 
     <p class="max-w-[760px] text-[19px] leading-[1.5] text-fg-muted">{summary}</p>
-  </section>
+  </Section>
 
   {
     metrics && metrics.length > 0 && (
-      <section class="container-x border-y border-border py-12">
+      <Section number="/m" eyebrow="metrics" meta={`${metrics.length} signals`}>
         <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
           {metrics.map((m: { label: string; value: string; unit?: string }) => (
             <StatBlock value={m.value} unit={m.unit} label={m.label} />
           ))}
         </div>
-      </section>
+      </Section>
     )
   }
 
-  <section class="container-x py-20">
+  <Section number="/§" eyebrow="case study" meta="long-form">
     <div class="prose">
       <Content />
     </div>
-  </section>
+  </Section>
 
   {
     stack && stack.length > 0 && (
-      <section class="container-x border-t border-border py-12">
-        <div class="mb-4 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
-          — stack
-        </div>
+      <Section number="/s" eyebrow="stack" meta={`${stack.length} tools`}>
         <div class="flex flex-wrap gap-2">
           {stack.map((s: string) => <StackTag>{s}</StackTag>)}
         </div>
-      </section>
+      </Section>
     )
   }
 
-  <section class="container-x border-t border-border py-24">
+  <Section number="→ next" eyebrow="continue" meta="next case">
     <div class="flex flex-wrap items-end justify-between gap-8">
-      <div>
-        <div
-          class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase"
-        >
-          — next case study
-        </div>
-        <a
-          href={`/work/${next.slug}`}
-          class="font-serif text-[36px] leading-tight font-normal tracking-[-0.02em] transition-colors hover:text-accent"
-        >
-          {next.title} →
-        </a>
-      </div>
+      <a
+        href={`/work/${next.slug}`}
+        class="font-serif text-[36px] leading-tight font-normal tracking-[-0.02em] transition-colors hover:text-accent"
+      >
+        {next.title} →
+      </a>
       <Button href="/contact" variant="primary" arrow="→">Hire me</Button>
     </div>
-  </section>
+  </Section>
 </BaseLayout>
+
+<style>
+  .hero-section {
+    padding-top: 120px;
+    padding-bottom: 56px;
+  }
+  @media (max-width: 900px) {
+    .hero-section {
+      padding-top: 72px;
+      padding-bottom: 32px;
+    }
+  }
+</style>

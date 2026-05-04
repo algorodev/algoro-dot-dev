@@ -1,25 +1,22 @@
 ---
+import Section from '@components/Section.astro';
 import Button from '@components/ui/Button.astro';
 ---
 
-<section class="container-x py-24 md:pt-[140px] md:pb-[120px]">
-  <div
-    class="mb-8 flex flex-wrap items-center gap-4 font-mono text-xs tracking-[0.05em] text-fg-faded uppercase"
-  >
-    <span class="text-accent">● senior ai engineer</span>
-    <span class="opacity-50">/</span>
-    <span>valencia, es · remote</span>
-    <span class="opacity-50">/</span>
-    <span>est. 2018</span>
-  </div>
-
+<Section
+  bordered={false}
+  number="● senior ai engineer"
+  eyebrow="valencia, es · remote"
+  meta="est. 2018"
+  notes={['accepting work', 'q2 2026']}
+  class="hero-section"
+>
   <h1
     id="hero-title"
-    class="mb-10 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-    style="font-size: clamp(52px, 8vw, 112px);"
+    class="mb-10 max-w-[18ch] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
+    style="font-size: clamp(52px, 8.5vw, 124px);"
   >
-    Building <em class="text-accent italic">production AI</em> systems<br />
-    that ship, scale, and don't break.
+    Building <em class="text-accent italic">production AI</em> systems that ship, scale, and don't break.
   </h1>
 
   <p class="mb-12 max-w-[620px] text-[19px] leading-[1.5] text-fg-muted">
@@ -32,7 +29,20 @@ import Button from '@components/ui/Button.astro';
     <Button href="/contact" variant="primary" arrow="→">Hire me</Button>
     <Button href="#work" variant="secondary" arrow="→">View selected work</Button>
   </div>
-</section>
+</Section>
+
+<style>
+  .hero-section {
+    padding-top: 140px;
+    padding-bottom: 120px;
+  }
+  @media (max-width: 900px) {
+    .hero-section {
+      padding-top: 80px;
+      padding-bottom: 72px;
+    }
+  }
+</style>
 
 <script>
   const title = document.getElementById('hero-title');
