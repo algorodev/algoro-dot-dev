@@ -8,22 +8,36 @@ tags:
   - enterprise
 stack:
   - React
+  - TypeScript
   - NestJS
   - PostgreSQL
-  - ML pipelines
+  - AWS
+  - Kubernetes
+  - ELK
+  - Microservices
 order: 2
 ---
 
-{/* TODO: ALEJANDRO — fill in this case study. */}
-
 ## Context
 
-{/* TODO: ALEJANDRO — describe the data scale, stakeholders, regulatory constraints. */}
+I joined DDX Marketplace as a consultant on the platform client team. DDX was Mercedes-Benz's internal data marketplace: a centralized place for senior employees across the company to discover, request access to, and consume the datasets they needed to do their work.
+
+Scope was global, excluding restricted markets. The audience was internal and gated to senior ranks, so the platform didn't need to scale to consumer-tier traffic — but it did have to handle large data volumes (millions of records flowing through marketplace surfaces and processing flows) under strict data-handling policies and internal compliance constraints. What you could log, where data lived, who could touch what, and how access was granted and revoked were all shaped by those rules.
 
 ## Approach
 
-{/* TODO: ALEJANDRO — what you owned, what was refactored, where the wins were. */}
+I worked full-stack on the team building the client-facing surface of the marketplace and several of its data-processing flows. IC with full ownership of several large features end to end — design through delivery, with decision authority on how they were built.
+
+**Engineering bar.** The codebase was already in good shape when I joined; we pushed it further. SOLID across the boundaries, functional-programming patterns where they fit, strict TypeScript, structured error handling. The team also maintained DDX's own internal component library — centralized styles, components, and shared utility functions — which I contributed to and extended for the features I owned.
+
+**Architecture.** One of the areas where I had real ownership was leading the move toward a microservices architecture — slicing the platform into bounded services that could be deployed and operated independently rather than shipped as one block.
+
+**Stack.** React and NestJS on the application side, PostgreSQL for the relational store, AWS as the cloud, Kubernetes for orchestration, and ELK for logging and observability. ML pipelines fed the marketplace from upstream — I sat at the platform and feature-design layer; the ML modelling side was owned by separate teams.
 
 ## Outcomes
 
-{/* TODO: ALEJANDRO — performance numbers, reliability, what it unlocked for the business. */}
+- **Lower latency and lower cost** on the surfaces the team owned. I don't have exact numbers to share publicly, but both were measurable wins on the platform's hot paths.
+- **More internal adoption.** As DDX got cheaper to run and faster to query, more Mercedes teams onboarded onto it instead of standing up their own data-access tooling.
+- **Faster, safer deploys.** The microservices direction plus the engineering-bar work shortened the cycle and made shipping lower-risk.
+
+**Where it didn't go cleanly.** Honest one: the engineering held up, the timelines didn't always. A few features hit unexpected blockers in design and review — predictable in a large enterprise with strict data policies — and dates slipped. The lesson I took: budget more cycles up front for compliance review and cross-team alignment, not just implementation.

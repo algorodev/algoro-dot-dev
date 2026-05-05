@@ -9,31 +9,54 @@ tags:
 stack:
   - Vue 3
   - Nuxt
-  - LLM agents
+  - Claude
+  - ElevenLabs
+  - Tool-use
   - Voice AI
   - Recommendations
 metrics:
   - label: catalogue coverage
-    value: '100'
+    value: '14'
     unit: '%'
-  - label: avg session uplift
-    value: '—'
-  - label: stack components
-    value: '04'
+  - label: voice latency
+    value: '<1'
+    unit: 's'
 featured: true
 order: 1
 ---
 
-{/* TODO: ALEJANDRO — fill in this case study (problem, approach, what shipped, outcomes, learnings). */}
-
 ## Context
 
-{/* TODO: ALEJANDRO — describe the team, scale, business problem. */}
+Smartbox is an e-commerce platform for experience gift boxes — travel, spa, dinners — the kind of gift where the recipient picks the experience after they receive the box. The catalogue is huge, which is also where the business problem lives: the marketplace is too sprawling, the UI is hard to navigate, and customers get lost and bounce before they buy.
+
+I led the introduction of AI into the platform in two phases. **Phase one** was a recommendation surface that suggested products based on the customer's purchase history and browsing context — a way to compress a giant marketplace into a small, relevant shortlist. **Phase two** was a voice agent that ran client-side and guided the customer through the site, recommending, narrating, and navigating between pages on their behalf.
+
+I wasn't the formal lead on paper when I started. I joined as a Frontend Engineer with no seat in the technical meetings, and earned my way into the AI track over time — first contributing to technical decisions, then organising them, and eventually running the AI-side technical meetings end to end. By the time I left, I was on track for a Tech Lead promotion.
 
 ## Approach
 
-{/* TODO: ALEJANDRO — architecture diagram or description, key trade-offs. */}
+**Voice pipeline.** Built on ElevenLabs, cloud-hosted, with a sub-second end-to-end latency target — catalogue browsing collapses if the agent feels laggy. Audio was not stored without explicit customer consent: non-negotiable on an EU site under GDPR.
+
+**LLM.** Claude Sonnet for the agent's reasoning, picked because its planning and tool-use behaviour was the right fit for guiding a customer through a multi-step shopping flow.
+
+**Catalogue access.** Tool-use over Smartbox's internal search API. The agent didn't get a flat embedding of the catalogue — it called the same search tool the rest of the site used, which kept its recommendations consistent with whatever the storefront would have shown anyway.
+
+**Recommendation logic.** Classical underneath — collaborative plus content-based on purchase history and browsing context. The novel part wasn't the recommender; it was that the voice agent consumed it and turned it into a guided conversation. The same logic that would normally render four product cards instead became "here are two I think you'll like — want me to walk you through the first one?"
+
+**Frontend.** Vue 3 + Nuxt, packaged as an independent web component layered onto the existing site.
+
+**The interesting engineering problem.** Smartbox uses server-side routing — every click reloads the page and tears down client state. The voice agent broke on day one: the conversation hung the moment the user navigated to a new product page and couldn't be recovered. The fix was to lift the agent's state out of the page lifecycle entirely — cache and memory persistence inside the web component, rehydrated on each page load — so the conversation survived navigation regardless of how the host site routed.
+
+**Trade-offs.** Cost per session (each voice turn was real money), hallucinations on long-tail catalogue edges, and graceful fallbacks when STT or the LLM dropped a request.
 
 ## Outcomes
 
-{/* TODO: ALEJANDRO — measurable results, what improved, what was learned. */}
+The trial launched in **France only, for one month**. The business judged that the impact didn't clear the bar in that window, and both phases were sunset.
+
+A few honest flags:
+
+- **Catalogue coverage was ~14%** at the time of the trial — indexing the full catalogue cleanly and keeping it fresh was a non-trivial scaling problem we hadn't yet solved.
+- **The hardest engineering win was the navigation persistence** described above. Lifting an agent out of the host site's page lifecycle is a reusable pattern for any e-commerce stack with server-side routing, and it's the part I'd carry into a future deployment.
+- **I don't have post-launch metrics to share.** I left Smartbox before that data was something I retained access to.
+
+The read I take away: the voice agent was technically real, the recommendation surface was working, and the engineering held up. The trial was short and ran in a single market — not enough runway for the business to commit to scaling it. Those are the actual lessons worth keeping on the record.
