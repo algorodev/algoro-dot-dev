@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Section from '@components/Section.astro';
 import Button from '@components/ui/Button.astro';
+import { contactPageSchema, breadcrumbsSchema } from '@lib/seo.ts';
 
 const types = [
   { value: 'contract', label: 'Contract' },
@@ -11,10 +12,19 @@ const types = [
 ];
 
 const title = 'Contact — Alejandro Gonzalez';
-const description = 'Open to senior contracts and full-time roles at AI-first companies. Response within 24 hours.';
+const description =
+  'Open to senior contracts and full-time roles at AI-first companies. Response within 24 hours.';
+
+const structured = [
+  contactPageSchema(),
+  breadcrumbsSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' },
+  ]),
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} structured={structured}>
   <Section
     bordered={false}
     number="● accepting work"

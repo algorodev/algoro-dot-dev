@@ -3,14 +3,24 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Section from '@components/Section.astro';
 import WorkCard from '@components/ui/WorkCard.astro';
 import { getAllWork } from '@lib/content/work.ts';
+import { breadcrumbsSchema, personSchema } from '@lib/seo.ts';
 
 const items = await getAllWork();
 
 const title = 'Work — Alejandro Gonzalez';
-const description = 'Case studies, projects, and ships across AI, e-commerce, enterprise, and self-hosted systems.';
+const description =
+  'Case studies, projects, and ships across AI, e-commerce, enterprise, and self-hosted systems.';
+
+const structured = [
+  personSchema(),
+  breadcrumbsSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Work', url: '/work' },
+  ]),
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} structured={structured}>
   <Section
     bordered={false}
     number={`● ${items.length} entries`}

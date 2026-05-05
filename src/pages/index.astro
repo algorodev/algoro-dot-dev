@@ -7,13 +7,16 @@ import AiDemo from '@components/home/AiDemo.astro';
 import AboutSnippet from '@components/home/AboutSnippet.astro';
 import TechGrid from '@components/home/TechGrid.astro';
 import FooterCTA from '@components/home/FooterCTA.astro';
+import { websiteSchema, personSchema } from '@lib/seo.ts';
 
 const title = 'Alejandro Gonzalez — Senior AI Engineer';
 const description =
-  'Senior AI Engineer building production AI systems that ship, scale, and don\'t break. Hands-on with AI/ML in production since 2022.';
+  "Senior AI Engineer building production AI systems that ship, scale, and don't break. Hands-on with AI/ML in production since 2022.";
+
+const structured = [websiteSchema(), personSchema()];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} structured={structured}>
   <Hero />
   <TrustStrip />
   <SelectedWork />

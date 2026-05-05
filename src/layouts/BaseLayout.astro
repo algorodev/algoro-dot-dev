@@ -9,15 +9,27 @@ type BaseLayoutProps = {
   description?: string;
   url?: string;
   image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  structured?: object | object[];
 };
 
-const { title, description, url, image } = Astro.props as BaseLayoutProps;
+const { title, description, url, image, imageAlt, noindex, structured } =
+  Astro.props as BaseLayoutProps;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <Meta title={title} description={description} url={url} image={image} />
+    <Meta
+      title={title}
+      description={description}
+      url={url}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      structured={structured}
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

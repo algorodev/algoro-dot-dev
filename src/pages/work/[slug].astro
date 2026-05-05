@@ -5,6 +5,7 @@ import StackTag from '@components/ui/StackTag.astro';
 import StatBlock from '@components/ui/StatBlock.astro';
 import Button from '@components/ui/Button.astro';
 import { getAllWork, getWorkBySlug } from '@lib/content/work.ts';
+import { creativeWorkSchema, breadcrumbsSchema } from '@lib/seo.ts';
 
 type Params = { slug: string };
 
@@ -23,9 +24,23 @@ const next = all[(idx + 1) % all.length];
 
 const { title, client, year, summary, tags, stack, metrics, Content } = entry;
 const url = new URL(Astro.request.url, Astro.site).toString();
+
+const structured = [
+  creativeWorkSchema({ title, summary, slug: slug!, client, year, tags, stack }),
+  breadcrumbsSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Work', url: '/work' },
+    { name: title, url: `/work/${slug}` },
+  ]),
+];
 ---
 
-<BaseLayout title={`${title} — Work`} description={summary} url={url}>
+<BaseLayout
+  title={`${title} — Work`}
+  description={summary}
+  url={url}
+  structured={structured}
+>
   <Section
     bordered={false}
     number={`/${String(idx + 1).padStart(2, '0')}`}

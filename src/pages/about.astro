@@ -5,11 +5,20 @@ import StackTag from '@components/ui/StackTag.astro';
 import Button from '@components/ui/Button.astro';
 import { getProfile } from '@lib/content/profile.ts';
 import { getAllExperiences } from '@lib/content/experience.ts';
+import { profilePageSchema, breadcrumbsSchema } from '@lib/seo.ts';
 
 const profile = await getProfile();
 const experiences = await getAllExperiences();
 
 const { name, role, raised, based, email, skills, image, Content } = profile;
+
+const structured = [
+  profilePageSchema(),
+  breadcrumbsSchema([
+    { name: 'Home', url: '/' },
+    { name: 'About', url: '/about' },
+  ]),
+];
 
 const principles = [
   {
@@ -38,7 +47,7 @@ const title = 'About — Alejandro Gonzalez';
 const description = `${role} based in ${based}. Senior AI Engineer with production track record across enterprise, scale-ups, and startups.`;
 ---
 
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} structured={structured}>
   <Section
     bordered={false}
     number={`● ${role.toLowerCase()}`}
