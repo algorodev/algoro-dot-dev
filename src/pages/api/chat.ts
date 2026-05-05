@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 import ragIndexJson from '../../data/rag-index.json';
 
 export const prerender = false;
@@ -28,6 +30,22 @@ const EMBED_MODEL = 'gemini-embedding-001';
 const TOP_K = 5;
 const MAX_MESSAGES = 30;
 const MAX_CONTENT_LEN = 4000;
+
+// Rate limiter (Upstash). Disabled when creds are unset so local dev keeps working.
+const upstashUrl =
+  process.env.UPSTASH_REDIS_REST_URL ?? import.meta.env.UPSTASH_REDIS_REST_URL;
+const upstashToken =
+  process.env.UPSTASH_REDIS_REST_TOKEN ?? import.meta.env.UPSTASH_REDIS_REST_TOKEN;
+
+const ratelimit =
+  upstashUrl && upstashToken
+    ? new Ratelimit({
+        redis: new Redis({ url: upstashUrl, token: upstashToken }),
+        limiter: Ratelimit.slidingWindow(10, '1 m'),
+        prefix: 'algoro-chat',
+        analytics: true,
+      })
+    : null;
 
 const SYSTEM_PROMPT = `You are the live "ask the portfolio" assistant on algoro.dev — Alejandro Gonzalez Romero's personal site. Visitors ask questions about Alejandro's experience, projects, and skills; you answer using only the source material provided.
 
@@ -68,6 +86,32 @@ export const POST: APIRoute = async ({ request }) => {
   const apiKey = process.env.GEMINI_API_KEY ?? import.meta.env.GEMINI_API_KEY;
   if (!apiKey) {
     return jsonError(500, 'Chat endpoint not configured (missing GEMINI_API_KEY).');
+  }
+
+  if (ratelimit) {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      request.headers.get('x-real-ip') ??
+      'unknown';
+    const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+    if (!success) {
+      const retryAfter = Math.max(1, Math.ceil((reset - Date.now()) / 1000));
+      return new Response(
+        JSON.stringify({
+          error: `Too many requests. Try again in ${retryAfter}s.`,
+        }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-RateLimit-Limit': String(limit),
+            'X-RateLimit-Remaining': String(remaining),
+            'X-RateLimit-Reset': String(reset),
+            'Retry-After': String(retryAfter),
+          },
+        },
+      );
+    }
   }
 
   let body: { messages?: IncomingMessage[] };
