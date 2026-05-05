@@ -38,10 +38,12 @@ cp .env.example .env   # then fill in values — see "Environment" below
 | Variable | Required for | Notes |
 |---|---|---|
 | `GEMINI_API_KEY` | Build-time embeddings + live `/api/chat` | Get one from [aistudio.google.com](https://aistudio.google.com). |
+| `TELEGRAM_BOT_TOKEN` | Live `/api/contact` | Create a bot with [@BotFather](https://t.me/BotFather). |
+| `TELEGRAM_CHAT_ID` | Live `/api/contact` | Message the bot once, then call `https://api.telegram.org/bot<TOKEN>/getUpdates` to read your numeric chat id. |
 | `UPSTASH_REDIS_REST_URL` | Optional — rate limiting | Free tier at [upstash.com](https://upstash.com) is plenty for portfolio traffic. |
 | `UPSTASH_REDIS_REST_TOKEN` | Optional — rate limiting | Paired with the URL above. |
 
-When the Upstash creds are unset the rate limiter is skipped (only safe for local dev). When `GEMINI_API_KEY` is unset, `pnpm build:rag-index` logs a warning and exits cleanly so local clones still build using the committed index. Vercel deploys should set all three.
+When the Upstash creds are unset the rate limiter is skipped (only safe for local dev). When `GEMINI_API_KEY` is unset, `pnpm build:rag-index` logs a warning and exits cleanly so local clones still build using the committed index. Vercel deploys should set everything except possibly Upstash (still strongly recommended).
 
 ### Scripts
 
@@ -116,7 +118,9 @@ Rate limiting is sliding-window 10 req/min per IP via `@upstash/ratelimit`. When
 
 ## Contact form
 
-`src/pages/api/contact.ts` is currently a prerendered stub that returns `405` with a JSON message. The contact page falls back to a client-side handler that logs submissions to the browser console. The Vercel adapter is already in place (it powers `/api/chat`), so making contact live is now a matter of flipping `prerender = false`, replacing the GET stub with a POST handler, and forwarding the payload (e.g. via Resend).
+`src/pages/api/contact.ts` is a live POST endpoint (`prerender = false`) that validates the form payload with Zod, applies a sliding-window rate limit (5 req/hour/IP via Upstash, prefix `algoro-contact`), and delivers each submission as a Telegram message to the chat id configured via `TELEGRAM_CHAT_ID`. The form includes an off-screen honeypot field — bots that fill every input get a silent `200` so they don't learn the trick.
+
+Sending email-to-self for a portfolio felt redundant: Telegram is instant, free, already in the same notification surface I use for Otto, and skips the deliverability and domain-verification overhead of a transactional mail provider.
 
 ## License
 

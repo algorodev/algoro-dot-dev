@@ -177,6 +177,17 @@ const description = 'Open to senior contracts and full-time roles at AI-first co
           ></textarea>
         </label>
 
+        {/* Honeypot — kept off-screen for sighted users, hidden from assistive tech.
+            Real users leave it empty; bots fill every field and get a silent 200. */}
+        <input
+          type="text"
+          name="website"
+          tabindex="-1"
+          autocomplete="off"
+          class="absolute left-[-9999px] h-0 w-0 opacity-0"
+          aria-hidden="true"
+        />
+
         <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
           <p
             id="contact-error"
@@ -223,6 +234,8 @@ const description = 'Open to senior contracts and full-time roles at AI-first co
   const errorEl = document.getElementById('contact-error');
 
   if (form && success && errorEl) {
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errorEl.classList.add('hidden');
@@ -231,18 +244,28 @@ const description = 'Open to senior contracts and full-time roles at AI-first co
 
       const data = Object.fromEntries(new FormData(form).entries());
 
+      if (submitBtn) submitBtn.disabled = true;
+
       try {
         const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
-        if (!res.ok && res.status !== 405) {
-          throw new Error(`HTTP ${res.status}`);
+
+        if (!res.ok) {
+          const body = (await res.json().catch(() => null)) as { error?: string } | null;
+          errorEl.textContent = body?.error ?? `Request failed (${res.status}).`;
+          errorEl.classList.remove('hidden');
+          return;
         }
       } catch (err) {
-        // API route is not live yet (Phase 2). Log locally and continue to success state.
-        console.info('[contact] submission (Phase 2 not wired):', data, err);
+        errorEl.textContent =
+          err instanceof Error ? err.message : 'Network error. Please try again.';
+        errorEl.classList.remove('hidden');
+        return;
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
 
       form.classList.add('hidden');
