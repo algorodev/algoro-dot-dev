@@ -1,7 +1,7 @@
 ---
 title: Prozeso AI Stack
 client: Co-founded SaaS
-year: 2025 — present
+year: 2025–present
 summary: Production automation infrastructure delivered to 15+ companies. RAG pipelines over private knowledge bases, conversational agents, and LLM-driven workflows across sales, support, ops, and HR.
 tags:
   - rag
@@ -26,17 +26,17 @@ order: 3
 
 ## Context
 
-Prozeso is a SaaS I co-founded — I'm Co-Founder & CTO. We help small and mid-sized companies automate processes across any function: sales, support, ops, HR, back-office. Some of those automations are LLM-driven; others are plain workflow plumbing. The pitch lands the same regardless: a centralized system that runs the business so the owner stops carrying it on their head.
+Prozeso is a SaaS I co-founded; I'm Co-Founder & CTO. We help small and mid-sized companies automate processes across any function: sales, support, ops, HR, back-office. Some of those automations are LLM-driven; others are plain workflow plumbing. The pitch lands the same regardless: a centralized system that runs the business so the owner stops carrying it on their head.
 
 We've shipped to 15+ companies across industry, real estate, and services in Spain, the UAE, Mexico, and Switzerland. Most engagements settle into the same shape: install Prozeso as the operating layer, integrate the systems the company already uses, and migrate operational owners from "I do this myself" to "I supervise this."
 
 ## Approach
 
-**Models.** Anthropic and Gemini for generation, routed per process — different workflows have different cost, latency, and quality envelopes, so we pick the right model per use case rather than locking the platform to one provider.
+**Models.** Anthropic and Gemini for generation, routed per process. Different workflows have different cost, latency, and quality envelopes, so we pick the right model per use case rather than locking the platform to one provider.
 
-**RAG.** pgvector on AWS RDS as the vector store. Embeddings via OpenAI's `text-embedding-3-small` (the production default that handles our multilingual customer base reasonably well). Chunking is adapted per domain — the right chunk size for a CRM record is not the right chunk size for an HR policy or an ops runbook, so we segment differently depending on what the corpus looks like.
+**RAG.** pgvector on AWS RDS as the vector store. Embeddings via OpenAI's `text-embedding-3-small` (the production default that handles our multilingual customer base reasonably well). Chunking is adapted per domain. The right chunk size for a CRM record is not the right chunk size for an HR policy or an ops runbook, so we segment differently depending on what the corpus looks like.
 
-**Integrations via MCP.** Default stance is MCP for every integration we ship — Salesforce, HubSpot, Notion, Slack, Google Workspace, Microsoft 365, plus per-client systems where they exist. The MCP-first approach means once we've built an integration, we reuse it across customers without bespoke connector code each time.
+**Integrations via MCP.** Default stance is MCP for every integration we ship: Salesforce, HubSpot, Notion, Slack, Google Workspace, Microsoft 365, plus per-client systems where they exist. The MCP-first approach means once we've built an integration, we reuse it across customers without bespoke connector code each time.
 
 **Agents and workflows.** Two patterns running side by side: agentic loops where the model has to reason its way through a task, and direct tool-use where the workflow is well-defined and the model just needs to call the right thing. Orchestration is hand-rolled in our own code where we want full control, and n8n where the workflow is simple enough that a low-code tool is the right tradeoff.
 
@@ -47,8 +47,8 @@ We've shipped to 15+ companies across industry, real estate, and services in Spa
 Two cases I can share anonymized:
 
 - A support-ops customer where automation reduced **human-handled tickets by 20%** and freed up roughly **16 hours per week** of operator time.
-- A sales-outreach deployment running a steady **10 emails per day** cadence with a **13.5% conversion rate** — well above the cold-outreach baselines we benchmark against.
+- A sales-outreach deployment running a steady **10 emails per day** cadence with a **13.5% conversion rate**, well above the cold-outreach baselines we benchmark against.
 
-Across deployments we've started consolidating reusable building blocks — playbook patterns, MCP server templates, evaluation scaffolding — so each new customer gets less bespoke code and more production-tested glue.
+Across deployments we've started consolidating reusable building blocks (playbook patterns, MCP server templates, evaluation scaffolding) so each new customer gets less bespoke code and more production-tested glue.
 
-**A deal we lost, because it's the right honest signal.** One customer's internal operations were chaotic enough that no automation we built could have stuck — inconsistent data, undocumented processes, source-of-truth varying by team. We ended the engagement. Lesson kept: before shipping anything to a new customer, we now do a short pre-engagement audit of how clean their inputs and process definitions actually are. Automation amplifies whatever you point it at — if the chaos is upstream of us, we'd just be amplifying it.
+**A deal we lost, because it's the right honest signal.** One customer's internal operations were chaotic enough that no automation we built could have stuck: inconsistent data, undocumented processes, source-of-truth varying by team. We ended the engagement. Lesson kept: before shipping anything to a new customer, we now do a short pre-engagement audit of how clean their inputs and process definitions actually are. Automation amplifies whatever you point it at; if the chaos is upstream of us, we'd just be amplifying it.

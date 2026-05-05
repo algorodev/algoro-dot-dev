@@ -20,21 +20,21 @@ order: 4
 
 ## Why
 
-Cloud LLMs work fine, but I wanted to build the assistant myself, end to end — choose the open-source model, decide what data it sees, and pick which integrations to expose via MCP. Maximum control, full ownership of the stack.
+Cloud LLMs work fine, but I wanted to build the assistant myself, end to end: choose the open-source model, decide what data it sees, and pick which integrations to expose via MCP. Maximum control, full ownership of the stack.
 
 Privacy was part of it, but the stronger pull was making something where I understand every layer: model serving, retrieval, tool execution, transport. That's the kind of stack I want to be fluent in, not just consume.
 
-I deliberately deployed it on a machine I already owned — an Intel i5 (7th gen), GTX 1050, 16GB RAM, 2.5TB storage. Not the best spec by 2025 standards, but it's the first PC I built with my own hands, so there's some sentimental value in keeping it useful. The hardware envelope also forced honest engineering decisions instead of throwing GPU at problems.
+I deliberately deployed it on a machine I already owned: an Intel i5 (7th gen), GTX 1050, 16GB RAM, 2.5TB storage. Not the best spec by 2025 standards, but it's the first PC I built with my own hands, so there's some sentimental value in keeping it useful. The hardware envelope also forced honest engineering decisions instead of throwing GPU at problems.
 
 ## How
 
-**Local model.** Ollama as the runtime — fast to iterate, easy to swap models. Currently running Qwen (quantized) for everyday inference; if I ever hit a ceiling on a specific task I have a fallback path to Anthropic or Gemini, but the goal is to keep as much as possible on the machine.
+**Local model.** Ollama as the runtime: fast to iterate, easy to swap models. Currently running Qwen (quantized) for everyday inference; if I ever hit a ceiling on a specific task I have a fallback path to Anthropic or Gemini, but the goal is to keep as much as possible on the machine.
 
-**Retrieval.** pgvector for the vector store (chosen after evaluating Qdrant, Chroma, and sqlite-vec — Postgres ergonomics plus a vector type fit the use case). Embeddings with `nomic-embed-text`, ingested via a file watcher that picks up changes in real time.
+**Retrieval.** pgvector for the vector store (chosen after evaluating Qdrant, Chroma, and sqlite-vec; Postgres ergonomics plus a vector type fit the use case). Embeddings with `nomic-embed-text`, ingested via a file watcher that picks up changes in real time.
 
 **Knowledge base.** Connected to my Notion (notes, project journal, daily logs) and the entire codebase of every project I've worked on across my career. Otto has my engineering history indexed and queryable.
 
-**MCP integrations.** Filesystem and GitHub for code work, Gmail for email actions, plus a custom MCP server I wrote from scratch that bridges to my JetBrains IDE and Claude Code — it lets me dispatch coding tasks from outside the house and have Otto drive my dev environment for me.
+**MCP integrations.** Filesystem and GitHub for code work, Gmail for email actions, plus a custom MCP server I wrote from scratch that bridges to my JetBrains IDE and Claude Code: it lets me dispatch coding tasks from outside the house and have Otto drive my dev environment for me.
 
 **Interface.** Today I talk to Otto over Telegram. Migrating to a HomePod next so it lives ambient in the house instead of in my pocket.
 
@@ -42,10 +42,10 @@ I deliberately deployed it on a machine I already owned — an Intel i5 (7th gen
 
 ## What's next
 
-- **More integrations.** WhatsApp is next — context-aware auto-replies per chat, so Otto can triage and respond to non-critical messages while I'm focused.
+- **More integrations.** WhatsApp is next: context-aware auto-replies per chat, so Otto can triage and respond to non-critical messages while I'm focused.
 - **Better voice.** Default TTS sounds robotic. Wiring up ElevenLabs (or a self-hosted equivalent) is what makes the HomePod migration land properly.
-- **Multi-user.** Right now Otto is single-tenant — only I have access. If I push toward a Home Intelligence setup, my family needs to be able to talk to it, which means proper user identity and per-user memory scoping.
+- **Multi-user.** Right now Otto is single-tenant: only I have access. If I push toward a Home Intelligence setup, my family needs to be able to talk to it, which means proper user identity and per-user memory scoping.
 - **What I'd open-source.** A template repo: the minimum stack (Ollama + pgvector + `nomic-embed-text` + the MCP server scaffolding) wired up so someone can clone it, point it at their own corpus and integrations, and shape it from there.
-- **Experiments.** Agentic loops are the next architectural push — letting Otto plan and execute multi-step tasks instead of one-shot tool calls.
+- **Experiments.** Agentic loops are the next architectural push: letting Otto plan and execute multi-step tasks instead of one-shot tool calls.
 
 **A few things I got wrong early.** The first version came from internet tutorials and engineering instinct, but I didn't account for the hardware envelope. Decisions about model size, embedding strategy, and indexing that worked on paper choked on a GTX 1050 with 16GB of system RAM. I rebuilt several pieces once I sat down and budgeted the hardware honestly.

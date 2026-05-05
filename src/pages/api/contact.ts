@@ -57,7 +57,7 @@ const TYPE_LABELS: Record<ContactBody['type'], string> = {
 function formatTelegramMessage(data: ContactBody): string {
   const e = escapeHtml;
   const lines = [
-    '🆕 <b>algoro.dev — contact</b>',
+    '🆕 <b>algoro.dev · contact</b>',
     '',
     `<b>Name:</b> ${e(data.name)}`,
     `<b>Email:</b> ${e(data.email)}`,

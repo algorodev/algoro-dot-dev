@@ -36,7 +36,7 @@ const structured = [
 ---
 
 <BaseLayout
-  title={`${title} — Work`}
+  title={`${title} | Work`}
   description={summary}
   url={url}
   structured={structured}
@@ -46,7 +46,7 @@ const structured = [
     number={`/${String(idx + 1).padStart(2, '0')}`}
     eyebrow={(tags ?? []).join(' · ') || 'case study'}
     meta={year}
-    notes={['client', client, '— back', '/work']}
+    notes={['client', client, 'back', '/work']}
     class="hero-section"
   >
     <a

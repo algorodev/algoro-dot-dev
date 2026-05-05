@@ -22,28 +22,28 @@ const structured = [
 
 const principles = [
   {
-    label: '— principle / 01',
+    label: 'principle / 01',
     title: 'Ship over prototype.',
-    body: 'Production-grade from day one: observability, error handling, retries, evals. A demo that wows in a meeting but breaks at scale is not done — it has not started.',
+    body: 'Production-grade from day one: observability, error handling, retries, evals. A demo that wows in a meeting but breaks at scale is not done. It has not started.',
   },
   {
-    label: '— principle / 02',
+    label: 'principle / 02',
     title: 'Architecture earns its keep.',
     body: 'Clean separation of concerns, typed boundaries, dependency injection where it pays. SOLID is a tool, not a religion. Tests exist to enable speed, not slow it down.',
   },
   {
-    label: '— principle / 03',
+    label: 'principle / 03',
     title: 'Instrument everything.',
     body: 'Centralised logging, structured analytics, performance budgets, AI evals. If a system is in production and you can\'t answer "is it working", it is not in production yet.',
   },
   {
-    label: '— principle / 04',
+    label: 'principle / 04',
     title: 'Product mindset.',
-    body: 'Discover the real user problem, prototype quickly, iterate with data. The best engineering is invisible — it lets users get their job done without thinking about the code.',
+    body: 'Discover the real user problem, prototype quickly, iterate with data. The best engineering is invisible: it lets users get their job done without thinking about the code.',
   },
 ];
 
-const title = 'About — Alejandro Gonzalez';
+const title = 'About | Alejandro Gonzalez';
 const description = `${role} based in ${based}. Senior AI Engineer with production track record across enterprise, scale-ups, and startups.`;
 ---
 
@@ -91,12 +91,12 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
           <li class="relative">
             <span class="absolute -left-[37px] top-[10px] h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" />
             <div class="mb-1 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
-              {exp.start} — {exp.end ?? 'present'} · {exp.location}
+              {exp.start}–{exp.end ?? 'present'} · {exp.location}
             </div>
             <h3 class="font-serif text-[28px] leading-tight font-normal tracking-[-0.02em]">
               {exp.title}
               {exp.organization && (
-                <span class="text-fg-muted"> — {exp.organization}</span>
+                <span class="text-fg-muted"> · {exp.organization}</span>
               )}
             </h3>
           </li>
@@ -137,7 +137,7 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
       <p class="font-serif text-[24px] leading-[1.4] tracking-[-0.01em]">
         I bring a <em class="text-accent italic">product mindset</em> to senior IC and tech-lead
-        roles — equally comfortable shaping systems, mentoring, or rolling up sleeves on the line.
+        roles, equally comfortable shaping systems, mentoring, or rolling up sleeves on the line.
       </p>
       <div class="flex flex-wrap gap-2">
         {skills.map((s: string) => <StackTag>{s}</StackTag>)}
@@ -149,7 +149,7 @@ const description = `${role} based in ${based}. Senior AI Engineer with producti
     <div
       class="mb-6 font-mono text-[11px] tracking-[0.15em] text-fg-faded uppercase"
     >
-      — work together
+      work together
     </div>
     <h2
       class="mb-6 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
