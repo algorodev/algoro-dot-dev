@@ -21,6 +21,19 @@
 
   --rail-width: 140px;
 
+  /* Per-layer typographic pairs — display + body */
+  --font-surface-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-surface-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --font-mid-display: 'Syne', system-ui, sans-serif;
+  --font-mid-body: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --font-deep-display: 'Azeret Mono', ui-monospace, monospace;
+  --font-deep-body: 'JetBrains Mono', ui-monospace, monospace;
+
+  --font-void-display: 'Unbounded', system-ui, sans-serif;
+  --font-void-body: 'Space Grotesk', system-ui, sans-serif;
+
   /* Layer system — vertical journey through the tech stack */
   --layer-transition: background-color 0.8s ease, color 0.6s ease;
 
@@ -701,6 +714,80 @@
       width: 120px;
       opacity: 0.6;
     }
+  }
+
+  /* ── Per-layer typography ── */
+
+  [data-layer="surface"] {
+    --layer-display-font: var(--font-surface-display);
+    --layer-body-font: var(--font-surface-body);
+  }
+  [data-layer="mid"] {
+    --layer-display-font: var(--font-mid-display);
+    --layer-body-font: var(--font-mid-body);
+  }
+  [data-layer="deep"] {
+    --layer-display-font: var(--font-deep-display);
+    --layer-body-font: var(--font-deep-body);
+  }
+  [data-layer="void"] {
+    --layer-display-font: var(--font-void-display);
+    --layer-body-font: var(--font-void-body);
+  }
+
+  [data-layer] h1,
+  [data-layer] h2,
+  [data-layer] h3 {
+    font-family: var(--layer-display-font);
+  }
+
+  /* Body copy — skip .font-mono and inline monospace labels */
+  [data-layer] p,
+  [data-layer] li,
+  [data-layer] span:not([class*="mono"]):not([class*="font-mono"]) {
+    font-family: var(--layer-body-font);
+  }
+
+  /* Per-type font sizing/spacing tweaks */
+  [data-layer="surface"] h1 {
+    font-size: clamp(52px, 8.5vw, 120px);
+  }
+  [data-layer="void"] h1,
+  [data-layer="void"] h2 {
+    letter-spacing: -0.02em;
+  }
+  [data-layer="deep"] h1,
+  [data-layer="deep"] h2 {
+    letter-spacing: -0.01em;
+  }
+
+  /* Panel typography per content type */
+  #panel[data-panel-type="work"] h1,
+  #panel[data-panel-type="work"] h2,
+  #panel[data-panel-type="work"] h3 {
+    font-family: var(--font-surface-display);
+  }
+  #panel[data-panel-type="work"] p,
+  #panel[data-panel-type="work"] li {
+    font-family: var(--font-surface-body);
+  }
+
+  #panel[data-panel-type="about"] h1,
+  #panel[data-panel-type="about"] h2 {
+    font-family: var(--font-mid-display);
+  }
+  #panel[data-panel-type="about"] p,
+  #panel[data-panel-type="about"] li {
+    font-family: var(--font-mid-body);
+  }
+
+  #panel[data-panel-type="contact"] h1,
+  #panel[data-panel-type="contact"] h2 {
+    font-family: var(--font-void-display);
+  }
+  #panel[data-panel-type="contact"] p,
+  #panel[data-panel-type="contact"] li {
+    font-family: var(--font-void-body);
   }
 
   /* Mobile panel: lighter effect, tighter padding */
