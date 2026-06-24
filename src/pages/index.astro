@@ -14,6 +14,15 @@ const description =
   "Senior AI Engineer building production AI systems that ship, scale, and don't break. Hands-on with AI/ML in production since 2022.";
 
 const structured = [websiteSchema(), personSchema()];
+
+const deepProcesses = [
+  { name: 'containerization', desc: 'Docker · AWS · multi-env' },
+  { name: 'cloud-deployment', desc: 'Vercel · AWS · CI/CD pipelines' },
+  { name: 'vector-storage', desc: 'pgvector · Qdrant · embeddings' },
+  { name: 'self-hosted-llm', desc: 'Ollama · local runtime · legacy hw' },
+  { name: 'data-pipelines', desc: 'ingestion · ETL · RAG indexing' },
+  { name: 'api-design', desc: 'REST · NestJS · FastAPI · typed' },
+];
 ---
 
 <BaseLayout title={title} description={description} structured={structured}>
@@ -45,15 +54,46 @@ const structured = [websiteSchema(), personSchema()];
     class="layer-section"
     style="background-color: var(--layer-deep-bg); color: var(--layer-deep-text);"
   >
-    <div class="section section-bordered">
-      <div class="section-rail">
-        <span class="rail-num">/03</span>
-        <span class="rail-eyebrow">infra &amp; systems</span>
-        <div class="rail-divider"></div>
-        <span class="rail-meta">coming soon</span>
-      </div>
+    <div class="layer-descent" style="color: var(--layer-deep-muted);">— going deeper —</div>
+
+    <div class="section section-bordered deep-main" id="deep-content">
+      <aside
+        class="section-rail"
+        style="color: var(--layer-deep-muted); border-color: var(--layer-deep-border);"
+      >
+        <div style="color: var(--layer-deep-accent); font-family: var(--font-mono); font-size: 12px;">/05</div>
+        <div style="color: var(--layer-deep-text); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">infra.sys</div>
+        <div style="color: var(--layer-deep-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">deep layer</div>
+      </aside>
+
       <div class="section-content">
-        <h2 class="section-title">Infra &amp; <em>Systems</em></h2>
+        <div class="d-prompt">root@algoro:~$ ls -la /stack/infrastructure</div>
+        <p class="d-prompt-output">The layer nobody sees. The one that matters most.</p>
+
+        <div class="d-procs">
+          {
+            deepProcesses.map((p) => (
+              <div class="d-proc-row">
+                <span class="d-proc-left">
+                  <span class="d-proc-dot">●</span>
+                  <span class="d-proc-name">{p.name}</span>
+                </span>
+                <span class="d-proc-desc">{p.desc}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="d-otto">
+          <div class="d-otto-status">● SELF-HOSTED · RUNNING</div>
+          <h3 class="d-otto-title">Otto</h3>
+          <p class="d-otto-desc">
+            Personal AI assistant running on legacy hardware. Local LLM runtime via Ollama,
+            RAG over my personal knowledge base, custom MCP integrations, and full vector
+            storage — without sending a single token to the cloud.
+          </p>
+          <a href="/work/otto" class="d-otto-link">→ /work/otto — case study</a>
+        </div>
       </div>
     </div>
   </section>
@@ -84,6 +124,139 @@ const structured = [websiteSchema(), personSchema()];
     font-size: 11px;
     letter-spacing: 0.12em;
     color: var(--layer-mid-muted);
+  }
+
+  /* ── deep layer ── */
+
+  .deep-main {
+    border-top-color: var(--layer-deep-border);
+    padding-bottom: 120px;
+  }
+
+  .d-prompt {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--layer-deep-accent);
+    margin-bottom: 14px;
+  }
+
+  .d-prompt-output {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--layer-deep-text);
+    max-width: 560px;
+    margin-bottom: 48px;
+  }
+
+  /* process list */
+  .d-procs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid var(--layer-deep-border);
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--layer-deep-bg) 70%, black);
+    overflow: hidden;
+    margin-bottom: 64px;
+  }
+  .d-proc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--layer-deep-border);
+    border-right: 1px solid var(--layer-deep-border);
+  }
+  .d-proc-row:nth-child(even) {
+    border-right: none;
+  }
+  .d-proc-row:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+  .d-proc-left {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .d-proc-dot {
+    font-size: 8px;
+    color: var(--layer-deep-accent);
+  }
+  .d-proc-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--layer-deep-text);
+  }
+  .d-proc-desc {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-deep-muted);
+    text-align: right;
+    flex-shrink: 0;
+  }
+  @media (max-width: 900px) {
+    .d-procs {
+      grid-template-columns: 1fr;
+    }
+    .d-proc-row {
+      border-right: none;
+    }
+    .d-proc-row:nth-last-child(-n + 2) {
+      border-bottom: 1px solid var(--layer-deep-border);
+    }
+    .d-proc-row:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* otto spotlight */
+  .d-otto {
+    border-left: 2px solid var(--layer-deep-accent);
+    padding-left: 32px;
+  }
+  .d-otto-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--layer-deep-accent);
+    margin-bottom: 14px;
+    animation: d-blink 1.5s ease infinite;
+  }
+  .d-otto-title {
+    font-family: var(--font-serif);
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--layer-deep-text);
+    margin-bottom: 20px;
+  }
+  .d-otto-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--layer-deep-muted);
+    max-width: 560px;
+    margin-bottom: 20px;
+  }
+  .d-otto-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--layer-deep-accent);
+    transition: opacity 0.2s ease;
+  }
+  .d-otto-link:hover {
+    opacity: 0.7;
+  }
+
+  @keyframes d-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
   }
 </style>
 
