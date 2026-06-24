@@ -35,8 +35,8 @@ const links = [
             <a
               href={link.href}
               class:list={[
-                'font-mono text-[13px] transition-opacity hover:opacity-100',
-                isActive(link.href) ? 'opacity-100' : 'opacity-60',
+                'nav-link font-mono text-[13px]',
+                isActive(link.href) ? '' : 'nav-link-inactive',
               ]}
             >
               {link.label}
@@ -45,9 +45,31 @@ const links = [
         ))
       }
     </ul>
-    <div class="hidden items-center gap-2 font-mono text-xs opacity-60 md:flex">
-      <span class="status-dot"></span>
-      <span>available · q2 2026</span>
+    <div class="hidden items-center gap-5 md:flex">
+      <span
+        id="nav-depth"
+        class="font-mono text-xs"
+        style="color: var(--nav-accent);"
+      >depth: 01 · surface</span>
+      <div class="flex items-center gap-2 font-mono text-xs opacity-60">
+        <span class="status-dot"></span>
+        <span>available · q2 2026</span>
+      </div>
     </div>
   </div>
 </nav>
+
+<style>
+  .nav-link {
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease;
+  }
+  .nav-link-inactive {
+    opacity: 0.6;
+  }
+  .nav-link:hover {
+    color: var(--nav-accent);
+    opacity: 1;
+  }
+</style>

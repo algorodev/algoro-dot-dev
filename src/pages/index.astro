@@ -287,12 +287,22 @@ const deepProcesses = [
   const dots = Array.from(document.querySelectorAll<HTMLElement>('#depth-indicator [data-for]'));
   const root = document.documentElement;
 
+  const layerLabels: Record<string, string> = {
+    surface: 'depth: 01 · surface',
+    mid: 'depth: 02 · mid',
+    deep: 'depth: 03 · deep',
+    void: 'depth: 04 · void',
+  };
+
   function setLayer(name: string) {
     const cs = getComputedStyle(root);
     root.style.setProperty('--active-layer', name);
     root.style.setProperty('--nav-bg', cs.getPropertyValue(`--layer-${name}-bg`).trim());
     root.style.setProperty('--nav-text', cs.getPropertyValue(`--layer-${name}-text`).trim());
     root.style.setProperty('--nav-accent', cs.getPropertyValue(`--layer-${name}-accent`).trim());
+
+    const depthEl = document.getElementById('nav-depth');
+    if (depthEl) depthEl.textContent = layerLabels[name] ?? name;
 
     layers.forEach((el) => el.classList.toggle('is-active', el.dataset.layer === name));
     dots.forEach((dot) => dot.classList.toggle('is-active', dot.getAttribute('data-for') === name));

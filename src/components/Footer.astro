@@ -2,12 +2,41 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-border py-8 font-mono text-[11px] text-fg-faded">
-  <div class="container-x flex flex-wrap items-center justify-between gap-4">
-    <div>© {year} · alejandro gonzalez · all rights reserved</div>
-    <div class="font-serif text-[13px] italic text-fg-muted">
+<footer class="footer">
+  <div class="container-x">
+    <div class="footer-quote">
       "Difficult many things are, but impossible nothing is."
     </div>
-    <div>v2.0 · last updated may '26</div>
+    <div class="footer-meta">
+      <span>© {year} · alejandro gonzalez</span>
+      <span>v2.0 · last updated may '26</span>
+    </div>
   </div>
 </footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--layer-void-border);
+    padding: 48px 0 32px;
+    background: var(--layer-void-bg);
+  }
+  .footer-quote {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--layer-void-muted);
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+  }
+  .footer-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-void-text);
+    opacity: 0.35;
+  }
+</style>

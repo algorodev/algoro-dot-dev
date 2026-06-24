@@ -1,26 +1,95 @@
 ---
-import Button from '@components/ui/Button.astro';
 ---
 
-<section class="container-x border-t border-border py-32 text-center md:py-40">
-  <div
-    class="mb-8 font-mono text-[11px] tracking-[0.15em] text-fg-faded uppercase"
-  >
-    fin · let's talk
-  </div>
-  <h2
-    class="mb-8 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-    style="font-size: clamp(56px, 9vw, 120px);"
-  >
-    Let's build<br />
-    something <em class="text-accent italic">worth shipping.</em>
+<section class="fc-section container-x">
+  <div class="fc-label">— end of stack —</div>
+
+  <h2 class="fc-title">
+    You made it to the bottom.<br />
+    <em class="fc-accent italic">Most people don't.</em>
   </h2>
-  <p class="mx-auto mb-12 max-w-[560px] text-[18px] text-fg-muted">
-    Open to senior contract engagements and full-time roles at AI-first companies. Response within
-    24 hours.
+
+  <p class="fc-sub">
+    Open to senior contract engagements and full-time roles at AI-first companies. If you've
+    read this far, you already know if we're a fit.
   </p>
-  <div class="flex flex-wrap justify-center gap-4">
-    <Button href="mailto:me@algoro.dev" variant="primary" arrow="→">me@algoro.dev</Button>
-    <Button href="/cv.pdf" variant="secondary" arrow="↓">Download CV</Button>
+
+  <div class="fc-ctas">
+    <a href="mailto:me@algoro.dev" class="fc-btn-primary">me@algoro.dev →</a>
+    <a href="/cv.pdf" class="fc-btn-ghost">Download CV ↓</a>
   </div>
 </section>
+
+<style>
+  .fc-section {
+    padding: 120px 0 100px;
+    text-align: center;
+  }
+  .fc-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--layer-void-muted);
+    margin-bottom: 48px;
+  }
+  .fc-title {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 8vw, 108px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--layer-void-text);
+    margin-bottom: 36px;
+  }
+  .fc-accent {
+    color: var(--layer-void-accent);
+  }
+  .fc-sub {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--layer-void-muted);
+    max-width: 520px;
+    margin: 0 auto 52px;
+  }
+  .fc-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .fc-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--layer-void-accent);
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .fc-btn-primary:hover {
+    opacity: 0.85;
+  }
+  .fc-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--layer-void-accent);
+    border: 1px solid var(--layer-void-accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .fc-btn-ghost:hover {
+    opacity: 0.7;
+  }
+</style>
