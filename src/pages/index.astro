@@ -17,11 +17,53 @@ const structured = [websiteSchema(), personSchema()];
 ---
 
 <BaseLayout title={title} description={description} structured={structured}>
-  <Hero />
-  <TrustStrip />
-  <SelectedWork />
-  <AiDemo />
-  <AboutSnippet />
-  <TechGrid />
-  <FooterCTA />
+  <section
+    id="layer-surface"
+    data-layer="surface"
+    class="layer-section"
+    style="background-color: var(--layer-surface-bg); color: var(--layer-surface-text);"
+  >
+    <Hero />
+    <TrustStrip />
+    <SelectedWork />
+  </section>
+
+  <section
+    id="layer-mid"
+    data-layer="mid"
+    class="layer-section"
+    style="background-color: var(--layer-mid-bg); color: var(--layer-mid-text);"
+  >
+    <AboutSnippet />
+    <TechGrid />
+  </section>
+
+  <section
+    id="layer-deep"
+    data-layer="deep"
+    class="layer-section"
+    style="background-color: var(--layer-deep-bg); color: var(--layer-deep-text);"
+  >
+    <div class="section section-bordered">
+      <div class="section-rail">
+        <span class="rail-num">/03</span>
+        <span class="rail-eyebrow">infra &amp; systems</span>
+        <div class="rail-divider"></div>
+        <span class="rail-meta">coming soon</span>
+      </div>
+      <div class="section-content">
+        <h2 class="section-title">Infra &amp; <em>Systems</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="layer-void"
+    data-layer="void"
+    class="layer-section"
+    style="background-color: var(--layer-void-bg); color: var(--layer-void-text); min-height: auto;"
+  >
+    <AiDemo />
+    <FooterCTA />
+  </section>
 </BaseLayout>

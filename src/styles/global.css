@@ -237,6 +237,11 @@
     }
   }
 
+  .layer-section {
+    transition: var(--layer-transition);
+    min-height: 100vh;
+  }
+
   .status-dot {
     width: 6px;
     height: 6px;
