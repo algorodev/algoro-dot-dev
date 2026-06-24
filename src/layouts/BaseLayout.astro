@@ -43,5 +43,80 @@ const { title, description, url, image, imageAlt, noindex, structured } =
       <slot />
     </main>
     <Footer />
+
+    <div id="panel-overlay" aria-hidden="true">
+      <div id="panel">
+        <button id="panel-close" aria-label="Back to home">
+          <span>← back</span>
+        </button>
+        <div id="panel-content"></div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        const overlay = document.getElementById('panel-overlay');
+        const panel = document.getElementById('panel');
+        const panelContent = document.getElementById('panel-content');
+        const panelClose = document.getElementById('panel-close');
+
+        let homeScrollY = 0;
+
+        async function openPanel(url) {
+          homeScrollY = window.scrollY;
+
+          document.documentElement.style.setProperty('--scroll-y', homeScrollY + 'px');
+          document.body.classList.add('panel-open');
+
+          try {
+            const res = await fetch(url);
+            const html = await res.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const main = doc.querySelector('main');
+            panelContent.innerHTML = main ? main.innerHTML : html;
+          } catch (e) {
+            panelContent.innerHTML = '<p style="padding:2rem">Error loading content.</p>';
+          }
+
+          panel.scrollTop = 0;
+
+          overlay.classList.add('is-open');
+          overlay.setAttribute('aria-hidden', 'false');
+
+          history.pushState({ panel: true, url: url }, '', url);
+        }
+
+        function closePanel() {
+          overlay.classList.remove('is-open');
+          overlay.setAttribute('aria-hidden', 'true');
+
+          setTimeout(function () {
+            document.body.classList.remove('panel-open');
+            document.documentElement.style.removeProperty('--scroll-y');
+            window.scrollTo(0, homeScrollY);
+            panelContent.innerHTML = '';
+          }, 580);
+
+          history.pushState({}, '', '/');
+        }
+
+        panelClose.addEventListener('click', closePanel);
+
+        window.addEventListener('popstate', function (e) {
+          if (overlay.classList.contains('is-open')) {
+            closePanel();
+          }
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+            closePanel();
+          }
+        });
+
+        window.openPanel = openPanel;
+      })();
+    </script>
   </body>
 </html>
