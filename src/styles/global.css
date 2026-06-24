@@ -716,78 +716,51 @@
     }
   }
 
-  /* ── Per-layer typography ── */
+  /* ── Per-layer typography ──
+     Override --font-serif and --font-sans at the layer scope.
+     CSS custom properties inherit to all descendants regardless of cascade
+     layers, so every component that uses var(--font-serif) or
+     var(--font-sans) — via Tailwind utilities, scoped styles, or inline —
+     picks up the layer-specific value automatically. */
 
   [data-layer="surface"] {
-    --layer-display-font: var(--font-surface-display);
-    --layer-body-font: var(--font-surface-body);
+    --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
   [data-layer="mid"] {
-    --layer-display-font: var(--font-mid-display);
-    --layer-body-font: var(--font-mid-body);
+    --font-serif: 'Syne', system-ui, sans-serif;
+    --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
   }
   [data-layer="deep"] {
-    --layer-display-font: var(--font-deep-display);
-    --layer-body-font: var(--font-deep-body);
+    --font-serif: 'Azeret Mono', ui-monospace, monospace;
+    --font-sans: 'JetBrains Mono', ui-monospace, monospace;
   }
   [data-layer="void"] {
-    --layer-display-font: var(--font-void-display);
-    --layer-body-font: var(--font-void-body);
+    --font-serif: 'Unbounded', system-ui, sans-serif;
+    --font-sans: 'Space Grotesk', system-ui, sans-serif;
   }
 
-  [data-layer] h1,
-  [data-layer] h2,
-  [data-layer] h3 {
-    font-family: var(--layer-display-font);
+  /* Panel — same var override approach for fetched content */
+  #panel[data-panel-type="work"] {
+    --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  #panel[data-panel-type="about"] {
+    --font-serif: 'Syne', system-ui, sans-serif;
+    --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  #panel[data-panel-type="contact"] {
+    --font-serif: 'Unbounded', system-ui, sans-serif;
+    --font-sans: 'Space Grotesk', system-ui, sans-serif;
   }
 
-  /* Body copy — skip .font-mono and inline monospace labels */
-  [data-layer] p,
-  [data-layer] li,
-  [data-layer] span:not([class*="mono"]):not([class*="font-mono"]) {
-    font-family: var(--layer-body-font);
-  }
-
-  /* Per-type font sizing/spacing tweaks */
-  [data-layer="surface"] h1 {
-    font-size: clamp(52px, 8.5vw, 120px);
-  }
-  [data-layer="void"] h1,
-  [data-layer="void"] h2 {
+  /* Metric tweaks — Unbounded is wide, Azeret Mono is tight */
+  [data-layer="void"] .font-serif,
+  #panel[data-panel-type="contact"] .font-serif {
     letter-spacing: -0.02em;
   }
-  [data-layer="deep"] h1,
-  [data-layer="deep"] h2 {
+  [data-layer="deep"] .font-serif {
     letter-spacing: -0.01em;
-  }
-
-  /* Panel typography per content type */
-  #panel[data-panel-type="work"] h1,
-  #panel[data-panel-type="work"] h2,
-  #panel[data-panel-type="work"] h3 {
-    font-family: var(--font-surface-display);
-  }
-  #panel[data-panel-type="work"] p,
-  #panel[data-panel-type="work"] li {
-    font-family: var(--font-surface-body);
-  }
-
-  #panel[data-panel-type="about"] h1,
-  #panel[data-panel-type="about"] h2 {
-    font-family: var(--font-mid-display);
-  }
-  #panel[data-panel-type="about"] p,
-  #panel[data-panel-type="about"] li {
-    font-family: var(--font-mid-body);
-  }
-
-  #panel[data-panel-type="contact"] h1,
-  #panel[data-panel-type="contact"] h2 {
-    font-family: var(--font-void-display);
-  }
-  #panel[data-panel-type="contact"] p,
-  #panel[data-panel-type="contact"] li {
-    font-family: var(--font-void-body);
   }
 
   /* Mobile panel: lighter effect, tighter padding */
