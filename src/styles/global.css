@@ -245,6 +245,10 @@
     transition: var(--layer-transition);
     min-height: 100vh;
     padding-bottom: 8rem;
+    /* Sit above body::before/::after fixed overlays (z-index: 0) so the
+       section's own background-color fully covers the dark grid + vignette */
+    position: relative;
+    z-index: 1;
   }
 
   @keyframes fadeInLayer {
@@ -461,6 +465,12 @@
 
   /* ── Standalone pages (non-home direct access) ── */
 
+  /* Suppress dark overlays on light standalone pages */
+  body.standalone::before,
+  body.standalone::after {
+    display: none;
+  }
+
   body.standalone {
     background: var(--layer-surface-bg);
     color: var(--layer-surface-text);
@@ -635,6 +645,12 @@
   #panel-content main,
   #panel-content > * {
     background: transparent !important;
+  }
+
+  /* Hide page-internal back navigation — the panel's ← back button takes over */
+  #panel-content [data-back-link],
+  #panel-content nav {
+    display: none !important;
   }
 
   /* Single column inside panel: hide rail sidebar */
