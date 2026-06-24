@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Section from '@components/Section.astro';
 import StackTag from '@components/ui/StackTag.astro';
-import Button from '@components/ui/Button.astro';
 import { getProfile } from '@lib/content/profile.ts';
 import { getAllExperiences } from '@lib/content/experience.ts';
 import { profilePageSchema, breadcrumbsSchema } from '@lib/seo.ts';
@@ -10,7 +8,7 @@ import { profilePageSchema, breadcrumbsSchema } from '@lib/seo.ts';
 const profile = await getProfile();
 const experiences = await getAllExperiences();
 
-const { name, role, raised, based, email, skills, image, Content } = profile;
+const { name, role, based, email, skills, image } = profile;
 
 const structured = [
   profilePageSchema(),
@@ -34,7 +32,7 @@ const principles = [
   {
     label: 'principle / 03',
     title: 'Instrument everything.',
-    body: 'Centralised logging, structured analytics, performance budgets, AI evals. If a system is in production and you can\'t answer "is it working", it is not in production yet.',
+    body: "Centralised logging, structured analytics, performance budgets, AI evals. If a system is in production and you can't answer 'is it working', it is not in production yet.",
   },
   {
     label: 'principle / 04',
@@ -44,138 +42,310 @@ const principles = [
 ];
 
 const title = 'About | Alejandro Gonzalez';
-const description = `${role} based in ${based}. Senior AI Engineer with production track record across enterprise, scale-ups, and startups.`;
+const description = `${role} based in ${based}. Senior AI Engineer with a production track record across enterprise, scale-ups, and startups.`;
 ---
 
 <BaseLayout title={title} description={description} structured={structured}>
-  <Section
-    bordered={false}
-    number={`● ${role.toLowerCase()}`}
-    eyebrow={`based in ${based.toLowerCase()}`}
-    meta={`raised in ${raised.toLowerCase()}`}
-    notes={['/ about', `${experiences.length} roles`, '2019 → today']}
-    class="hero-section"
-  >
-    <h1
-      class="mb-12 max-w-[1100px] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-      style="font-size: clamp(52px, 8.5vw, 124px);"
-    >
-      About <em class="text-accent italic">{name.split(' ')[0].toLowerCase()}.</em>
+  <div class="ab-hero container-x">
+    <div class="ab-eyebrow">// {role.toLowerCase()} · {based.toLowerCase()}</div>
+    <h1 class="ab-title">
+      About <em class="ab-accent italic">{name.split(' ')[0].toLowerCase()}.</em>
     </h1>
 
-    <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+    <div class="ab-intro clearfix">
       <img
         src={image}
         alt={`Portrait of ${name}`}
-        width="480"
-        height="600"
+        width="120"
+        height="120"
         loading="eager"
-        class="aspect-[4/5] w-full max-w-[420px] rounded-xl border border-border object-cover"
+        class="ab-photo"
       />
-      <div class="prose">
-        <Content />
-      </div>
+      <p class="ab-bio">
+        Senior software engineer with <strong>nearly 8 years</strong> shipping production systems
+        across enterprise (Mercedes-Benz), scale-ups (Smartbox), and startups. Hands-on with
+        AI/ML in production since 2022. Currently CTO &amp; co-founder at Prozeso, building
+        AI automation infrastructure for real businesses — not demos.
+      </p>
+      <p class="ab-bio">
+        I work best at the intersection of product and engineering: scoping systems that will
+        actually scale, shipping fast without accumulating debt, and making AI that earns trust
+        by being observable, reliable, and honest about its limits.
+      </p>
+      <p class="ab-bio">
+        Based in Valencia, Spain. Remote-first, CET±4h. Available for senior contracts and
+        full-time roles at AI-first companies.
+      </p>
     </div>
-  </Section>
+  </div>
 
-  <Section
-    number="/01"
-    eyebrow="trajectory"
-    meta={`${experiences.length} roles`}
-    notes={['oldest → newest reversed']}
-    title="Trajectory"
-  >
-    <ol class="relative ml-2 grid gap-8 border-l border-border pl-8">
+  <div class="ab-section container-x ab-border">
+    <div class="ab-section-label">// trajectory · {experiences.length} roles · 2019 → present</div>
+    <h2 class="ab-section-title">Trajectory</h2>
+    <ol class="ab-timeline">
       {
         experiences.map((exp) => (
-          <li class="relative">
-            <span class="absolute -left-[37px] top-[10px] h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" />
-            <div class="mb-1 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
+          <li class="ab-timeline-item">
+            <span class="ab-timeline-dot" aria-hidden="true"></span>
+            <div class="ab-timeline-meta">
               {exp.start}–{exp.end ?? 'present'} · {exp.location}
             </div>
-            <h3 class="font-serif text-[28px] leading-tight font-normal tracking-[-0.02em]">
+            <h3 class="ab-timeline-role">
               {exp.title}
               {exp.organization && (
-                <span class="text-fg-muted"> · {exp.organization}</span>
+                <span class="ab-timeline-org"> · {exp.organization}</span>
               )}
             </h3>
           </li>
         ))
       }
     </ol>
-  </Section>
+  </div>
 
-  <Section
-    number="/02"
-    eyebrow="how i work"
-    meta="principles"
-    title="How I work"
-  >
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+  <div class="ab-section container-x ab-border">
+    <div class="ab-section-label">// how i work · principles</div>
+    <h2 class="ab-section-title">How I work</h2>
+    <div class="ab-principles">
       {
         principles.map((p) => (
-          <div>
-            <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
-              {p.label}
-            </div>
-            <h3 class="mb-3 font-serif text-[28px] leading-tight font-normal tracking-[-0.02em]">
-              {p.title}
-            </h3>
-            <p class="text-[15px] leading-[1.7] text-fg-muted">{p.body}</p>
+          <div class="ab-principle">
+            <div class="ab-principle-label">{p.label}</div>
+            <h3 class="ab-principle-title">{p.title}</h3>
+            <p class="ab-principle-body">{p.body}</p>
           </div>
         ))
       }
     </div>
-  </Section>
+  </div>
 
-  <Section
-    number="/03"
-    eyebrow="hands-on"
-    meta="broader skills"
-    title="Hands-on with"
-  >
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-      <p class="font-serif text-[24px] leading-[1.4] tracking-[-0.01em]">
-        I bring a <em class="text-accent italic">product mindset</em> to senior IC and tech-lead
-        roles, equally comfortable shaping systems, mentoring, or rolling up sleeves on the line.
-      </p>
-      <div class="flex flex-wrap gap-2">
-        {skills.map((s: string) => <StackTag>{s}</StackTag>)}
-      </div>
-    </div>
-  </Section>
-
-  <section class="container-x border-t border-border py-32 text-center">
-    <div
-      class="mb-6 font-mono text-[11px] tracking-[0.15em] text-fg-faded uppercase"
-    >
-      work together
-    </div>
-    <h2
-      class="mb-6 font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-      style="font-size: clamp(48px, 7vw, 96px);"
-    >
-      Want to <em class="text-accent italic">work together?</em>
-    </h2>
-    <p class="mx-auto mb-10 max-w-[520px] text-[17px] text-fg-muted">
-      Open to senior contracts and full-time roles. I respond within 24 hours.
+  <div class="ab-section container-x ab-border">
+    <div class="ab-section-label">// hands-on · broader skills</div>
+    <h2 class="ab-section-title">Hands-on with</h2>
+    <p class="ab-skills-intro">
+      I bring a <em class="ab-accent italic">product mindset</em> to senior IC and tech-lead roles,
+      equally comfortable shaping systems, mentoring, or rolling up sleeves on the line.
     </p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <Button href="/contact" variant="primary" arrow="→">Get in touch</Button>
-      <Button href={`mailto:${email}`} variant="secondary" arrow="→">{email}</Button>
+    <div class="ab-tags">
+      {skills.map((s: string) => <StackTag>{s}</StackTag>)}
     </div>
-  </section>
+  </div>
+
+  <div class="ab-cta container-x ab-border">
+    <div class="ab-cta-label">// contact</div>
+    <a href="mailto:{email}" class="ab-cta-email">{email} →</a>
+  </div>
 </BaseLayout>
 
 <style>
-  .hero-section {
-    padding-top: 120px;
+  .ab-hero {
+    padding-top: 80px;
+    padding-bottom: 64px;
+  }
+
+  .ab-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-fg-faded);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .ab-title {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+    color: var(--color-fg);
+  }
+
+  .ab-accent {
+    color: var(--color-accent);
+  }
+
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .ab-photo {
+    float: left;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+    border: 2px solid var(--color-border);
+  }
+
+  .ab-bio {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-fg-muted);
+    max-width: 680px;
+    margin-bottom: 1rem;
+  }
+
+  .ab-bio strong {
+    color: var(--color-fg);
+    font-weight: 500;
+  }
+
+  .ab-section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .ab-border {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ab-section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-fg-faded);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .ab-section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    color: var(--color-fg);
+    margin-bottom: 40px;
+  }
+
+  /* Timeline */
+  .ab-timeline {
+    display: grid;
+    gap: 32px;
+    border-left: 1px solid var(--color-border);
+    padding-left: 28px;
+    margin-left: 6px;
+  }
+
+  .ab-timeline-item {
+    position: relative;
+  }
+
+  .ab-timeline-dot {
+    position: absolute;
+    left: -35px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  .ab-timeline-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fg-faded);
+    margin-bottom: 4px;
+  }
+
+  .ab-timeline-role {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+  }
+
+  .ab-timeline-org {
+    color: var(--color-fg-muted);
+  }
+
+  /* Principles */
+  .ab-principles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  @media (max-width: 640px) {
+    .ab-principles {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ab-principle-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fg-faded);
+    margin-bottom: 8px;
+  }
+
+  .ab-principle-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+    margin-bottom: 10px;
+  }
+
+  .ab-principle-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-fg-muted);
+  }
+
+  /* Skills */
+  .ab-skills-intro {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: var(--color-fg-muted);
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+
+  .ab-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* CTA */
+  .ab-cta {
+    padding-top: 56px;
     padding-bottom: 80px;
   }
-  @media (max-width: 900px) {
-    .hero-section {
-      padding-top: 72px;
-      padding-bottom: 48px;
-    }
+
+  .ab-cta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fg-faded);
+    margin-bottom: 12px;
+  }
+
+  .ab-cta-email {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: -0.02em;
+    transition: opacity 0.2s ease;
+  }
+
+  .ab-cta-email:hover {
+    opacity: 0.7;
   }
 </style>

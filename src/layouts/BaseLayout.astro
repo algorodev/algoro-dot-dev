@@ -16,6 +16,9 @@ type BaseLayoutProps = {
 
 const { title, description, url, image, imageAlt, noindex, structured } =
   Astro.props as BaseLayoutProps;
+
+const isHome = Astro.url.pathname === '/';
+const isContact = Astro.url.pathname === '/contact';
 ---
 
 <!doctype html>
@@ -37,7 +40,7 @@ const { title, description, url, image, imageAlt, noindex, structured } =
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class:list={[!isHome && 'standalone', isContact && 'contact-page']}>
     <div id="home-stage">
       <Nav />
       <main>
@@ -57,82 +60,147 @@ const { title, description, url, image, imageAlt, noindex, structured } =
 
     <script is:inline>
       (function () {
-        const overlay = document.getElementById('panel-overlay');
-        const panel = document.getElementById('panel');
-        const panelContent = document.getElementById('panel-content');
-        const panelClose = document.getElementById('panel-close');
+        var overlay = document.getElementById('panel-overlay');
+        var panel = document.getElementById('panel');
+        var panelContent = document.getElementById('panel-content');
+        var panelClose = document.getElementById('panel-close');
 
-        let homeScrollY = 0;
+        var homeScrollY = 0;
 
-        async function openPanel(url) {
-          homeScrollY = window.scrollY;
+        var PANEL_ROUTES = ['/about', '/contact', '/work/otto', '/work/smartbox-voice', '/work/mercedes-ddx', '/work/prozeso-stack'];
 
-          document.documentElement.style.setProperty('--scroll-y', homeScrollY + 'px');
-          document.body.classList.add('panel-open');
+        function getPanelType(url) {
+          if (url.startsWith('/work/')) return 'work';
+          if (url === '/contact') return 'contact';
+          if (url === '/about') return 'about';
+          return 'page';
+        }
 
+        function initContactForm() {
+          var form = document.getElementById('contact-form');
+          var successEl = document.getElementById('contact-success');
+          var errorEl = document.getElementById('contact-error');
+          if (!form || !successEl || !errorEl) return;
+          if (form.dataset.initialized) return;
+          form.dataset.initialized = 'true';
+
+          var submitBtn = form.querySelector('button[type="submit"]');
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            errorEl.classList.add('hidden');
+            if (!form.reportValidity()) return;
+
+            var data = Object.fromEntries(new FormData(form).entries());
+            if (submitBtn) submitBtn.disabled = true;
+
+            fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            })
+              .then(function (res) {
+                if (!res.ok) {
+                  return res.json().catch(function () { return null; }).then(function (body) {
+                    errorEl.textContent = (body && body.error) || ('Request failed (' + res.status + ').');
+                    errorEl.classList.remove('hidden');
+                  });
+                }
+                form.classList.add('hidden');
+                successEl.classList.remove('hidden');
+              })
+              .catch(function (err) {
+                errorEl.textContent = (err && err.message) || 'Network error. Please try again.';
+                errorEl.classList.remove('hidden');
+              })
+              .finally(function () {
+                if (submitBtn) submitBtn.disabled = false;
+              });
+          });
+        }
+
+        async function loadPanelContent(url) {
+          panel.dataset.panelType = getPanelType(url);
           try {
-            const res = await fetch(url);
-            const html = await res.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const main = doc.querySelector('main');
+            var res = await fetch(url);
+            var html = await res.text();
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var main = doc.querySelector('main');
             panelContent.innerHTML = main ? main.innerHTML : html;
           } catch (e) {
             panelContent.innerHTML = '<p style="padding:2rem">Error loading content.</p>';
           }
+          initContactForm();
+        }
+
+        async function openPanel(url) {
+          homeScrollY = window.scrollY;
+          document.documentElement.style.setProperty('--scroll-y', homeScrollY + 'px');
+          document.body.classList.add('panel-open');
+
+          await loadPanelContent(url);
 
           panel.scrollTop = 0;
-
           overlay.classList.add('is-open');
           overlay.setAttribute('aria-hidden', 'false');
-
           history.pushState({ panel: true, url: url }, '', url);
         }
 
         function closePanel() {
           overlay.classList.remove('is-open');
           overlay.setAttribute('aria-hidden', 'true');
-
           setTimeout(function () {
             document.body.classList.remove('panel-open');
             document.documentElement.style.removeProperty('--scroll-y');
             window.scrollTo(0, homeScrollY);
             panelContent.innerHTML = '';
+            delete panel.dataset.panelType;
           }, 580);
-
           history.pushState({}, '', '/');
         }
 
         panelClose.addEventListener('click', closePanel);
 
-        window.addEventListener('popstate', function (e) {
-          if (overlay.classList.contains('is-open')) {
-            closePanel();
-          }
+        window.addEventListener('popstate', function () {
+          if (overlay.classList.contains('is-open')) closePanel();
         });
 
         document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
-            closePanel();
-          }
+          if (e.key === 'Escape' && overlay.classList.contains('is-open')) closePanel();
         });
 
-        window.openPanel = openPanel;
+        // In-panel navigation: replace content instead of opening a nested panel
+        document.addEventListener('click', function (e) {
+          if (!overlay.classList.contains('is-open')) return;
+          var link = e.target.closest('#panel-content a[href]');
+          if (!link) return;
+          var href = link.getAttribute('href');
+          var url;
+          try { url = new URL(href, window.location.origin); } catch (_) { return; }
+          if (url.origin !== window.location.origin || link.target === '_blank' || link.hasAttribute('data-no-panel')) return;
+          var shouldPanel = PANEL_ROUTES.some(function (r) {
+            return url.pathname === r || url.pathname.startsWith('/work/');
+          });
+          if (!shouldPanel) return;
+          e.preventDefault();
+          panelContent.innerHTML = '<p style="padding:2rem;opacity:0.5;font-family:var(--font-mono);font-size:12px">Loading…</p>';
+          panel.scrollTop = 0;
+          loadPanelContent(url.pathname).then(function () {
+            history.pushState({ panel: true, url: url.pathname }, '', url.pathname);
+          });
+        });
 
-        // Link interceptor — panel routes only
-        var PANEL_ROUTES = ['/about', '/contact', '/work/otto', '/work/smartbox-voice', '/work/mercedes-ddx', '/work/prozeso-stack'];
-
+        // Outer interceptor: links outside the panel
         document.addEventListener('click', function (e) {
           var link = e.target.closest('a[href]');
           if (!link) return;
+          // Skip links that are inside the panel itself
+          if (link.closest('#panel')) return;
 
           var href = link.getAttribute('href');
           var url;
-          try {
-            url = new URL(href, window.location.origin);
-          } catch (_) {
-            return;
-          }
+          try { url = new URL(href, window.location.origin); } catch (_) { return; }
 
           if (
             url.origin !== window.location.origin ||
@@ -141,15 +209,20 @@ const { title, description, url, image, imageAlt, noindex, structured } =
             link.hasAttribute('data-no-panel')
           ) return;
 
-          var shouldUsePanel = PANEL_ROUTES.some(function (route) {
-            return url.pathname === route || url.pathname.startsWith('/work/');
+          var shouldPanel = PANEL_ROUTES.some(function (r) {
+            return url.pathname === r || url.pathname.startsWith('/work/');
           });
 
-          if (shouldUsePanel) {
+          if (shouldPanel) {
             e.preventDefault();
             openPanel(url.pathname);
           }
         });
+
+        window.openPanel = openPanel;
+
+        // Initialize contact form if present on standalone page
+        initContactForm();
       })();
     </script>
   </body>

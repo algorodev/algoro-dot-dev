@@ -459,6 +459,37 @@
     margin: 2.5rem 0;
   }
 
+  /* ── Standalone pages (non-home direct access) ── */
+
+  body.standalone {
+    background: var(--layer-surface-bg);
+    color: var(--layer-surface-text);
+    /* Override dark-theme tokens → surface palette */
+    --color-bg: var(--layer-surface-bg);
+    --color-fg: var(--layer-surface-text);
+    --color-fg-muted: var(--layer-surface-muted);
+    --color-fg-faded: var(--layer-surface-muted);
+    --color-accent: var(--layer-surface-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-surface-accent) 50%, transparent);
+    --color-border: var(--layer-surface-border);
+    --color-border-strong: var(--layer-surface-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-surface-bg) 60%, white);
+  }
+
+  body.standalone.contact-page {
+    background: var(--layer-void-bg);
+    color: var(--layer-void-text);
+    --color-bg: var(--layer-void-bg);
+    --color-fg: var(--layer-void-text);
+    --color-fg-muted: var(--layer-void-muted);
+    --color-fg-faded: var(--layer-void-muted);
+    --color-accent: var(--layer-void-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-void-accent) 50%, transparent);
+    --color-border: var(--layer-void-border);
+    --color-border-strong: var(--layer-void-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-void-bg) 60%, var(--layer-void-border));
+  }
+
   /* ── Sliding panel ── */
 
   #home-stage {
@@ -535,5 +566,97 @@
 
   #panel-close:hover {
     opacity: 0.7;
+  }
+
+  /* Panel: CSS token override per content type */
+
+  #panel[data-panel-type="work"] {
+    --color-bg: var(--layer-surface-bg);
+    --color-fg: var(--layer-surface-text);
+    --color-fg-muted: var(--layer-surface-muted);
+    --color-fg-faded: var(--layer-surface-muted);
+    --color-accent: var(--layer-surface-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-surface-accent) 50%, transparent);
+    --color-border: var(--layer-surface-border);
+    --color-border-strong: var(--layer-surface-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-surface-bg) 60%, white);
+    background: var(--layer-surface-bg);
+    color: var(--layer-surface-text);
+  }
+
+  #panel[data-panel-type="about"] {
+    --color-bg: var(--layer-mid-bg);
+    --color-fg: var(--layer-mid-text);
+    --color-fg-muted: var(--layer-mid-muted);
+    --color-fg-faded: var(--layer-mid-muted);
+    --color-accent: var(--layer-mid-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-mid-accent) 50%, transparent);
+    --color-border: var(--layer-mid-border);
+    --color-border-strong: var(--layer-mid-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-mid-bg) 60%, var(--layer-mid-border));
+    background: var(--layer-mid-bg);
+    color: var(--layer-mid-text);
+  }
+
+  #panel[data-panel-type="contact"] {
+    --color-bg: var(--layer-void-bg);
+    --color-fg: var(--layer-void-text);
+    --color-fg-muted: var(--layer-void-muted);
+    --color-fg-faded: var(--layer-void-muted);
+    --color-accent: var(--layer-void-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-void-accent) 50%, transparent);
+    --color-border: var(--layer-void-border);
+    --color-border-strong: var(--layer-void-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-void-bg) 60%, var(--layer-void-border));
+    background: var(--layer-void-bg);
+    color: var(--layer-void-text);
+  }
+
+  /* Panel close button adapts to content type */
+  #panel[data-panel-type="about"] #panel-close {
+    background: var(--layer-mid-bg);
+    color: var(--layer-mid-accent);
+    border-bottom-color: var(--layer-mid-border);
+  }
+
+  #panel[data-panel-type="contact"] #panel-close {
+    background: var(--layer-void-bg);
+    color: var(--layer-void-accent);
+    border-bottom-color: var(--layer-void-border);
+  }
+
+  /* Panel content: layout resets */
+  #panel-content {
+    padding: 2rem 2rem 6rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  #panel-content main,
+  #panel-content > * {
+    background: transparent !important;
+  }
+
+  /* Single column inside panel: hide rail sidebar */
+  #panel-content .section {
+    grid-template-columns: 1fr;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #panel-content .section-rail {
+    display: none;
+  }
+
+  #panel-content .section-bordered {
+    border-top-color: var(--color-border);
+  }
+
+  /* Constrain images inside panel */
+  #panel-content img {
+    max-width: 100%;
+    height: auto;
   }
 }

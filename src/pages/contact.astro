@@ -238,48 +238,5 @@ const structured = [
   }
 </style>
 
-<script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const success = document.getElementById('contact-success');
-  const errorEl = document.getElementById('contact-error');
-
-  if (form && success && errorEl) {
-    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.classList.add('hidden');
-
-      if (!form.reportValidity()) return;
-
-      const data = Object.fromEntries(new FormData(form).entries());
-
-      if (submitBtn) submitBtn.disabled = true;
-
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-
-        if (!res.ok) {
-          const body = (await res.json().catch(() => null)) as { error?: string } | null;
-          errorEl.textContent = body?.error ?? `Request failed (${res.status}).`;
-          errorEl.classList.remove('hidden');
-          return;
-        }
-      } catch (err) {
-        errorEl.textContent =
-          err instanceof Error ? err.message : 'Network error. Please try again.';
-        errorEl.classList.remove('hidden');
-        return;
-      } finally {
-        if (submitBtn) submitBtn.disabled = false;
-      }
-
-      form.classList.add('hidden');
-      success.classList.remove('hidden');
-    });
-  }
-</script>
+<!-- Contact form logic lives in BaseLayout.astro (initContactForm) so it works
+     both on standalone access and when loaded inside the sliding panel. -->
