@@ -67,3 +67,23 @@ const items: Item[] = [
     {items.map((it) => <WorkCard {...it} />)}
   </div>
 </Section>
+
+<style is:global>
+  #work .section-rail {
+    color: var(--layer-surface-muted);
+    border-color: var(--layer-surface-border);
+  }
+  #work .rail-num {
+    color: var(--layer-surface-accent);
+  }
+  #work .rail-eyebrow {
+    color: var(--layer-surface-text);
+  }
+  #work .rail-meta,
+  #work .rail-note {
+    color: var(--layer-surface-muted);
+  }
+  #work .rail-divider {
+    background: var(--layer-surface-border);
+  }
+</style>

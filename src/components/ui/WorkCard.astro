@@ -27,16 +27,17 @@ const {
 <a
   href={href}
   class:list={[
-    'group relative block overflow-hidden rounded-xl border border-border bg-bg-elevated p-10 transition-all duration-300',
-    'hover:-translate-y-0.5 hover:border-border-strong',
-    featured &&
-      'sm:col-span-2 bg-[linear-gradient(135deg,_var(--color-bg-elevated)_0%,_#181818_100%)]',
+    'group relative block overflow-hidden rounded-xl border p-10 transition-all duration-300',
+    'border-[var(--layer-surface-border)] bg-white',
+    'hover:-translate-y-0.5 hover:border-[var(--layer-surface-accent)]',
+    featured && 'sm:col-span-2',
   ]}
 >
   <div
-    class="mb-8 flex justify-between font-mono text-[11px] tracking-[0.05em] text-fg-faded uppercase"
+    class="mb-8 flex justify-between font-mono text-[11px] tracking-[0.05em] uppercase"
+    style="color: var(--layer-surface-muted);"
   >
-    <span class="text-accent">● {tag}</span>
+    <span style="color: var(--layer-surface-accent);">● {tag}</span>
     <span>{period}</span>
   </div>
   <h3
@@ -47,21 +48,30 @@ const {
   >
     <Fragment set:html={title} />
   </h3>
-  <p class="mb-8 max-w-[560px] text-[15px] leading-relaxed text-fg-muted">
+  <p class="mb-8 max-w-[560px] text-[15px] leading-relaxed" style="color: var(--layer-surface-muted);">
     {description}
   </p>
   {
     stack.length > 0 && (
       <div class="mb-6 flex flex-wrap gap-2">
         {stack.map((s) => (
-          <StackTag>{s}</StackTag>
+          <StackTag class="wc-surface-tag">{s}</StackTag>
         ))}
       </div>
     )
   }
   <span
-    class="inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-xs text-accent transition-colors duration-200 group-hover:border-accent"
+    class="inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-xs transition-colors duration-200 group-hover:border-[var(--layer-surface-accent)]"
+    style="color: var(--layer-surface-accent);"
   >
     {linkLabel} <span>→</span>
   </span>
 </a>
+
+<style is:global>
+  [data-layer="surface"] .wc-surface-tag {
+    border-color: color-mix(in srgb, var(--layer-surface-accent) 25%, transparent);
+    background-color: color-mix(in srgb, var(--layer-surface-accent) 8%, transparent);
+    color: var(--layer-surface-accent);
+  }
+</style>

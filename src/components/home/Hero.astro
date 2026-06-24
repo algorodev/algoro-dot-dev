@@ -1,40 +1,69 @@
 ---
-import Section from '@components/Section.astro';
 import Button from '@components/ui/Button.astro';
 ---
 
-<Section
-  bordered={false}
-  number="● senior ai engineer"
-  eyebrow="valencia, es · remote"
-  meta="est. 2018"
-  notes={['accepting work', 'q2 2026']}
-  class="hero-section"
->
+<div class="hero-section container-x">
+  <div class="hero-rule" aria-hidden="true"></div>
+
   <h1
     id="hero-title"
-    class="mb-10 max-w-[18ch] font-serif font-normal leading-[0.95] tracking-[-0.03em]"
-    style="font-size: clamp(52px, 8.5vw, 124px);"
+    class="hero-headline font-serif font-normal leading-[0.95] tracking-[-0.03em]"
   >
-    Building <em class="text-accent italic">production AI</em> systems that ship, scale, and don't break.
+    Full-stack runs <em style="color: var(--layer-surface-accent);" class="italic">deep.</em>
   </h1>
 
-  <p class="mb-12 max-w-[620px] text-[19px] leading-[1.5] text-fg-muted">
-    Senior software engineer with <strong class="font-medium text-fg">nearly 8 years</strong> shipping
+  <p class="hero-tagline">
+    Frontend to infra.<br />
+    <span style="color: var(--layer-surface-accent);">Scroll to explore the stack.</span>
+  </p>
+
+  <p class="hero-bio">
+    Senior software engineer with <strong class="font-medium">nearly 8 years</strong> shipping
     production systems across enterprise (Mercedes-Benz), scale-ups (Smartbox), and startups.
     Hands-on with AI/ML in production since 2022. Currently CTO &amp; co-founder at Prozeso.
   </p>
 
-  <div class="flex flex-wrap items-center gap-4">
+  <div class="hero-ctas">
     <Button href="/contact" variant="primary" arrow="→">Hire me</Button>
     <Button href="#work" variant="secondary" arrow="→">View selected work</Button>
   </div>
-</Section>
+</div>
 
 <style>
   .hero-section {
     padding-top: 140px;
     padding-bottom: 120px;
+  }
+  .hero-rule {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 48px;
+    background-color: var(--layer-surface-accent);
+  }
+  .hero-headline {
+    font-size: clamp(52px, 8.5vw, 120px);
+    max-width: 14ch;
+    margin-bottom: 32px;
+  }
+  .hero-tagline {
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.45;
+    margin-bottom: 40px;
+    max-width: 560px;
+    color: var(--layer-surface-muted);
+  }
+  .hero-bio {
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 620px;
+    color: var(--layer-surface-muted);
+    margin-bottom: 48px;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
   }
   @media (max-width: 900px) {
     .hero-section {
@@ -85,6 +114,7 @@ import Button from '@components/ui/Button.astro';
             span.className = el.className;
             const tag = el.tagName.toLowerCase();
             if (tag === 'em') span.style.fontStyle = 'italic';
+            if (el.style.color) span.style.color = el.style.color;
             span.style.animationDelay = `${idx * 60}ms`;
             title.appendChild(span);
             idx++;
