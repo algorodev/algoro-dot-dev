@@ -69,11 +69,31 @@ const isContact = Astro.url.pathname === '/contact';
 
         var PANEL_ROUTES = ['/about', '/contact', '/work/otto', '/work/smartbox-voice', '/work/mercedes-ddx', '/work/prozeso-stack'];
 
+        var LOADING_HTML = '<div class="panel-loading"><span class="panel-loading-bar"></span></div>';
+
         function getPanelType(url) {
           if (url.startsWith('/work/')) return 'work';
           if (url === '/contact') return 'contact';
           if (url === '/about') return 'about';
           return 'page';
+        }
+
+        function activatePanelContent() {
+          // Re-execute any <script> tags injected via innerHTML (browsers skip them)
+          panelContent.querySelectorAll('script').forEach(function (old) {
+            var s = document.createElement('script');
+            Array.from(old.attributes).forEach(function (a) { s.setAttribute(a.name, a.value); });
+            s.textContent = old.textContent;
+            old.parentNode.replaceChild(s, old);
+          });
+
+          // Activate reveal animations — IntersectionObserver from the source page
+          // won't have observed these elements; mark them visible immediately
+          panelContent.querySelectorAll('.reveal-up, .reveal-line').forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+
+          initContactForm();
         }
 
         function initContactForm() {
@@ -121,6 +141,7 @@ const isContact = Astro.url.pathname === '/contact';
 
         async function loadPanelContent(url) {
           panel.dataset.panelType = getPanelType(url);
+          panelContent.innerHTML = LOADING_HTML;
           try {
             var res = await fetch(url);
             var html = await res.text();
@@ -131,12 +152,13 @@ const isContact = Astro.url.pathname === '/contact';
           } catch (e) {
             panelContent.innerHTML = '<p style="padding:2rem">Error loading content.</p>';
           }
-          initContactForm();
+          activatePanelContent();
         }
 
         async function openPanel(url) {
           homeScrollY = window.scrollY;
           document.documentElement.style.setProperty('--scroll-y', homeScrollY + 'px');
+          document.documentElement.style.overflow = 'hidden';
           document.body.classList.add('panel-open');
 
           await loadPanelContent(url);
@@ -151,6 +173,7 @@ const isContact = Astro.url.pathname === '/contact';
           overlay.classList.remove('is-open');
           overlay.setAttribute('aria-hidden', 'true');
           setTimeout(function () {
+            document.documentElement.style.overflow = '';
             document.body.classList.remove('panel-open');
             document.documentElement.style.removeProperty('--scroll-y');
             window.scrollTo(0, homeScrollY);
@@ -184,9 +207,8 @@ const isContact = Astro.url.pathname === '/contact';
           });
           if (!shouldPanel) return;
           e.preventDefault();
-          panelContent.innerHTML = '<p style="padding:2rem;opacity:0.5;font-family:var(--font-mono);font-size:12px">Loading…</p>';
-          panel.scrollTop = 0;
           loadPanelContent(url.pathname).then(function () {
+            panel.scrollTop = 0;
             history.pushState({ panel: true, url: url.pathname }, '', url.pathname);
           });
         });
@@ -195,7 +217,6 @@ const isContact = Astro.url.pathname === '/contact';
         document.addEventListener('click', function (e) {
           var link = e.target.closest('a[href]');
           if (!link) return;
-          // Skip links that are inside the panel itself
           if (link.closest('#panel')) return;
 
           var href = link.getAttribute('href');
@@ -221,7 +242,7 @@ const isContact = Astro.url.pathname === '/contact';
 
         window.openPanel = openPanel;
 
-        // Initialize contact form if present on standalone page
+        // Initialize contact form if present on standalone page load
         initContactForm();
       })();
     </script>
