@@ -461,6 +461,22 @@
 
   /* ── Sliding panel ── */
 
+  #home-stage {
+    transition:
+      transform 0.55s cubic-bezier(0.76, 0, 0.24, 1),
+      opacity 0.55s cubic-bezier(0.76, 0, 0.24, 1),
+      filter 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+    transform-origin: center center;
+    will-change: transform, opacity;
+  }
+
+  body.panel-open #home-stage {
+    transform: translateX(-6%) scale(0.97);
+    opacity: 0.4;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
   body.panel-open {
     overflow: hidden;
     position: fixed;

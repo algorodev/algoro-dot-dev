@@ -38,11 +38,13 @@ const { title, description, url, image, imageAlt, noindex, structured } =
     />
   </head>
   <body>
-    <Nav />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+    <div id="home-stage">
+      <Nav />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
 
     <div id="panel-overlay" aria-hidden="true">
       <div id="panel">
