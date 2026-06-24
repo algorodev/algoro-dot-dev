@@ -57,9 +57,10 @@
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
-    --nav-bg: #f5f2ed;
-    --nav-text: #1a1a18;
-    --nav-accent: #c4622d;
+    /* Dark-theme nav defaults — home page JS/style overrides these to surface */
+    --nav-bg: var(--color-bg);
+    --nav-text: var(--color-fg);
+    --nav-accent: var(--color-accent);
   }
 
   body {
@@ -243,6 +244,27 @@
   .layer-section {
     transition: var(--layer-transition);
     min-height: 100vh;
+    padding-bottom: 8rem;
+  }
+
+  @keyframes fadeInLayer {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .layer-fade-in {
+    animation: fadeInLayer 0.7s ease forwards;
+    animation-play-state: paused;
+  }
+
+  [data-layer].is-active .layer-fade-in {
+    animation-play-state: running;
   }
 
   #depth-indicator {
@@ -273,6 +295,12 @@
   #depth-indicator span.is-active {
     opacity: 1;
     transform: scale(1.4);
+  }
+
+  @media (max-width: 768px) {
+    #depth-indicator {
+      display: none;
+    }
   }
 
   .status-dot {

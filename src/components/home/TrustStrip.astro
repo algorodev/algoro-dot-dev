@@ -5,6 +5,7 @@ const logos = ['Mercedes-Benz', 'Smartbox', 'Nexook', 'Prozeso'];
 ---
 
 <Section
+  id="trust-strip"
   number="trust"
   eyebrow="teams"
   meta="+15 via prozeso"
@@ -12,10 +13,38 @@ const logos = ['Mercedes-Benz', 'Smartbox', 'Nexook', 'Prozeso'];
   <div class="flex flex-wrap items-center gap-x-14 gap-y-6">
     {
       logos.map((logo) => (
-        <div class="cursor-default font-serif text-[28px] italic text-fg-muted opacity-70 transition-[color,opacity] duration-300 hover:text-fg hover:opacity-100">
+        <div class="trust-logo cursor-default font-serif text-[28px] italic transition-[color,opacity] duration-300">
           {logo}
         </div>
       ))
     }
   </div>
 </Section>
+
+<style is:global>
+  #trust-strip .section-rail {
+    color: var(--layer-surface-muted);
+    border-color: var(--layer-surface-border);
+  }
+  #trust-strip .rail-num {
+    color: var(--layer-surface-accent);
+  }
+  #trust-strip .rail-eyebrow {
+    color: var(--layer-surface-text);
+  }
+  #trust-strip .rail-meta,
+  #trust-strip .rail-note {
+    color: var(--layer-surface-muted);
+  }
+  #trust-strip .rail-divider {
+    background: var(--layer-surface-border);
+  }
+  .trust-logo {
+    color: var(--layer-surface-muted);
+    opacity: 0.7;
+  }
+  .trust-logo:hover {
+    color: var(--layer-surface-text);
+    opacity: 1;
+  }
+</style>

@@ -43,7 +43,7 @@ const deepProcesses = [
     class="layer-section"
     style="background-color: var(--layer-mid-bg); color: var(--layer-mid-text);"
   >
-    <div class="layer-descent">— descending into the stack —</div>
+    <div class="layer-descent layer-fade-in">— descending into the stack —</div>
     <AboutSnippet />
     <TechGrid />
   </section>
@@ -54,7 +54,7 @@ const deepProcesses = [
     class="layer-section"
     style="background-color: var(--layer-deep-bg); color: var(--layer-deep-text);"
   >
-    <div class="layer-descent" style="color: var(--layer-deep-muted);">— going deeper —</div>
+    <div class="layer-descent layer-fade-in" style="color: var(--layer-deep-muted);">— going deeper —</div>
 
     <div class="section section-bordered deep-main" id="deep-content">
       <aside
@@ -102,9 +102,9 @@ const deepProcesses = [
     id="layer-void"
     data-layer="void"
     class="layer-section"
-    style="background-color: var(--layer-void-bg); color: var(--layer-void-text); min-height: auto;"
+    style="background-color: var(--layer-void-bg); color: var(--layer-void-text); min-height: auto; padding-bottom: 0;"
   >
-    <div class="layer-void-signal">— signal detected at depth 04 —</div>
+    <div class="layer-void-signal layer-fade-in">— signal detected at depth 04 —</div>
     <AiDemo />
     <FooterCTA />
   </section>
@@ -116,6 +116,15 @@ const deepProcesses = [
     <span data-for="void"></span>
   </div>
 </BaseLayout>
+
+<style is:global>
+  /* Home page only: set surface nav defaults before JS setLayer('surface') fires */
+  html {
+    --nav-bg: #f5f2ed;
+    --nav-text: #1a1a18;
+    --nav-accent: #c4622d;
+  }
+</style>
 
 <style>
   .layer-descent {
