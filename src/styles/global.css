@@ -499,6 +499,22 @@
     --color-bg-elevated: color-mix(in srgb, var(--layer-surface-bg) 60%, white);
   }
 
+  body.standalone.about-page {
+    background: var(--layer-mid-bg);
+    color: var(--layer-mid-text);
+    --color-bg: var(--layer-mid-bg);
+    --color-fg: var(--layer-mid-text);
+    --color-fg-muted: var(--layer-mid-muted);
+    --color-fg-faded: var(--layer-mid-muted);
+    --color-accent: var(--layer-mid-accent);
+    --color-accent-dim: color-mix(in srgb, var(--layer-mid-accent) 50%, transparent);
+    --color-border: var(--layer-mid-border);
+    --color-border-strong: var(--layer-mid-accent);
+    --color-bg-elevated: color-mix(in srgb, var(--layer-mid-bg) 60%, var(--layer-mid-border));
+    --font-serif: 'Syne', system-ui, sans-serif;
+    --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
   body.standalone.contact-page {
     background: var(--layer-void-bg);
     color: var(--layer-void-text);

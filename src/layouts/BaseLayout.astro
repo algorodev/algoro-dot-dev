@@ -19,6 +19,7 @@ const { title, description, url, image, imageAlt, noindex, structured } =
 
 const isHome = Astro.url.pathname === '/';
 const isContact = Astro.url.pathname === '/contact';
+const isAbout = Astro.url.pathname === '/about';
 ---
 
 <!doctype html>
@@ -40,7 +41,7 @@ const isContact = Astro.url.pathname === '/contact';
       rel="stylesheet"
     />
   </head>
-  <body class:list={[!isHome && 'standalone', isContact && 'contact-page']}>
+  <body class:list={[!isHome && 'standalone', isContact && 'contact-page', isAbout && 'about-page']}>
     <div id="home-stage">
       <Nav />
       <main>
