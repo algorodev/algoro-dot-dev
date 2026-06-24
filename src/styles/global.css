@@ -20,6 +20,37 @@
   --radius-xl: 0.75rem;
 
   --rail-width: 140px;
+
+  /* Layer system — vertical journey through the tech stack */
+  --layer-transition: background-color 0.8s ease, color 0.6s ease;
+
+  /* surface — Frontend / UI */
+  --layer-surface-bg: #f5f2ed;
+  --layer-surface-text: #1a1a18;
+  --layer-surface-accent: #c4622d;
+  --layer-surface-muted: #6b6860;
+  --layer-surface-border: #dedad4;
+
+  /* mid — Backend / APIs */
+  --layer-mid-bg: #1c2333;
+  --layer-mid-text: #a8b4c8;
+  --layer-mid-accent: #4a7fa5;
+  --layer-mid-muted: #5a6478;
+  --layer-mid-border: #2a3348;
+
+  /* deep — Infra / DevOps / Databases / SRE */
+  --layer-deep-bg: #0d1410;
+  --layer-deep-text: #6b9e78;
+  --layer-deep-accent: #00c853;
+  --layer-deep-muted: #3d5c45;
+  --layer-deep-border: #1a2e1e;
+
+  /* void — AI / ML / LLMs */
+  --layer-void-bg: #080810;
+  --layer-void-text: #b8a9d4;
+  --layer-void-accent: #7c3aed;
+  --layer-void-muted: #5c4f78;
+  --layer-void-border: #161624;
 }
 
 @layer base {
