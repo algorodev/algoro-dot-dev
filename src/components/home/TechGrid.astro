@@ -1,6 +1,4 @@
 ---
-import Section from '@components/Section.astro';
-
 type Cell = {
   category: string;
   items: string[];
@@ -26,25 +24,101 @@ const cells: Cell[] = [
 ];
 ---
 
-<Section
-  number="/04"
-  eyebrow="tech"
-  meta="primary stack"
->
-  <div
-    class="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border lg:grid-cols-4"
+<div class="section section-bordered tech-section" id="tech-grid">
+  <aside
+    class="section-rail"
+    style="color: var(--layer-mid-muted); border-color: var(--layer-mid-border);"
   >
-    {
-      cells.map((cell) => (
-        <div class="bg-bg p-7 transition-colors duration-200 hover:bg-bg-elevated">
-          <div class="mb-4 font-mono text-[10px] tracking-[0.1em] text-accent uppercase">
-            {cell.category}
-          </div>
-          <ul class="text-[13px] leading-[1.7] text-fg-muted">
-            {cell.items.map((it) => <li>{it}</li>)}
-          </ul>
+    <div style="color: var(--layer-mid-accent); font-family: var(--font-mono); font-size: 12px;">/04</div>
+    <div style="color: var(--layer-mid-text); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">stack.config</div>
+    <div style="color: var(--layer-mid-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">tech deps</div>
+  </aside>
+
+  <div class="section-content">
+    <div class="term-window">
+      <div class="term-bar">
+        <div class="term-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
         </div>
-      ))
-    }
+        <span class="term-filename">stack.config</span>
+      </div>
+      <div class="term-body">
+        {
+          cells.map((cell) => (
+            <div class="term-group">
+              <div class="term-comment">// {cell.category}</div>
+              <div class="term-items">{cell.items.join(' · ')}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
-</Section>
+</div>
+
+<style is:global>
+  #tech-grid {
+    border-top-color: var(--layer-mid-border);
+  }
+  @media (max-width: 900px) {
+    #tech-grid .section-rail {
+      border-bottom-color: var(--layer-mid-border);
+    }
+  }
+</style>
+
+<style>
+  .tech-section {
+    padding-bottom: 120px;
+  }
+  .term-window {
+    border: 1px solid var(--layer-mid-border);
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--layer-mid-bg) 75%, black);
+    overflow: hidden;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--layer-mid-border);
+    background: color-mix(in srgb, var(--layer-mid-bg) 55%, black);
+  }
+  .term-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .term-dots span {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--layer-mid-border);
+  }
+  .term-filename {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-mid-muted);
+    letter-spacing: 0.05em;
+  }
+  .term-body {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .term-comment {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-mid-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .term-items {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--layer-mid-text);
+    line-height: 1.7;
+  }
+</style>

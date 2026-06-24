@@ -34,6 +34,7 @@ const structured = [websiteSchema(), personSchema()];
     class="layer-section"
     style="background-color: var(--layer-mid-bg); color: var(--layer-mid-text);"
   >
+    <div class="layer-descent">— descending into the stack —</div>
     <AboutSnippet />
     <TechGrid />
   </section>
@@ -74,6 +75,17 @@ const structured = [websiteSchema(), personSchema()];
     <span data-for="void"></span>
   </div>
 </BaseLayout>
+
+<style>
+  .layer-descent {
+    padding-top: 80px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--layer-mid-muted);
+  }
+</style>
 
 <script>
   const layers = Array.from(document.querySelectorAll<HTMLElement>('[data-layer]'));

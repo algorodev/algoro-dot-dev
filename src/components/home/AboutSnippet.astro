@@ -1,45 +1,142 @@
 ---
 import Section from '@components/Section.astro';
-import StatBlock from '@components/ui/StatBlock.astro';
 ---
 
 <Section
   id="about-snippet"
   number="/03"
-  eyebrow="about"
+  eyebrow="sys.profile"
   meta="who · how · why"
-  notes={['8 years · 4 in production AI']}
+  notes={['8y engineering · 4y prod AI']}
 >
   <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
     <div>
-      <div
-        class="mb-4 font-mono text-xs tracking-[0.1em] text-fg-faded uppercase"
-      >
-        profile
-      </div>
-      <p class="text-sm leading-[1.7] text-fg-muted">
+      <div class="mid-label">sys.profile</div>
+      <div class="mid-layer-tag">Layer 02 · Backend &amp; Systems</div>
+      <p class="mid-bio">
         I started writing software in 2018. Eight years in, I've shipped on enterprise teams
         (Mercedes-Benz), scale-ups (Smartbox in Dublin), and now my own consultancy.
       </p>
-      <p class="mt-4 text-sm leading-[1.7] text-fg-muted">
+      <p class="mid-bio mt-4">
         I care about systems that ship, scale, and don't break, and about being the senior who can
         look at a vague problem and turn it into something running in production by Friday.
       </p>
     </div>
 
     <div>
-      <p class="font-serif text-[28px] leading-[1.4] tracking-[-0.01em] text-fg">
-        I build <em class="text-accent italic">production AI systems</em> for companies that need to
+      <p class="mid-quote">
+        I build <em class="mid-accent italic">production AI systems</em> for companies that need to
         ship, not prototype. My work spans the whole stack: data, infra, model orchestration, and
         the UI on top.
       </p>
 
-      <div class="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-12">
-        <StatBlock value="8" unit="y" label="software engineering" />
-        <StatBlock value="15" unit="+" label="ai systems shipped" />
-        <StatBlock value="04" unit="y" label="ai/ml in production" />
-        <StatBlock value="02" unit="x" label="languages · es / en" />
+      <div class="mid-stats">
+        <div class="mid-stat">
+          <div class="mid-stat-num">8<span class="mid-stat-unit">y</span></div>
+          <div class="mid-stat-label">software engineering</div>
+        </div>
+        <div class="mid-stat">
+          <div class="mid-stat-num">15<span class="mid-stat-unit">+</span></div>
+          <div class="mid-stat-label">ai systems shipped</div>
+        </div>
+        <div class="mid-stat">
+          <div class="mid-stat-num">04<span class="mid-stat-unit">y</span></div>
+          <div class="mid-stat-label">ai/ml in production</div>
+        </div>
+        <div class="mid-stat">
+          <div class="mid-stat-num">02<span class="mid-stat-unit">x</span></div>
+          <div class="mid-stat-label">languages · es / en</div>
+        </div>
       </div>
     </div>
   </div>
 </Section>
+
+<style is:global>
+  #about-snippet {
+    border-top-color: var(--layer-mid-border);
+  }
+  #about-snippet .section-rail {
+    color: var(--layer-mid-muted);
+    border-color: var(--layer-mid-border);
+  }
+  #about-snippet .rail-num {
+    color: var(--layer-mid-accent);
+  }
+  #about-snippet .rail-eyebrow {
+    color: var(--layer-mid-text);
+  }
+  #about-snippet .rail-meta,
+  #about-snippet .rail-note {
+    color: var(--layer-mid-muted);
+  }
+  #about-snippet .rail-divider {
+    background: var(--layer-mid-border);
+  }
+  @media (max-width: 900px) {
+    #about-snippet .section-rail {
+      border-bottom-color: var(--layer-mid-border);
+    }
+  }
+</style>
+
+<style>
+  .mid-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--layer-mid-muted);
+    margin-bottom: 8px;
+  }
+  .mid-layer-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--layer-mid-accent);
+    margin-bottom: 20px;
+  }
+  .mid-bio {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--layer-mid-text);
+  }
+  .mid-quote {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.5vw, 28px);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--layer-mid-text);
+    margin-bottom: 40px;
+  }
+  .mid-accent {
+    color: var(--layer-mid-accent);
+  }
+  .mid-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    border-top: 1px solid var(--layer-mid-border);
+    padding-top: 40px;
+  }
+  .mid-stat-num {
+    font-family: var(--font-serif);
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--layer-mid-accent);
+    margin-bottom: 6px;
+  }
+  .mid-stat-unit {
+    font-size: 28px;
+    color: var(--layer-mid-muted);
+  }
+  .mid-stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--layer-mid-muted);
+  }
+</style>
