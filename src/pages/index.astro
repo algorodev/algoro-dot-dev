@@ -66,4 +66,43 @@ const structured = [websiteSchema(), personSchema()];
     <AiDemo />
     <FooterCTA />
   </section>
+
+  <div id="depth-indicator" aria-hidden="true">
+    <span data-for="surface"></span>
+    <span data-for="mid"></span>
+    <span data-for="deep"></span>
+    <span data-for="void"></span>
+  </div>
 </BaseLayout>
+
+<script>
+  const layers = Array.from(document.querySelectorAll<HTMLElement>('[data-layer]'));
+  const dots = Array.from(document.querySelectorAll<HTMLElement>('#depth-indicator [data-for]'));
+  const root = document.documentElement;
+
+  function setLayer(name: string) {
+    const cs = getComputedStyle(root);
+    root.style.setProperty('--active-layer', name);
+    root.style.setProperty('--nav-bg', cs.getPropertyValue(`--layer-${name}-bg`).trim());
+    root.style.setProperty('--nav-text', cs.getPropertyValue(`--layer-${name}-text`).trim());
+    root.style.setProperty('--nav-accent', cs.getPropertyValue(`--layer-${name}-accent`).trim());
+
+    layers.forEach((el) => el.classList.toggle('is-active', el.dataset.layer === name));
+    dots.forEach((dot) => dot.classList.toggle('is-active', dot.getAttribute('data-for') === name));
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          setLayer((entry.target as HTMLElement).dataset.layer!);
+        }
+      }
+    },
+    { rootMargin: '-40% 0px -40% 0px', threshold: 0 },
+  );
+
+  layers.forEach((el) => observer.observe(el));
+
+  setLayer('surface');
+</script>

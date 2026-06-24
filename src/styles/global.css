@@ -57,6 +57,9 @@
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
+    --nav-bg: #f5f2ed;
+    --nav-text: #1a1a18;
+    --nav-accent: #c4622d;
   }
 
   body {
@@ -240,6 +243,36 @@
   .layer-section {
     transition: var(--layer-transition);
     min-height: 100vh;
+  }
+
+  #depth-indicator {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+  }
+
+  #depth-indicator span {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: var(--nav-accent);
+    opacity: 0.3;
+    transform: scale(1);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  #depth-indicator span.is-active {
+    opacity: 1;
+    transform: scale(1.4);
   }
 
   .status-dot {

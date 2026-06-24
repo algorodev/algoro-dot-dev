@@ -10,18 +10,22 @@ const links = [
 ];
 ---
 
-<nav class="sticky top-0 z-50 border-b border-border bg-bg/70 py-4 backdrop-blur-md">
+<nav
+  class="sticky top-0 z-50 border-b border-border py-4 backdrop-blur-md"
+  style="background-color: color-mix(in srgb, var(--nav-bg) 70%, transparent); color: var(--nav-text); transition: var(--layer-transition);"
+>
   <div class="container-x flex items-center justify-between">
     <a
       href="/"
-      class="font-mono text-sm font-medium tracking-tight text-fg"
+      class="font-mono text-sm font-medium tracking-tight"
       aria-label="algorodev home"
     >
       algoro<svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 4 12"
         aria-hidden="true"
-        class="mx-[2px] inline-block h-[0.85em] w-[0.28em] animate-pulse align-[-0.05em] text-accent"
+        class="mx-[2px] inline-block h-[0.85em] w-[0.28em] animate-pulse align-[-0.05em]"
+        style="color: var(--nav-accent);"
       ><rect width="4" height="12" rx="0.4" fill="currentColor" /></svg>dev
     </a>
     <ul class="hidden gap-8 md:flex">
@@ -31,8 +35,8 @@ const links = [
             <a
               href={link.href}
               class:list={[
-                'font-mono text-[13px] transition-colors hover:text-fg',
-                isActive(link.href) ? 'text-fg' : 'text-fg-muted',
+                'font-mono text-[13px] transition-opacity hover:opacity-100',
+                isActive(link.href) ? 'opacity-100' : 'opacity-60',
               ]}
             >
               {link.label}
@@ -41,7 +45,7 @@ const links = [
         ))
       }
     </ul>
-    <div class="hidden items-center gap-2 font-mono text-xs text-fg-muted md:flex">
+    <div class="hidden items-center gap-2 font-mono text-xs opacity-60 md:flex">
       <span class="status-dot"></span>
       <span>available · q2 2026</span>
     </div>
