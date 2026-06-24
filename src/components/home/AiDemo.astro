@@ -16,33 +16,23 @@ const suggested = [
 ];
 ---
 
-<Section id="demo" number="/02" eyebrow="live ai demo" meta="rag · streaming · cited">
+<Section id="demo" number="/06" eyebrow="void.rag" meta="depth 04 · bottom">
   <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
-      <h3
-        class="mb-6 font-serif text-[44px] leading-none font-normal tracking-[-0.02em]"
-      >
-        Ask the <em class="text-accent italic">portfolio</em> anything.
-      </h3>
-      <p class="mb-6 text-[15px] text-fg-muted">
-        This isn't a static page. It's a working RAG system over my CV, case studies, and writing.
-        Ask anything about my experience and the system retrieves relevant chunks, generates a
-        grounded answer, and cites the source.
+      <div class="void-layer-tag">Layer 04 · AI / LLMs / RAG</div>
+      <h3 class="void-heading">This is where it thinks.</h3>
+      <p class="void-desc">
+        You've scrolled through the full stack. This is the bottom. A working RAG system over my
+        CV, case studies, and writing — same architecture I ship to clients. Ask anything.
       </p>
-      <p class="mb-6 text-[13px] text-fg-faded">
-        Same architecture I ship to clients. No mock data, no canned responses.
-      </p>
-      <div class="mt-8 border-t border-border pt-6">
-        <div
-          class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase"
-        >
-          stack
-        </div>
-        <ul class="font-mono text-xs leading-[1.9] text-fg-muted">
+      <div class="void-syslog">
+        <div class="void-syslog-label">sys.log</div>
+        <ul class="void-syslog-list">
           {
             stack.map((line) => (
               <li>
-                <span class="text-accent-dim">→</span> {line}
+                <span class="void-arrow">→</span>
+                {line}
               </li>
             ))
           }
@@ -50,65 +40,322 @@ const suggested = [
       </div>
     </div>
 
-    <div
-      data-chat
-      class="overflow-hidden rounded-xl border border-border bg-bg-elevated"
-    >
-      <div
-        class="flex items-center gap-2.5 border-b border-border px-5 py-3.5 font-mono text-xs text-fg-muted"
-      >
-        <div class="flex gap-1.5">
-          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-border-strong"></span>
-        </div>
-        <span class="ml-2">algoro.rag · interactive</span>
-      </div>
+    <div class="void-right">
+      <div class="void-grid-bg" aria-hidden="true"></div>
 
-      <div class="flex min-h-[380px] flex-col gap-4 p-6">
-        <div data-empty class="flex flex-1 flex-col items-start justify-center gap-2 text-fg-faded">
-          <p class="text-[14px] leading-[1.55]">
-            Ask anything about Alejandro's work, projects, or experience. Answers stream live and
-            cite the source.
-          </p>
+      <div data-chat class="void-chat">
+        <div class="void-titlebar">
+          <div class="void-titlebar-dots" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <span>algoro.rag · interactive</span>
         </div>
 
-        <div data-messages class="flex flex-col gap-4"></div>
+        <div class="void-body">
+          <div data-empty class="void-empty">
+            <p>
+              Ask anything about Alejandro's work, projects, or experience. Answers stream live
+              and cite the source.
+            </p>
+          </div>
 
-        <div data-suggested class="mt-auto flex flex-wrap gap-2">
-          {
-            suggested.map((q) => (
-              <button
-                type="button"
-                data-q={q}
-                class="cursor-pointer rounded-full border border-border bg-transparent px-3 py-1.5 font-mono text-[11px] text-fg-muted transition-all duration-200 hover:border-accent-dim hover:text-accent"
-              >
-                → {q}
-              </button>
-            ))
-          }
+          <div data-messages class="flex flex-col gap-4"></div>
+
+          <div data-suggested class="mt-auto flex flex-wrap gap-2">
+            {
+              suggested.map((q) => (
+                <button type="button" data-q={q} class="void-chip">→ {q}</button>
+              ))
+            }
+          </div>
         </div>
-      </div>
 
-      <div class="flex items-center gap-3 border-t border-border px-5 py-3.5">
-        <input
-          data-input
-          type="text"
-          aria-label="Ask anything about my work"
-          placeholder="Ask anything about my work..."
-          class="flex-1 border-0 bg-transparent font-sans text-sm text-fg outline-none placeholder:text-fg-faded disabled:opacity-50"
-        />
-        <button
-          data-send
-          type="button"
-          class="cursor-pointer rounded border border-accent-dim bg-transparent px-3 py-1.5 font-mono text-[11px] text-accent transition-colors hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
-        >
-          send ↵
-        </button>
+        <div class="void-input-row">
+          <input
+            data-input
+            type="text"
+            aria-label="Ask anything about my work"
+            placeholder="Ask anything about my work..."
+            class="void-input"
+          />
+          <button data-send type="button" class="void-send">send ↵</button>
+        </div>
       </div>
     </div>
   </div>
 </Section>
+
+<style is:global>
+  #demo {
+    border-top-color: var(--layer-void-border);
+  }
+  #demo .section-rail {
+    color: var(--layer-void-muted);
+    border-color: var(--layer-void-border);
+  }
+  #demo .rail-num {
+    color: var(--layer-void-accent);
+  }
+  #demo .rail-eyebrow {
+    color: var(--layer-void-text);
+  }
+  #demo .rail-meta,
+  #demo .rail-note {
+    color: var(--layer-void-muted);
+  }
+  #demo .rail-divider {
+    background: var(--layer-void-border);
+  }
+  @media (max-width: 900px) {
+    #demo .section-rail {
+      border-bottom-color: var(--layer-void-border);
+    }
+  }
+
+  /* dynamically created message elements */
+  .void-msg-user {
+    max-width: 85%;
+    align-self: flex-end;
+    background: var(--layer-void-accent);
+    color: white;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 500;
+    border-radius: 2px;
+  }
+  .void-msg-bot {
+    max-width: 85%;
+    align-self: flex-start;
+    background: color-mix(in srgb, var(--layer-void-accent) 6%, transparent);
+    border: 1px solid var(--layer-void-border);
+    color: var(--layer-void-text);
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    border-radius: 2px;
+  }
+  .void-msg-error {
+    color: var(--layer-void-muted);
+    font-style: italic;
+  }
+  .void-cite {
+    display: inline-block;
+    border: 1px solid color-mix(in srgb, var(--layer-void-accent) 25%, transparent);
+    background: color-mix(in srgb, var(--layer-void-accent) 12%, transparent);
+    color: var(--layer-void-accent);
+    border-radius: 3px;
+    padding: 0 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    margin: 0 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .void-cite:hover {
+    background: color-mix(in srgb, var(--layer-void-accent) 22%, transparent);
+  }
+  .void-cursor {
+    color: var(--layer-void-accent);
+    display: inline-block;
+    margin-left: 2px;
+    animation: void-cursor-blink 1.2s ease infinite;
+  }
+  @keyframes void-cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+</style>
+
+<style>
+  /* left column */
+  .void-layer-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--layer-void-accent);
+    margin-bottom: 16px;
+  }
+  .void-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--layer-void-text);
+    margin-bottom: 20px;
+  }
+  .void-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--layer-void-text);
+    max-width: 60ch;
+    margin-bottom: 32px;
+    opacity: 0.85;
+  }
+  .void-syslog {
+    border-top: 1px solid var(--layer-void-border);
+    padding-top: 20px;
+  }
+  .void-syslog-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--layer-void-muted);
+    margin-bottom: 10px;
+  }
+  .void-syslog-list {
+    list-style: none;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 2;
+    color: var(--layer-void-muted);
+  }
+  .void-arrow {
+    color: var(--layer-void-accent);
+    margin-right: 6px;
+  }
+
+  /* right column — grid + chat */
+  .void-right {
+    position: relative;
+  }
+  .void-grid-bg {
+    position: absolute;
+    inset: -24px;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--layer-void-accent) 4%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--layer-void-accent) 4%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 32px 32px;
+  }
+  .void-chat {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid color-mix(in srgb, var(--layer-void-accent) 30%, transparent);
+    background: color-mix(in srgb, var(--layer-void-bg) 60%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .void-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--layer-void-border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--layer-void-muted);
+    background: color-mix(in srgb, var(--layer-void-bg) 80%, transparent);
+  }
+  .void-titlebar-dots {
+    display: flex;
+    gap: 5px;
+  }
+  .void-titlebar-dots span {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--layer-void-border);
+  }
+  .void-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 380px;
+    padding: 24px;
+  }
+  .void-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--layer-void-muted);
+  }
+  .void-chip {
+    cursor: pointer;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--layer-void-accent) 40%, transparent);
+    background: transparent;
+    padding: 6px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-void-muted);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .void-chip:hover {
+    background: var(--layer-void-accent);
+    color: white;
+    border-color: var(--layer-void-accent);
+  }
+  .void-input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--layer-void-border);
+  }
+  .void-input {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--layer-void-border);
+    border-radius: 0;
+    color: var(--layer-void-text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    padding: 6px 12px;
+    outline: none;
+  }
+  .void-input::placeholder {
+    color: var(--layer-void-muted);
+  }
+  .void-input:disabled {
+    opacity: 0.5;
+  }
+  .void-send {
+    cursor: pointer;
+    flex-shrink: 0;
+    background: var(--layer-void-accent);
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 7px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    transition: opacity 0.2s ease;
+  }
+  .void-send:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+  .void-send:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+</style>
 
 <script>
   type SourceRef = {
@@ -155,7 +402,7 @@ const suggested = [
         const src = sources?.find((s) => s.n === Number(n));
         if (!src) return match;
         const label = `${src.title}${src.section !== 'header' ? ' · ' + src.section : ''}`;
-        return `<a href="${src.url}" title="${escapeHtml(label)}" class="mx-0.5 inline-block cursor-pointer rounded-[3px] border border-accent/20 bg-accent/10 px-1.5 py-px font-mono text-[10px] text-accent hover:bg-accent/20">[${n}]</a>`;
+        return `<a href="${src.url}" title="${escapeHtml(label)}" class="void-cite">[${n}]</a>`;
       });
       return html;
     }
@@ -169,17 +416,15 @@ const suggested = [
         .map((m, i) => {
           const isLast = i === messages.length - 1;
           if (m.role === 'user') {
-            return `<div class="max-w-[85%] self-end rounded-[10px] bg-accent px-4 py-3 font-medium text-bg" style="font-size: 14px; line-height: 1.55;">${escapeHtml(m.content)}</div>`;
+            return `<div class="void-msg-user">${escapeHtml(m.content)}</div>`;
           }
           const cursor =
-            isStreaming && isLast
-              ? '<span class="ml-0.5 inline-block animate-pulse text-accent">▋</span>'
-              : '';
-          const errClass = m.error ? ' italic text-fg-faded' : '';
+            isStreaming && isLast ? '<span class="void-cursor">▋</span>' : '';
+          const errClass = m.error ? ' void-msg-error' : '';
           const body = m.content
             ? renderText(m.content, m.sources)
-            : '<span class="animate-pulse text-accent">▋</span>';
-          return `<div class="max-w-[85%] self-start rounded-[10px] border border-border bg-white/[0.03] px-4 py-3 text-fg${errClass}" style="font-size: 14px; line-height: 1.55;">${body}${m.content ? cursor : ''}</div>`;
+            : '<span class="void-cursor">▋</span>';
+          return `<div class="void-msg-bot${errClass}">${body}${m.content ? cursor : ''}</div>`;
         })
         .join('');
 

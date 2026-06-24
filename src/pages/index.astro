@@ -104,6 +104,7 @@ const deepProcesses = [
     class="layer-section"
     style="background-color: var(--layer-void-bg); color: var(--layer-void-text); min-height: auto;"
   >
+    <div class="layer-void-signal">— signal detected at depth 04 —</div>
     <AiDemo />
     <FooterCTA />
   </section>
@@ -256,6 +257,27 @@ const deepProcesses = [
     }
     50% {
       opacity: 0.4;
+    }
+  }
+
+  /* ── void layer ── */
+
+  .layer-void-signal {
+    padding-top: 80px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--layer-void-muted);
+    animation: signal-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes signal-pulse {
+    0%,
+    100% {
+      letter-spacing: 0.06em;
+    }
+    50% {
+      letter-spacing: 0.18em;
     }
   }
 </style>
