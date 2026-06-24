@@ -3,6 +3,12 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+  approvedBuilds:
+    - '@google/genai'
+    - '@tailwindcss/oxide'
+    - esbuild
+    - protobufjs
+    - sharp
 
 importers:
 
