@@ -118,6 +118,38 @@ const { title, description, url, image, imageAlt, noindex, structured } =
         });
 
         window.openPanel = openPanel;
+
+        // Link interceptor — panel routes only
+        var PANEL_ROUTES = ['/about', '/contact', '/work/otto', '/work/smartbox-voice', '/work/mercedes-ddx', '/work/prozeso-stack'];
+
+        document.addEventListener('click', function (e) {
+          var link = e.target.closest('a[href]');
+          if (!link) return;
+
+          var href = link.getAttribute('href');
+          var url;
+          try {
+            url = new URL(href, window.location.origin);
+          } catch (_) {
+            return;
+          }
+
+          if (
+            url.origin !== window.location.origin ||
+            href.startsWith('#') ||
+            link.target === '_blank' ||
+            link.hasAttribute('data-no-panel')
+          ) return;
+
+          var shouldUsePanel = PANEL_ROUTES.some(function (route) {
+            return url.pathname === route || url.pathname.startsWith('/work/');
+          });
+
+          if (shouldUsePanel) {
+            e.preventDefault();
+            openPanel(url.pathname);
+          }
+        });
       })();
     </script>
   </body>
