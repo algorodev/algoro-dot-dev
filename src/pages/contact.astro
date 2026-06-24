@@ -46,7 +46,12 @@ const structured = [
     </p>
   </Section>
 
-  <Section number="/01" eyebrow="form" meta="all fields validated">
+  <div class="contact-form-section container-x">
+    <div class="contact-form-eyebrow">
+      <span class="contact-form-num">/01</span>
+      <span class="contact-form-tag">form</span>
+      <span class="contact-form-meta">all fields validated</span>
+    </div>
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.4fr]">
       <aside>
         <div class="mb-3 font-mono text-[11px] tracking-[0.1em] text-fg-faded uppercase">
@@ -222,7 +227,7 @@ const structured = [
         </p>
       </div>
     </div>
-  </Section>
+  </div>
 </BaseLayout>
 
 <style>
@@ -230,10 +235,50 @@ const structured = [
     padding-top: 120px;
     padding-bottom: 56px;
   }
+
+  .contact-form-section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact-form-eyebrow {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 48px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-form-num {
+    color: var(--color-fg-faded);
+  }
+
+  .contact-form-tag {
+    color: var(--color-fg-muted);
+  }
+
+  .contact-form-meta {
+    color: var(--color-fg-faded);
+    margin-left: auto;
+  }
+
   @media (max-width: 900px) {
     .hero-section {
       padding-top: 72px;
       padding-bottom: 32px;
+    }
+
+    .contact-form-section {
+      padding-top: 56px;
+      padding-bottom: 56px;
+    }
+
+    .contact-form-meta {
+      display: none;
     }
   }
 </style>
