@@ -17,16 +17,34 @@ const links = [
   <div class="container-x flex items-center justify-between">
     <a
       href="/"
-      class="font-mono text-sm font-medium tracking-tight"
+      class="logo-home"
       aria-label="algorodev home"
+      style="color: var(--nav-accent);"
     >
-      algoro<svg
+      <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 4 12"
+        viewBox="0 0 192 192"
         aria-hidden="true"
-        class="mx-[2px] inline-block h-[0.85em] w-[0.28em] animate-pulse align-[-0.05em]"
-        style="color: var(--nav-accent);"
-      ><rect width="4" height="12" rx="0.4" fill="currentColor" /></svg>dev
+        class="logo-icon"
+      >
+        <rect x="49" y="49" width="22" height="22" fill="currentColor"/>
+        <rect x="73" y="49" width="22" height="22" fill="currentColor"/>
+        <rect x="97" y="49" width="22" height="22" fill="currentColor"/>
+        <rect x="121" y="73" width="22" height="22" fill="currentColor"/>
+        <rect x="49" y="97" width="22" height="22" fill="currentColor"/>
+        <rect x="73" y="97" width="22" height="22" fill="currentColor"/>
+        <rect x="97" y="97" width="22" height="22" fill="currentColor"/>
+        <rect x="121" y="97" width="22" height="22" fill="currentColor"/>
+        <rect x="25" y="121" width="22" height="22" fill="currentColor"/>
+        <rect x="121" y="121" width="22" height="22" fill="currentColor"/>
+        <rect x="49" y="145" width="22" height="22" fill="currentColor"/>
+        <rect x="73" y="145" width="22" height="22" fill="currentColor"/>
+        <rect x="97" y="145" width="22" height="22" fill="currentColor"/>
+        <rect x="25" y="169" width="22" height="22" fill="currentColor"/>
+        <rect x="49" y="169" width="22" height="22" fill="currentColor"/>
+        <rect x="73" y="169" width="22" height="22" fill="currentColor"/>
+        <rect x="97" y="169" width="22" height="22" fill="currentColor"/>
+      </svg>
     </a>
     <ul class="hidden gap-8 md:flex">
       {
@@ -60,6 +78,18 @@ const links = [
 </nav>
 
 <style>
+  .logo-home {
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+  .logo-home:hover {
+    opacity: 0.75;
+  }
+  .logo-icon {
+    height: 1.5rem;
+    width: auto;
+  }
   nav svg {
     transition: color 0.3s ease;
   }

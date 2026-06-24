@@ -1,0 +1,19 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <rect x="49" y="49" width="22" height="22" fill="currentColor"/>
+  <rect x="73" y="49" width="22" height="22" fill="currentColor"/>
+  <rect x="97" y="49" width="22" height="22" fill="currentColor"/>
+  <rect x="121" y="73" width="22" height="22" fill="currentColor"/>
+  <rect x="49" y="97" width="22" height="22" fill="currentColor"/>
+  <rect x="73" y="97" width="22" height="22" fill="currentColor"/>
+  <rect x="97" y="97" width="22" height="22" fill="currentColor"/>
+  <rect x="121" y="97" width="22" height="22" fill="currentColor"/>
+  <rect x="25" y="121" width="22" height="22" fill="currentColor"/>
+  <rect x="121" y="121" width="22" height="22" fill="currentColor"/>
+  <rect x="49" y="145" width="22" height="22" fill="currentColor"/>
+  <rect x="73" y="145" width="22" height="22" fill="currentColor"/>
+  <rect x="97" y="145" width="22" height="22" fill="currentColor"/>
+  <rect x="25" y="169" width="22" height="22" fill="currentColor"/>
+  <rect x="49" y="169" width="22" height="22" fill="currentColor"/>
+  <rect x="73" y="169" width="22" height="22" fill="currentColor"/>
+  <rect x="97" y="169" width="22" height="22" fill="currentColor"/>
+</svg>
